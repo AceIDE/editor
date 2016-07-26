@@ -12,141 +12,110 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-if ( !class_exists( 'wpide' ) ) :
-class wpide
-
+class AceIDE
 {
-
 	public $site_url, $plugin_url, $git, $git_repo_path;
     private $menu_hook;
 
-
 	function __construct() {
-
     	//add WPide to the menu
 		add_action( 'admin_menu', array( &$this, 'add_my_menu_page' ) );
 		add_action( 'admin_head', array( &$this, 'add_my_menu_icon' ) );
 
 		//hook for processing incoming image saves
-		if ( isset($_GET['wpide_save_image']) ){
-
+		if ( isset( $_GET['aceide_save_image'] ) ) {
 			//force local file method for testing - you could force other methods 'direct', 'ssh', 'ftpext' or 'ftpsockets'
 			$this->override_fs_method('direct');
 
-			add_action('admin_init', array( &$this, 'wpide_save_image') );
-
+			add_action('admin_init', array( &$this, 'save_image') );
 		}
 
 		add_action( 'admin_init', array( &$this, 'setup_hooks' ) );
 
 		$this->site_url = get_bloginfo('url');
-
-
 	}
 
-
-    /**
-	 * The main WPide loader (PHP4 compatable)
-	 *
-	 * @uses wpide::__construct() Setup the globals needed
-	 */
-	public function wpide() {
-		$this->__construct();
-	}
-
-
-    public function override_fs_method($method = 'direct'){
-
-
-        if ( defined('FS_METHOD') ){
-
-            define('WPIDE_FS_METHOD_FORCED_ELSEWHERE', FS_METHOD); //make a note of the forced method
-
-        }else{
-
-            define('FS_METHOD', $method); //force direct
-
+    public function override_fs_method( $method='direct' ) {
+        if ( defined('FS_METHOD') ) {
+            define( 'WPIDE_FS_METHOD_FORCED_ELSEWHERE', FS_METHOD ); //make a note of the forced method
+        } else {
+            define( 'FS_METHOD', $method ); //force direct
         }
-
     }
 
 	public function setup_hooks() {
 		// force local file method until I've worked out how to implement the other methods
 		// main problem being password wouldn't/isn't saved between requests
 		// you could force other methods 'direct', 'ssh', 'ftpext' or 'ftpsockets'
-		$this->override_fs_method('direct');
+		$this->override_fs_method( 'direct' );
 
 		// Uncomment any of these calls to add the functionality that you need.
 		// Will only enqueue on WPide page
-		add_action('admin_print_scripts-' . $this->menu_hook, array( &$this, 'add_admin_js' ) );
-		add_action('admin_print_styles-' . $this->menu_hook, array( &$this, 'add_admin_styles' ) );
+		add_action( 'admin_print_scripts-' . $this->menu_hook, array( &$this, 'add_admin_js' ) );
+		add_action( 'admin_print_styles-'  . $this->menu_hook, array( &$this, 'add_admin_styles' ) );
 
-		add_action('admin_print_footer_scripts', array( &$this, 'print_find_dialog' ) );
-		add_action('admin_print_footer_scripts', array( &$this, 'print_settings_dialog' ) );
+		add_action( 'admin_print_footer_scripts', array( &$this, 'print_find_dialog' ) );
+		add_action( 'admin_print_footer_scripts', array( &$this, 'print_settings_dialog' ) );
 
 		//setup jqueryFiletree list callback
-		add_action('wp_ajax_jqueryFileTree', array( &$this, 'jqueryFileTree_get_list' ) );
+		add_action( 'wp_ajax_jqueryFileTree', array( &$this, 'jqueryFileTree_get_list' ) );
 		//setup ajax function to get file contents for editing
-		add_action('wp_ajax_wpide_get_file',  array( &$this, 'wpide_get_file' ) );
+		add_action( 'wp_ajax_aceide_get_file', array( &$this, 'get_file' ) );
 		//setup ajax function to save file contents and do automatic backup if needed
-		add_action('wp_ajax_wpide_save_file',  array( &$this, 'wpide_save_file' ) );
+		add_action( 'wp_ajax_aceide_save_file', array( &$this, 'save_file' ) );
 		//setup ajax function to rename file/folder
-		add_action('wp_ajax_wpide_rename_file', array( &$this, 'wpide_rename_file' ) );
+		add_action( 'wp_ajax_aceide_rename_file', array( &$this, 'rename_file' ) );
 		//setup ajax function to delete file/folder
-		add_action('wp_ajax_wpide_delete_file', array( &$this, 'wpide_delete_file' ) );
+		add_action( 'wp_ajax_aceide_delete_file', array( &$this, 'delete_file' ) );
 		//setup ajax function to handle upload
-		add_action('wp_ajax_wpide_upload_file', array( &$this, 'wpide_upload_file' ) );
+		add_action( 'wp_ajax_aceide_upload_file', array( &$this, 'upload_file' ) );
 		//setup ajax function to handle download
-		add_action('wp_ajax_wpide_download_file', array( &$this, 'wpide_download_file' ) );
+		add_action( 'wp_ajax_aceide_download_file', array( &$this, 'download_file' ) );
 		//setup ajax function to unzip file
-		add_action('wp_ajax_wpide_unzip_file', array( &$this, 'wpide_unzip_file' ) );
+		add_action( 'wp_ajax_aceide_unzip_file', array( &$this, 'unzip_file' ) );
 		//setup ajax function to zip file
-		add_action('wp_ajax_wpide_zip_file', array( &$this, 'wpide_zip_file' ) );
+		add_action( 'wp_ajax_aceide_zip_file', array( &$this, 'zip_file' ) );
 		//setup ajax function to create new item (folder, file etc)
-		add_action('wp_ajax_wpide_create_new', array( &$this, 'wpide_create_new' ) );
+		add_action( 'wp_ajax_aceide_create_new', array( &$this, 'create_new' ) );
 		//setup ajax function to show local git repo changes
-		add_action('wp_ajax_wpide_git_status', array( &$this, 'git_status' ) );
+		add_action( 'wp_ajax_aceide_git_status', array( &$this, 'git_status' ) );
 		//setup ajax function to show diff
-		add_action('wp_ajax_wpide_git_diff', array( &$this, 'git_diff' ) );
+		add_action( 'wp_ajax_aceide_git_diff', array( &$this, 'git_diff' ) );
 		//setup ajax function to commit changes
-		add_action('wp_ajax_wpide_git_commit', array( &$this, 'git_commit' ) );
+		add_action( 'wp_ajax_aceide_git_commit', array( &$this, 'git_commit' ) );
 		//setup ajax function to view the git log
-		add_action('wp_ajax_wpide_git_log', array( &$this, 'git_log' ) );
+		add_action( 'wp_ajax_aceide_git_log', array( &$this, 'git_log' ) );
 		//setup ajax function to initiate a git repo
-		add_action('wp_ajax_wpide_git_init', array( &$this, 'git_init' ) );
+		add_action( 'wp_ajax_aceide_git_init', array( &$this, 'git_init' ) );
 		//setup ajax function to clone a remote
-		add_action('wp_ajax_wpide_git_clone', array( &$this, 'git_clone' ) );
+		add_action( 'wp_ajax_aceide_git_clone', array( &$this, 'git_clone' ) );
 		//setup ajax function to push to remote
-		add_action('wp_ajax_wpide_git_push', array( &$this, 'git_push' ) );
+		add_action( 'wp_ajax_aceide_git_push', array( &$this, 'git_push' ) );
 		//setup ajax function to view/generate ssh key and known host file
-		add_action('wp_ajax_wpide_git_ssh_gen', array( &$this, 'git_ssh_gen' ) );
-
-
-
+		add_action( 'wp_ajax_aceide_git_ssh_gen', array( &$this, 'git_ssh_gen' ) );
 		//setup ajax function to create new item (folder, file etc)
-		add_action('wp_ajax_wpide_image_edit_key', array( &$this, 'wpide_image_edit_key' )  );
-
+		add_action( 'wp_ajax_wpide_image_edit_key', array( &$this, 'image_edit_key' )  );
 		//setup ajax function for startup to get some debug info, checking permissions etc
-		add_action('wp_ajax_wpide_startup_check', array( &$this, 'wpide_startup_check' ) );
+		add_action( 'wp_ajax_wpide_startup_check', array( &$this, 'startup_check' ) );
 
-		//add a warning when navigating away from WPide
-		//it has to go after WordPress scripts otherwise WP clears the binding
+		// add a warning when navigating away from WPide
+		// it has to go after WordPress scripts otherwise WP clears the binding
 		// This has been implemented in load-editor.js
 		// add_action('admin_print_footer_scripts', array( &$this, 'add_admin_nav_warning' ), 99 );
 
 		// Add body class to collapse the wp sidebar nav
-		add_filter('admin_body_class', array( &$this, 'hide_wp_sidebar_nav' ), 11);
+		add_filter( 'admin_body_class', array( &$this, 'hide_wp_sidebar_nav' ), 11);
 
-		//hide the update nag
-		add_action('admin_menu', array( &$this, 'hide_wp_update_nag' ));
+		// hide the update nag
+		add_action( 'admin_menu', array( &$this, 'hide_wp_update_nag' ) );
 	}
 
 
-    public function hide_wp_sidebar_nav($classes) {
+    public function hide_wp_sidebar_nav( $classes ) {
         global $hook_suffix;
 
 		if ( apply_filters( 'wpide_sidebar_folded', $hook_suffix === $this->menu_hook ) ) {
-	    	return  str_replace("auto-fold", "", $classes) . ' folded';
+	    	return  str_replace( "auto-fold", "", $classes ) . ' folded';
 		}
     }
 
@@ -169,86 +138,79 @@ class wpide
         <?php
 	}
 
+	public static function add_admin_js() {
+		$plugin_path =  plugin_dir_url( __FILE__ );
 
-
-
-
-
-	public static function add_admin_js(){
-
-	    $plugin_path =  plugin_dir_url( __FILE__ );
-		    //include file tree
-		    wp_enqueue_script('jquery-file-tree', plugins_url("jqueryFileTree.js", __FILE__ ) );
-		    //include ace
-		    wp_enqueue_script('ace', plugins_url("js/ace-1.2.0/ace.js", __FILE__ ) );
-		    //include ace modes for css, javascript & php
-		    wp_enqueue_script('ace-mode-css', $plugin_path . 'js/ace-1.2.0/mode-css.js');
-            wp_enqueue_script('ace-mode-less', $plugin_path . 'js/ace-1.2.0/mode-less.js');
-		    wp_enqueue_script('ace-mode-javascript', $plugin_path . 'js/ace-1.2.0/mode-javascript.js');
-		    wp_enqueue_script('ace-mode-php', $plugin_path . 'js/ace-1.2.0/mode-php.js');
-		    //include ace theme
-		    wp_enqueue_script('ace-theme', plugins_url("js/ace-1.2.0/theme-dawn.js", __FILE__ ) );//ambiance looks really nice for high contrast
-		    // wordpress-completion tags
-		    wp_enqueue_script('wpide-wordpress-completion', plugins_url("js/autocomplete/wordpress.js", __FILE__ ) );
-		    // php-completion tags
-		    wp_enqueue_script('wpide-php-completion', plugins_url("js/autocomplete/php.js", __FILE__ ) );
-		    // load editor
-		    wp_enqueue_script('wpide-load-editor', plugins_url("js/load-editor.js", __FILE__ ) );
-		    // load filetree menu
-		    wp_enqueue_script('wpide-load-filetree-menu', plugins_url("js/load-filetree-menu.js", __FILE__ ) );
-		    // load autocomplete dropdown
-		    wp_enqueue_script('wpide-dd', plugins_url("js/jquery.dd.js", __FILE__ ) );
-
-		     // load jquery ui
-		    wp_enqueue_script('jquery-ui', plugins_url("js/jquery-ui-1.9.2.custom.min.js", __FILE__ ), array('jquery'),  '1.9.2');
-
-		    // load color picker
-    	    wp_enqueue_script('ImageColorPicker', plugins_url("js/ImageColorPicker.js", __FILE__ ), array('jquery'),  '0.3');
-
-
-
+		//include file tree
+		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'jqueryFileTree.js', __FILE__ ) );
+		//include ace
+		wp_enqueue_script( 'ace', plugins_url( 'js/ace-1.2.0/ace.js', __FILE__ ) );
+		//include ace modes for css, javascript & php
+		wp_enqueue_script( 'ace-mode-css', $plugin_path . 'js/ace-1.2.0/mode-css.js' );
+		wp_enqueue_script( 'ace-mode-less', $plugin_path . 'js/ace-1.2.0/mode-less.js' );
+		wp_enqueue_script( 'ace-mode-javascript', $plugin_path . 'js/ace-1.2.0/mode-javascript.js' );
+		wp_enqueue_script( 'ace-mode-php', $plugin_path . 'js/ace-1.2.0/mode-php.js' );
+		//include ace theme
+		wp_enqueue_script( 'ace-theme', plugins_url( 'js/ace-1.2.0/theme-dawn.js', __FILE__ ) );//ambiance looks really nice for high contrast
+		// wordpress-completion tags
+		wp_enqueue_script( 'wpide-wordpress-completion', plugins_url( 'js/autocomplete/wordpress.js', __FILE__ ) );
+		// php-completion tags
+		wp_enqueue_script( 'wpide-php-completion', plugins_url('js/autocomplete/php.js', __FILE__ ) );
+		// load editor
+		wp_enqueue_script( 'wpide-load-editor', plugins_url( 'js/load-editor.js', __FILE__ ) );
+		// load filetree menu
+		wp_enqueue_script( 'wpide-load-filetree-menu', plugins_url( 'js/load-filetree-menu.js', __FILE__ ) );
+		// load autocomplete dropdown
+		wp_enqueue_script( 'wpide-dd', plugins_url( 'js/jquery.dd.js', __FILE__ ) );
+		
+		// load jquery ui
+		wp_enqueue_script( 'jquery-ui', plugins_url( 'js/jquery-ui-1.9.2.custom.min.js', __FILE__ ), array( 'jquery' ),  '1.9.2' );
+		
+		// load color picker
+		wp_enqueue_script( 'ImageColorPicker', plugins_url( 'js/ImageColorPicker.js', __FILE__ ), array( 'jquery' ),  '0.3' );
 	}
 
-	public static function add_admin_styles(){
-
+	public static function add_admin_styles() {
 		//main wpide styles
-		 wp_register_style( 'wpide_style', plugins_url('wpide.css', __FILE__) );
+		 wp_register_style( 'wpide_style', plugins_url( 'wpide.css', __FILE__ ) );
 		 wp_enqueue_style( 'wpide_style' );
 		 //filetree styles
-		 wp_register_style( 'wpide_filetree_style', plugins_url('jqueryFileTree.css', __FILE__) );
+		 wp_register_style( 'wpide_filetree_style', plugins_url( 'jqueryFileTree.css', __FILE__ ) );
 		 wp_enqueue_style( 'wpide_filetree_style' );
 		 //autocomplete dropdown styles
-		 wp_register_style( 'wpide_dd_style', plugins_url('dd.css', __FILE__) );
+		 wp_register_style( 'wpide_dd_style', plugins_url( 'dd.css', __FILE__ ) );
 		 wp_enqueue_style( 'wpide_dd_style' );
 
 		 //jquery ui styles
-		 wp_register_style( 'wpide_jqueryui_style', plugins_url('css/flick/jquery-ui-1.8.20.custom.css', __FILE__) );
+		 wp_register_style( 'wpide_jqueryui_style', plugins_url( 'css/flick/jquery-ui-1.8.20.custom.css', __FILE__ ) );
 		 wp_enqueue_style( 'wpide_jqueryui_style' );
-
-
 	}
 
 
 
 	public static function jqueryFileTree_get_list() {
 		//check the user has the permissions
-		check_admin_referer('plugin-name-action_wpidenonce');
-		if ( !current_user_can('edit_themes') )
-			wp_die('<p>'.__('You do not have sufficient permissions to edit templates for this site. SORRY').'</p>');
+		check_admin_referer( 'plugin-name-action_wpidenonce' );
+		if ( !current_user_can( 'edit_themes' ) ) {
+			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY') . '</p>' );
+		}
 
 		//setup wp_filesystem api
 		global $wp_filesystem;
-        $url = wp_nonce_url('admin.php?page=wpide','plugin-name-action_wpidenonce');
+
+        $url         = wp_nonce_url( 'admin.php?page=wpide', 'plugin-name-action_wpidenonce' );
         $form_fields = null; // for now, but at some point the login info should be passed in here
-        if (false === ($creds = request_filesystem_credentials($url, FS_METHOD, false, false, $form_fields) ) ) {
+        $creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+
+        if ( false === $creds ) {
              // no credentials yet, just produced a form for the user to fill in
             return true; // stop the normal page form from displaying
         }
 
-		if ( ! WP_Filesystem($creds) )
+		if ( ! WP_Filesystem( $creds ) )
 		    return false;
 
-		$_POST['dir'] = urldecode($_POST['dir']);
+		$_POST['dir'] = urldecode( $_POST['dir'] );
         $root = apply_filters( 'wpide_filesystem_root', WP_CONTENT_DIR );
 
 		if( $wp_filesystem->exists($root . $_POST['dir']) ) {
@@ -2010,8 +1972,4 @@ class wpide
 
 }
 
-$wpide = new wpide();
-
-endif; // class_exists check
-
-?>
+$aceide = new AceIDE();
