@@ -24,7 +24,7 @@ function display_context_menu(e) {
     left += parseInt($parent.css('paddingLeft'), 10);
 
     // Create menu
-    var $menu = jQuery("<ul class='wpide-context-menu'>").css({
+    var $menu = jQuery("<ul class='aceide-context-menu'>").css({
         'left':left + 'px',
         'top':e.offsetY + 'px'
     });
@@ -38,7 +38,7 @@ function display_context_menu(e) {
                     .text("Edit")
                     .on("click", function() {
                         $this.parent().addClass('wait');
-						wpide_set_file_contents($this.attr('rel'), function(){
+						aceide_set_file_contents($this.attr('rel'), function(){
 							$this.parent().removeClass('wait');
 						});
                     });
@@ -52,7 +52,7 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-rename")
                     .text("Rename")
                     .on("click", function() {
-                        wpide_rename_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_rename_file($this.attr("rel"), function(){alert("Callback")});
                     });
 
             return $item;
@@ -63,7 +63,7 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-delete")
                     .text("Delete")
                     .on("click", function() {
-                        wpide_delete_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_delete_file($this.attr("rel"), function(){alert("Callback")});
                     });
 
             return $item;
@@ -75,9 +75,9 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-upload")
                     .text("Upload")
                     .on("click", function() {
-                        wpide_upload_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_upload_file($this.attr("rel"), function(){alert("Callback")});
                     });
-    
+
             return $item;
         });
     } else {
@@ -86,9 +86,9 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-download")
                     .text("Download")
                     .on("click", function() {
-                        wpide_download_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_download_file($this.attr("rel"), function(){alert("Callback")});
                     });
-    
+
             return $item;
         });
     }
@@ -99,7 +99,7 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-zip")
                     .text("Zip")
                     .on("click", function() {
-                        wpide_zip_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_zip_file($this.attr("rel"), function(){alert("Callback")});
                     });
 
             return $item;
@@ -110,7 +110,7 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-unzip")
                     .text("Unzip")
                     .on("click", function() {
-                        wpide_unzip_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_unzip_file($this.attr("rel"), function(){alert("Callback")});
                     });
 
             return $item;
@@ -131,13 +131,13 @@ function display_context_menu(e) {
     function exit_menu(e) {
         var src_element = e.target || e.srcElement;
 
-        if (!jQuery(src_element).closest('.wpide-context-menu').get().length)
+        if (!jQuery(src_element).closest('.aceide-context-menu').get().length)
             destroy_menu();
     }
     function exit_menu_onclick(e) {
         var src_element = e.target || e.srcElement;
 
-        if (!jQuery(src_element).hasClass('wpide-context-menu'))
+        if (!jQuery(src_element).hasClass('aceide-context-menu'))
             destroy_menu();
     }
     function exit_menu_onblur() {
@@ -160,11 +160,11 @@ function display_context_menu(e) {
 }
 
 // rename file
-function wpide_rename_file(file, callback_func) {
+function aceide_rename_file(file, callback_func) {
     var folder = file.replace(/\/[^\/]*?\/?$/, '/'),
         filename = file.replace(folder, ''),
         new_name = prompt("What would you like to change the name to", filename),
-        data = { action: 'wpide_rename_file', filename: file, newname: new_name, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
+        data = { action: 'aceide_rename_file', filename: file, newname: new_name, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
     // User cancelled
     if (new_name === null)
@@ -181,10 +181,10 @@ function wpide_rename_file(file, callback_func) {
 }
 
 // delete file
-function wpide_delete_file(file, callback_func) {
+function aceide_delete_file(file, callback_func) {
     var folder = file.replace(/\/[^\/]*?\/?$/, '/'),
         filename = file.replace(folder, ''),
-        data = { action: 'wpide_delete_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
+        data = { action: 'aceide_delete_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
     if ( !confirm("Are you sure you wish to delete " + filename + "?") )
         return;
@@ -200,7 +200,7 @@ function wpide_delete_file(file, callback_func) {
 }
 
 // upload file
-function wpide_upload_file(server_destination, callback_func) {
+function aceide_upload_file(server_destination, callback_func) {
     var data = {  _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
     jQuery("<input>").attr({
@@ -214,7 +214,7 @@ function wpide_upload_file(server_destination, callback_func) {
             formdata.append(i, files[i]);
         }
 
-        formdata.append('action', 'wpide_upload_file');
+        formdata.append('action', 'aceide_upload_file');
         formdata.append('destination', server_destination);
         formdata.append('_wpnonce', jQuery("#_wpnonce").val());
         formdata.append('_wp_http_referer', jQuery("#_wp_http_referer").val());
@@ -246,9 +246,9 @@ function wpide_upload_file(server_destination, callback_func) {
 }
 
 // download file
-function wpide_download_file(file, callback_func) {
+function aceide_download_file(file, callback_func) {
     var filename = file.replace(/.*?([^\\\/]+?)$/, '$1'),
-        data = { action: 'wpide_download_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
+        data = { action: 'aceide_download_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
 //    jQuery("a[rel='"+file+"']").parent().addClass("wait");
 
@@ -258,7 +258,7 @@ function wpide_download_file(file, callback_func) {
         $iframe.css("display","none").appendTo(document.body);
         $iframe.get(0).contentWindow.document.write(
             '<form action="'+ajaxurl+'" method="POST"><input type="hidden"' +
-            ' name="action" value="wpide_download_file" /><input type=' +
+            ' name="action" value="aceide_download_file" /><input type=' +
             '"hidden" name="filename" value="'+file+'" /><input type="hidden"' +
             ' name="_wpnonce" value="'+jQuery("#_wpnonce").val()+'" /><input' +
             ' type="hidden" name="_wp_http_referer" value="' +
@@ -289,9 +289,9 @@ function wpide_download_file(file, callback_func) {
 }
 
 // zip given file
-function wpide_zip_file(file, callback_func) {
+function aceide_zip_file(file, callback_func) {
     var folder = file.replace(/\/[^\/]*?\/?$/, '/'),
-        data = { action: 'wpide_zip_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
+        data = { action: 'aceide_zip_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
     jQuery.post(ajaxurl, data, function(response) {
         if (response.length) {
@@ -303,14 +303,14 @@ function wpide_zip_file(file, callback_func) {
             the_filetree();
         } else {
             jQuery("ul.jqueryFileTree a[rel='"+ folder +"']").click().click();
-        }        
+        }
     });
 }
 
 // unzip given file
-function wpide_unzip_file(file, callback_func) {
+function aceide_unzip_file(file, callback_func) {
     var folder = file.replace(/\/[^\/]*?\/?$/, '/'),
-        data = { action: 'wpide_unzip_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
+        data = { action: 'aceide_unzip_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
     jQuery.post(ajaxurl, data, function(response) {
         if (response.length) {
@@ -322,6 +322,7 @@ function wpide_unzip_file(file, callback_func) {
             the_filetree();
         } else {
             jQuery("ul.jqueryFileTree a[rel='"+ folder +"']").click().click();
-        }        
+        }
     });
 }
+

@@ -1,5 +1,5 @@
 	/* This is to make sure the IDE does not overlap anything else in the window */
-	.toplevel_page_wpide #wpcontent {
+	.toplevel_page_aceide #wpcontent {
 		z-index: 10;
 		position: relative;
 	}
@@ -22,8 +22,8 @@
 		background-image: url( 'images/resize-handle.png' );
 	}
 	#template div{margin-right:0 !important;}
-	
-	#wpide_toolbar{
+
+	#aceide_toolbar{
 		width: 75%;
 		min-height: 30px;
 		text-align: right;
@@ -31,15 +31,15 @@
 		position: relative;
 		float: left;
 	}
-	#wpide_toolbar form{
+	#aceide_toolbar form{
 		position: absolute;
 		left: 104%;
 	}
-	#wpide_toolbar_tabs{
+	#aceide_toolbar_tabs{
 		width:100%;
 	}
-	
-	#wpide_toolbar .wpide_tab {
+
+	#aceide_toolbar .aceide_tab {
         position:relative;
 		height: 18px;
 		font: 13px/18px Arial,Helvetica,sans-serif normal;
@@ -60,28 +60,28 @@
 		color: #B00001;
 		text-decoration: none;
 		font-style: italic;
-        -moz-opacity:.60; 
-        filter:alpha(opacity=60); 
+        -moz-opacity:.60;
+        filter:alpha(opacity=60);
         opacity:.60;
 	}
-    #wpide_toolbar .wpide_tab.active {
-        -moz-opacity:1; 
-        filter:alpha(opacity=1); 
+    #aceide_toolbar .aceide_tab.active {
+        -moz-opacity:1;
+        filter:alpha(opacity=1);
         opacity:1;
         border-left-color:#bbb;
         border-right-color:#bbb;
         border-top-color:#bbb;
         border-bottom-color:#dedede;
     }
-	#wpide_toolbar .wpide_tab.modified {
+	#aceide_toolbar .aceide_tab.modified {
 		color: blue;
 		font-weight: bold;
 	}
-	#wpide_toolbar .wpide-tab.modified:after {
+	#aceide_toolbar .aceide-tab.modified:after {
 		content: ' *';
 	}
-	
-    #wpide_toolbar .close_tab {
+
+    #aceide_toolbar .close_tab {
         color: #575757;
         font-style: normal;
         padding-bottom: 7px;
@@ -92,28 +92,28 @@
         top: -2px;
 		outline: none !important;
     }
-    #wpide_toolbar .close_tab:hover{
+    #aceide_toolbar .close_tab:hover{
         color:#B00001;
         font-weight:bold;
     }
-	#wpide_toolbar .close_tab:active {
+	#aceide_toolbar .close_tab:active {
 		color: #444444;
 		font-weight: bold;
 	}
-    
-	#wpide_file_browser{
+
+	#aceide_file_browser{
 		margin-right:2%;
 		text-align:left;
 	}
-	
-	.toplevel_page_wpide #submitdiv,
-	.toplevel_page_wpide #docinfodiv h3.hndle{
+
+	.toplevel_page_aceide #submitdiv,
+	.toplevel_page_aceide #docinfodiv h3.hndle{
 		 width:100%;
 		 float:right;
 		 clear:right;
 	 }
-	 .toplevel_page_wpide #submitdiv h3.hndle,
-	 .toplevel_page_wpide #docinfodiv h3.hndle{
+	 .toplevel_page_aceide #submitdiv h3.hndle,
+	 .toplevel_page_aceide #docinfodiv h3.hndle{
 	 	font-family: Georgia,"Times New Roman";
 		font-size: 15px;
 		font-weight: bold;
@@ -121,8 +121,8 @@
 		margin: 0;
 		line-height: 1;
 	 }
-	 
-	 #wpide_toolbar_buttons {
+
+	 #aceide_toolbar_buttons {
 	 	position:relative;
 	 	min-height:30px;
 		width:75%;
@@ -137,14 +137,14 @@
 		background-image: -o-linear-gradient(bottom,#ddd,#e9e9e9);
 		background-image: -webkit-linear-gradient(bottom,#ddd,#e9e9e9);
 		background-image: linear-gradient(bottom,#ddd,#e9e9e9);
-		
+
 		-webkit-border-top-right-radius: 6px;
 		-webkit-border-top-left-radius: 0px;
 		border-top-right-radius: 6px;
 		border-top-left-radius: 0px;
 	}
-		
-	#wpide_toolbar_buttons a{
+
+	#aceide_toolbar_buttons a{
         display: block;
         float: right;
         margin: 2px;
@@ -152,10 +152,10 @@
         height: auto;
         margin-top: 4px;
 	}
-    #wpide_toolbar_buttons .red{
+    #aceide_toolbar_buttons .red{
         color:#bc201d;
     }
-	
+
 	#wpwrap div.ace_gutter{
 		background-color:#f4f4f4;
 		color:#aaa;
@@ -168,21 +168,21 @@
 		z-index: 1000;
 	}
 
-	#wpide_save_container{
+	#aceide_save_container{
         float: left;
         clear: left;
         width: 74%;
         padding: 0.5%;
         background-color: #E9E9E9;
-        
+
         border-color: #CCC;
         -webkit-box-shadow: inset 0 1px 0 #fff;
         box-shadow: inset 0 1px 0 #fff;
         -webkit-border-radius: 3px;
         border-radius: 3px;
 	}
-	
-	#wpide_info {
+
+	#aceide_info {
 		position: relative;
 		min-height: 30px;
 		width: 100%;
@@ -205,43 +205,43 @@
 		border-top-left-radius: 6px;
 
 	}
-	
-	#wpide_info_content{
+
+	#aceide_info_content{
 		margin-top: 8px;
 		margin-left: 10px;
 	}
-	.wpide_func_highlight,
-	.wpide_func_highlight_black {
+	.aceide_func_highlight,
+	.aceide_func_highlight_black {
 		font-size: 120%;
 	}
-	.wpide_func_highlight{
+	.aceide_func_highlight{
 		color: #4A8EAD;
 	}
-	.wpide_func_params{
+	.aceide_func_params{
 		padding-left:10px;
 		display: block;
 		color:#555;
 		font-family: courier;
 	}
-	.wpide_func_desc{
+	.aceide_func_desc{
 		color:#333;
 	}
-	.wpide_func_arg_notrequired{
-		color:#888;	
+	.aceide_func_arg_notrequired{
+		color:#888;
 	}
-	.wpide_func_arg_notrequired em{
+	.aceide_func_arg_notrequired em{
 		color: green;
 		display: block;
 		font-size: 80%;
 		line-height: 100%;
 	}
-    
+
     .inner-sidebar{
-        background-image: url(images/wpide_logo.jpg);
+        background-image: url(images/aceide_logo.jpg);
         background-repeat: no-repeat;
         background-position: top right;
     }
-    
+
     #fancyeditordiv{
         width:75%;
         height:1000px;
@@ -254,8 +254,8 @@
 		-moz-user-select: none;
 		user-select: none;
     }
-    
-    #wpide_message{
+
+    #aceide_message{
         display:none;
         width: 80%;
         float: left;
@@ -263,41 +263,41 @@
         margin: 0;
         padding: 7px;
     }
-    
-    #wpide_message a{
+
+    #aceide_message a{
         float:none;
         display:inline-block;
         margin:2px;
     }
-    
-    #wpide_message span{
+
+    #aceide_message span{
         width: 80%;
     }
-    
-    #wpide_message .note{
+
+    #aceide_message .note{
         font-size: 10px;
         margin: 10px 0;
         display: block;
     }
-    
-    #wpide_footer_message,
-    #wpide_footer_message_last_saved,
-    #wpide_footer_message_unsaved{
+
+    #aceide_footer_message,
+    #aceide_footer_message_last_saved,
+    #aceide_footer_message_unsaved{
         display:none;
         float: left;
         padding: 8px;
         font-size: 12px;
         color: #666;
     }
-    #wpide_footer_message_unsaved{
+    #aceide_footer_message_unsaved{
         color:#bc201d;
     }
-    
-    #wpide_save{
+
+    #aceide_save{
         float: right;
     }
-    
-    #wpide_git{
+
+    #aceide_git{
         float: right;
         margin-right: 20px;
         background-image: url(images/git.png);
@@ -305,12 +305,12 @@
         background-position: right center;
         padding-right: 30px;
     }
-    
+
     /* Make sure the modal window doesn't get hidden behind wp toolbar */
     .ui-dialog{
         margin-top:30px; /* this just is not working - the WP admin toolbar gets in the way */
     }
-    
+
     #gitdiv{
         display:none;
         background-color: #efefef;
@@ -321,7 +321,7 @@
     #gitdivcontent{
         margin:10px;
     }
-    
+
     .git_settings_panel{
         overflow: hidden;
         margin:20px 0px;
@@ -348,7 +348,7 @@
         float:left;
         clear:left;
     }
- 
+
     .git_log .input_row{
         padding: 5px;
         width: 99%;
@@ -361,7 +361,7 @@
         font-weight:bold;
         margin-bottom:10px;
     }
-    
+
     #gitdiv label,
     #gitdiv input[type=text],
     #gitdiv a.button{
@@ -370,7 +370,7 @@
     #gitdiv label{
         font-weight:bold;
     }
-    
+
     #gitdiv .button{
         text-align: center;
         height: inherit;
@@ -383,18 +383,18 @@
         font-size: 10px;
         font-weight:normal;
     }
-    
+
     .gitfilerow{
         background-color: #bbb;
         padding: 10px;
-        
-     
+
+
     }
     .gitfilerow:hover{
-      
+
     }
     .gitfilerow.light{
-        background-color: #ddd;   
+        background-color: #ddd;
     }
     .gitfilerow input[type=checkbox]{
         margin-right:20px;
@@ -407,7 +407,7 @@
     .gitfilerow .viewdiff{
         color: #bc201d;
     }
-    
+
     #gitdivcommit{
         margin-top:20px;
         padding:10px;
@@ -419,7 +419,7 @@
     #gitdiv input.message{
         width:70%;
     }
-    
+
     .gitdivdiff{
         margin-top: 10px;
     }
@@ -435,17 +435,17 @@
     .gitdivdiff .diff_line.minus{
         background-color:#fad3e5;
     }
-    
+
     .gitdivdiff .diff-addedline,
     .gitdivdiff .diff-deletedline{
         font-size:10px;
         line-height:130%;
     }
-    
+
     #publishing-action img{
         visibility: hidden;
     }
-    
+
     div#side-info-column{
            width:23%;
     }
@@ -455,11 +455,11 @@
 
 /* color assist */
 .ImageColorPickerWrapper{
-    height: 300px; 
+    height: 300px;
     width: 100%;
     overflow: scroll;
 }
-#wpide_color_assist{
+#aceide_color_assist{
     position:relative;
     width: 100%;
     background-color: whiteSmoke;
@@ -469,22 +469,22 @@
     margin-left: -2px;
     height: 380px;
 }
-#wpide_color_assist img, #wpide_color_assist canvas{
+#aceide_color_assist img, #aceide_color_assist canvas{
     margin:auto;
     display:block;
 }
-#wpide_color_assist canvas.ImageColorPickerCanvasColor{
+#aceide_color_assist canvas.ImageColorPickerCanvasColor{
     position:absolute;
     left:0;
     top:0;
 }
-#wpide_color_assist input[type=button]{
+#aceide_color_assist input[type=button]{
     float:left;
     width:110px;
     margin: 15px 5px;
     font-size: 12px;
 }
-#wpide_color_assist_input{
+#aceide_color_assist_input{
     float:left;
     width:100px;
     margin: 15px 5px;
@@ -494,7 +494,7 @@
     padding-bottom: 7px;
     padding-left: 7px;
     position: absolute;
-    right: 20px;   
+    right: 20px;
     top: 5px;
 }
 .close_color_picker a{
@@ -504,7 +504,7 @@
     font-size: 16px;
 }
 
-#wpide_color_assist h3{
+#aceide_color_assist h3{
     background-color: #F1F1F1;
     background-image: -ms-linear-gradient(top,#F9F9F9,#ECECEC);
     background-image: -moz-linear-gradient(top,#F9F9F9,#ECECEC);
@@ -512,7 +512,7 @@
     background-image: -webkit-gradient(linear,left top,left bottom,from(#F9F9F9),to(#ECECEC));
     background-image: -webkit-linear-gradient(top,#F9F9F9,#ECECEC);
     background-image: linear-gradient(top,#F9F9F9,#ECECEC);
-    
+
     -webkit-border-top-left-radius: 3px;
     -webkit-border-top-right-radius: 3px;
     border-top-left-radius: 3px;
@@ -531,7 +531,7 @@
 }
 
 div.ImageColorPickerWrapper{
- 
+
 }
 
 #wpfooter{
@@ -541,7 +541,7 @@ div.ImageColorPickerWrapper{
     padding-bottom:0;
 }
 
-.wpide-settings {
+.aceide-settings {
 	height: 20px;
 	width: 20px;
 	background-image: url( images/settings.png );
@@ -560,7 +560,7 @@ div.ImageColorPickerWrapper{
 	display: none;
 }
 
-.wpide-settings:hover {
+.aceide-settings:hover {
 	border-color: #666666;
 	background-color: #F2F2F2;
 }
@@ -656,7 +656,7 @@ ul.jqueryFileTree a {
 	max-width: 24px;
 	width: 24px;
 }
- 
+
 .jqueryFileTree .directory > a,
 .jqueryFileTree .file > a {
 	border: 1px solid transparent;
@@ -681,7 +681,7 @@ ul.jqueryFileTree a {
 	outline: none !important;
 }
 
-#wpide_file_browser .wpide-context-menu {
+#aceide_file_browser .aceide-context-menu {
 	position: absolute;
 	background: white;
 	border: 1px solid #AAAAAA;
@@ -690,7 +690,7 @@ ul.jqueryFileTree a {
 	border-radius: 3px;
 	box-shadow: 6px 6px 11px -7px #333;
 }
-#wpide_file_browser .wpide-context-menu li {
+#aceide_file_browser .aceide-context-menu li {
 	list-style-type: none;
 	padding: 3px 6px 3px 20px;
 	-webkit-user-select: none;
@@ -698,6 +698,6 @@ ul.jqueryFileTree a {
 	cursor: pointer;
 	font-size: 14px;
 }
-#wpide_file_browser .wpide-context-menu li:hover {
+#aceide_file_browser .aceide-context-menu li:hover {
 	background-color: #DFDFDF;
 }

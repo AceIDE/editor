@@ -5,7 +5,7 @@
 * Copyright 2010, Stefan Siebel
 * Licensed under the MIT license.
 * http://github.com/Skarabaeus/ImageColorPicker/MIT-LICENSE.txt
-* 
+*
 * Released under the MIT
 *
 * Date: Tue May 17 11:20:16 2011 -0700
@@ -30,7 +30,7 @@ var uiImageColorPicker = function(){
 	var _h2d = function(h) {
 		return parseInt(h,16);
 	};
-    
+
     var _pointerPos = {};
 
 	var _createImageColorPicker = function(widget) {
@@ -69,17 +69,17 @@ var uiImageColorPicker = function(){
 		img.src = widget.element.attr("src");
 		widget.$canvas.attr("width", img.width);
 		widget.$canvas.attr("height", img.height);
-        
+
         //the floating color
-        widget.$canvas2.attr("width", "40"); 
+        widget.$canvas2.attr("width", "40");
 		widget.$canvas2.attr("height", "40");
-        
+
         var canvas = widget.$canvas;
         var mouse={x:0,y:0} //make an object to hold mouse position
-        
-        canvas.onmousemove=function(e){mouse={x:e.pageX-this.offsetLeft,y:e.pageY-this.offsetTop};} 
-        canvas.onmousemove=function(e){mouse={x:e.pageX-this.offsetLeft,y:e.pageY-this.offsetTop};} 
-        
+
+        canvas.onmousemove=function(e){mouse={x:e.pageX-this.offsetLeft,y:e.pageY-this.offsetTop};}
+        canvas.onmousemove=function(e){mouse={x:e.pageX-this.offsetLeft,y:e.pageY-this.offsetTop};}
+
 
 
 
@@ -112,14 +112,14 @@ var uiImageColorPicker = function(){
 		widget.$canvas.bind("mousemove", function(e){
           var point = imageCoordinates( that, e.pageX, e.pageY );
           var color = lookupColor( that.imageData, point );
-    
+
           updateCurrentColor( that, color.red, color.green, color.blue, point );
 		});
 
     	widget.$canvas.bind("click", function(e){
             var point = imageCoordinates( that, e.pageX, e.pageY );
             var color = lookupColor( that.imageData, point );
-            
+
             updateSelectedColor( that, color.red, color.green, color.blue );
             that._trigger("afterColorSelected", 0, that.selectedColor());
 		});
@@ -169,14 +169,14 @@ var uiImageColorPicker = function(){
 		c2.lineJoin = "round";
         c2.strokeStyle="#FFFFFF";
 		c2.strokeRect (0, 0, 30, 30);
-        
+
         widget.$canvas2.css("top", (point.y+30) - jQuery(widget.$canvas).parent().scrollTop() );
         widget.$canvas2.css("left", (point.x+30) - jQuery(widget.$canvas).parent().scrollLeft() );
-        
+
 	}
 
 	var updateSelectedColor = function(widget, red, green, blue) {
-        jQuery("#wpide_color_assist_input").css("borderRight", "30px solid #" + _d2h(red) + _d2h(green) + _d2h(blue) );
+        jQuery("#aceide_color_assist_input").css("borderRight", "30px solid #" + _d2h(red) + _d2h(green) + _d2h(blue) );
 
 		// set new selected color
 		var newColor = [red, green, blue];
@@ -223,9 +223,3 @@ var uiImageColorPicker = function(){
 }();
 	jQuery.widget("ui.ImageColorPicker", uiImageColorPicker);
 })();
-
-
-
-
-
-

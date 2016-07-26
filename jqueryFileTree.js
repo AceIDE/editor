@@ -26,12 +26,12 @@
 // 1.00 - released (24 March 2008)
 //
 // TERMS OF USE
-// 
+//
 // This plugin is dual-licensed under the GNU General Public License and the MIT License and
-// is copyright 2008 A Beautiful Site, LLC. 
+// is copyright 2008 A Beautiful Site, LLC.
 //
 if(jQuery) (function($){
-	
+
 	$.extend($.fn, {
 		fileTree: function(o, h) {
 			// Defaults
@@ -45,9 +45,9 @@ if(jQuery) (function($){
 			if( o.collapseEasing == undefined ) o.collapseEasing = null;
 			if( o.multiFolder == undefined ) o.multiFolder = true;
 			if( o.loadMessage == undefined ) o.loadMessage = 'Loading...';
-			
+
 			$(this).each( function() {
-				
+
 				function showTree(c, t) {
 					$(c).addClass('wait');
 					$(".jqueryFileTree.start").remove();
@@ -58,7 +58,7 @@ if(jQuery) (function($){
 						bindTree(c);
 					});
 				}
-				
+
 				function bindTree(t) {
 					$(t).find('LI A').bind(o.folderEvent, function() {
 						if( $(this).parent().hasClass('directory') ) {
@@ -79,9 +79,9 @@ if(jQuery) (function($){
 						} else {
 							h($(this).parent(), $(this).attr('rel'));
 						}
-                        
-  
-        
+
+
+
 						return false;
 					});
 					// Prevent A from triggering the # on non-click events
@@ -90,18 +90,18 @@ if(jQuery) (function($){
 				// Loading message
 				$(this).html('<ul class="jqueryFileTree start"><li class="wait">' + o.loadMessage + '<li></ul>');
 				// Get the initial file list
-				jQuery.ajaxSetup({async:false}); //we need to wait until we get the response 
+				jQuery.ajaxSetup({async:false}); //we need to wait until we get the response
 				showTree( $(this), escape(o.root) );
-                jQuery.ajaxSetup({async:true}); //enable async again 
-                
+                jQuery.ajaxSetup({async:true}); //enable async again
 
-				
+
+
 				//if nothing returned then let user know something wrong with permissions
-				if ( $(this).children('.jqueryFileTree').length==0 ){
-					alert('WPide is having trouble accessing your files.');
+				if ( $(this).children('.jqueryFileTree').length == 0 ){
+					alert('AceIDE is having trouble accessing your files.');
 				}
 			});
 		}
 	});
-	
+
 })(jQuery);
