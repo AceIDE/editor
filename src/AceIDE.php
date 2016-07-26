@@ -1,18 +1,10 @@
 <?php
-/**
- * Plugin Name: AceIDE
- * Plugin URI: https://github.com/AceIDE/AceIDE
- * Description: WordPress code editor with auto completion of both WordPress and PHP functions with reference, syntax highlighting, line numbers, tabbed editing, automatic backup.
- * Version: 2.5.0
- * Author: AceIDE
- **/
 
-// Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
-
-require_once __DIR__ . '/vendor/autoload.php';
+namespace AceIDE\Editor;
 
 use phpseclib\Crypt\RSA as Crypt_RSA;
+use PHPParser_Lexer;
+use PHPParser_Parser;
 
 class AceIDE
 {
@@ -117,7 +109,7 @@ class AceIDE
         global $hook_suffix;
 
 		if ( apply_filters( 'aceide_sidebar_folded', $hook_suffix === $this->menu_hook ) ) {
-	    	return  str_replace( "auto-fold", "", $classes ) . ' folded';
+			return  str_replace( "auto-fold", "", $classes ) . ' folded';
 		}
     }
 
@@ -174,18 +166,18 @@ class AceIDE
 
 	public function add_admin_styles() {
 		// main AceIDE styles
-		 wp_register_style( 'aceide_style', plugins_url( 'aceide.css', __FILE__ ) );
-		 wp_enqueue_style( 'aceide_style' );
-		 // filetree styles
-		 wp_register_style( 'aceide_filetree_style', plugins_url( 'jqueryFileTree.css', __FILE__ ) );
-		 wp_enqueue_style( 'aceide_filetree_style' );
-		 // autocomplete dropdown styles
-		 wp_register_style( 'aceide_dd_style', plugins_url( 'dd.css', __FILE__ ) );
-		 wp_enqueue_style( 'aceide_dd_style' );
+		wp_register_style( 'aceide_style', plugins_url( 'aceide.css', __FILE__ ) );
+		wp_enqueue_style( 'aceide_style' );
+		// filetree styles
+		wp_register_style( 'aceide_filetree_style', plugins_url( 'jqueryFileTree.css', __FILE__ ) );
+		wp_enqueue_style( 'aceide_filetree_style' );
+		// autocomplete dropdown styles
+		wp_register_style( 'aceide_dd_style', plugins_url( 'dd.css', __FILE__ ) );
+		wp_enqueue_style( 'aceide_dd_style' );
 
-		 // jquery ui styles
-		 wp_register_style( 'aceide_jqueryui_style', plugins_url( 'css/flick/jquery-ui-1.8.20.custom.css', __FILE__ ) );
-		 wp_enqueue_style( 'aceide_jqueryui_style' );
+		// jquery ui styles
+		wp_register_style( 'aceide_jqueryui_style', plugins_url( 'css/flick/jquery-ui-1.8.20.custom.css', __FILE__ ) );
+		wp_enqueue_style( 'aceide_jqueryui_style' );
 	}
 
 	public function jqueryFileTree_get_list() {
@@ -208,7 +200,7 @@ class AceIDE
         }
 
 		if ( ! WP_Filesystem( $creds ) ) {
-		    return false;
+			return false;
 		}
 
 		$_POST['dir'] = urldecode( $_POST['dir'] );
@@ -274,7 +266,7 @@ class AceIDE
         }
 
 		if ( ! WP_Filesystem( $creds ) ) {
-		    return false;
+			return false;
 		}
 
 		$root      = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
@@ -658,10 +650,10 @@ class AceIDE
         }
 
 		if ( ! WP_Filesystem( $creds ) ) {
-		    return false;
+			return false;
 		}
 
-	    $root = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
+		$root = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
 
 		// check all required vars are passed
 		if ( strlen( $_POST['path'] ) > 0 && strlen( $_POST['type'] ) > 0 && strlen( $_POST['file'] ) > 0 ) {
@@ -748,7 +740,7 @@ class AceIDE
         }
 
 		if ( ! WP_Filesystem( $creds ) ) {
-		    echo __( "Cannot initialise the WP file system API" );
+			echo __( "Cannot initialise the WP file system API" );
 		}
 
 		// save a copy of the file and create a backup just in case
@@ -783,7 +775,7 @@ class AceIDE
             file_put_contents( $backup_path_full ,  $restore_php . file_get_contents( $file_name ) );
         } else {
             // do normal backup
-		    $wp_filesystem->copy( $file_name, $backup_path_full );
+			$wp_filesystem->copy( $file_name, $backup_path_full );
         }
 
 		// save file
@@ -810,9 +802,9 @@ class AceIDE
 			wp_die( '<p>' . __( 'You do not have sufficient permissions to modify files for this site. SORRY' ) . '</p>' );
 		}
 
-		$url		 = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
+		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
-		$creds		 = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+		$creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
 
 		if ( false === $creds ) {
 			// no credentials yet, just produced a form for the user to fill in
@@ -855,9 +847,9 @@ class AceIDE
 			wp_die( '<p>' . __( 'You do not have sufficient permissions to modify files for this site. SORRY' ) . '</p>' );
 		}
 
-		$url		 = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
+		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
-		$creds		 = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+		$creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
 
 		if ( false === $creds ) {
 			// no credentials yet, just produced a form for the user to fill in
@@ -876,7 +868,7 @@ class AceIDE
 			exit;
 		}
 
-		$deleted = $wp_filesystem->delete( $file_name );
+		$deleted = $wp_filesystem->delete( $file_name, true );
 
 		if ( ! $deleted ) {
 			echo __( 'The file couldn\'t be deleted.' );
@@ -894,9 +886,9 @@ class AceIDE
 			wp_die('<p>'.__('You do not have sufficient permissions to modify files for this site. SORRY').'</p>');
 		}
 
-		$url		 = wp_nonce_url( 'admin.php?page=ace', 'plugin-name-action_aceidenonce' );
+		$url         = wp_nonce_url( 'admin.php?page=ace', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
-		$creds		 = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+		$creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
 
 		if ( false === $creds ) {
 			// no credentials yet, just produced a form for the user to fill in
@@ -942,9 +934,9 @@ class AceIDE
 			wp_die( '<p>' . __( 'You do not have sufficient permissions to modify files for this site. SORRY' ) . '</p>' );
 		}
 
-		$url		 = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
+		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
-		$creds		 = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+		$creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
 
 		if ( false === $creds ) {
 			// no credentials yet, just produced a form for the user to fill in
@@ -986,9 +978,9 @@ class AceIDE
 		$root      = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
 		$file_name = $root . stripslashes( $_POST['filename'] );
 
-		$url		 = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
+		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
-		$creds		 = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+		$creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
 
 		if ( false === $creds ) {
 			// no credentials yet, just produced a form for the user to fill in
@@ -1047,10 +1039,10 @@ class AceIDE
 			case 'gz':
 			case 'tar':
 				if ( class_exists( 'PharData' ) && apply_filters( 'unzip_file_use_phardata', true ) ) {
-				    exit('yes');
-				    return self::_zip_archive_phardata( $file, $to );
+					exit('yes');
+					return self::_zip_archive_phardata( $file, $to );
 				} else {
-				    exit( 'figure it out');
+					exit( 'figure it out');
 				}
 
 /*				if ( $method === 'gz' ) {
@@ -1148,8 +1140,8 @@ class AceIDE
 		}
 
 		if ( is_dir( $file ) ) {
-		    $base = dirname( $file );
-		    $file = untrailingslashit( $file );
+			$base = dirname( $file );
+			$file = untrailingslashit( $file );
 
 			$z = self::_zip_folder_ziparchive( $base, $file, $to, $z );
 			if ( is_wp_error( $z ) ) {
@@ -1231,9 +1223,9 @@ class AceIDE
 		$root      = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
 		$file_name = $root . stripslashes( $_POST['filename'] );
 
-		$url		 = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
+		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
-		$creds		 = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+		$creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
 
 		if ( false === $creds ) {
 			// no credentials yet, just produced a form for the user to fill in
@@ -1276,7 +1268,7 @@ class AceIDE
 			case 'PK':
 				return unzip_file( $from, $to );
 			default:
-			    return new WP_Error( 'unknown', 'Unknown archive type' );
+				return new WP_Error( 'unknown', 'Unknown archive type' );
 		}
 	}
 
@@ -1289,7 +1281,7 @@ class AceIDE
 		// we are checking two variations of the nonce, one as-is and another that we have removed a trailing zero from
 		// this is to get around some sort of bug where a nonce generated on another page has a trailing zero and a nonce generated/checked here doesn't have the zero
 		if ( ! wp_verify_nonce( $filennonce[1], 'aceide_image_edit' . $filennonce[0] ) &&
-		    ! wp_verify_nonce( rtrim($filennonce[1], "0") , 'aceide_image_edit' . $filennonce[0] ) ) {
+			 ! wp_verify_nonce( rtrim($filennonce[1], "0") , 'aceide_image_edit' . $filennonce[0] ) ) {
 			die( __( 'Security check' ) ); // die because both checks failed
 		}
 		// check the user has the permissions
@@ -1311,7 +1303,7 @@ class AceIDE
         }
 
 		if ( ! WP_Filesystem( $creds ) ) {
-		    echo __( "Cannot initialise the WP file system API" );
+			echo __( "Cannot initialise the WP file system API" );
 		}
 
 		// save a copy of the file and create a backup just in case
@@ -1373,7 +1365,7 @@ class AceIDE
 
 		if ( defined( 'ACEIDE_FS_METHOD_FORCED_ELSEWHERE' ) ) {
             echo __( sprintf(
-				 "WordPress filesystem API has been forced to use the %s method by another plugin/WordPress",
+				"WordPress filesystem API has been forced to use the %s method by another plugin/WordPress",
 				ACEIDE_FS_METHOD_FORCED
 			) );
         }
@@ -1384,7 +1376,7 @@ class AceIDE
 
         $url         = wp_nonce_url( 'admin.php?page=aceide','plugin-name-action_acepidenonce' );
         $form_fields = null; // for now, but at some point the login info should be passed in here
-		$creds		 = request_filesystem_credentials($url, FS_METHOD, false, false, $form_fields);
+		$creds       = request_filesystem_credentials($url, FS_METHOD, false, false, $form_fields);
 
 		ob_start();
         if ( false === $creds ) {
@@ -1404,44 +1396,44 @@ class AceIDE
 
 		$root = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
         if ( isset( $wp_filesystem ) ) {
-	        // Running webservers user and group
-	        printf(
+			// Running webservers user and group
+			printf(
 				__( 'Web server user/group = %s:%s' ),
 				getenv( 'APACHE_RUN_USER' ),
 				getenv( 'APACHE_RUN_GROUP' )
 			);
 			echo "\n";
 
-	        // wp-content user and group
-	        printf(
+			// wp-content user and group
+			printf(
 				__( 'wp-content owner/group = %s:%s' ),
 				$wp_filesystem->owner( $root ),
 				$wp_filesystem->group( $root )
 			);
 			echo "\n\n";
 
-	        // check we can list wp-content files
-	        if ( $wp_filesystem->exists( $root ) ) {
-	            $files = $wp_filesystem->dirlist( $root );
-	            if ( count( $files ) > 0) {
-	                printf(
+			// check we can list wp-content files
+			if ( $wp_filesystem->exists( $root ) ) {
+				$files = $wp_filesystem->dirlist( $root );
+				if ( count( $files ) > 0) {
+					printf(
 						__( 'wp-content folder exists and contains %d files' ),
 						count( $files )
 					);
-	            } else {
-	                echo __( 'wp-content folder exists but we cannot read it\'s contents' );
-	            }
+				} else {
+					echo __( 'wp-content folder exists but we cannot read it\'s contents' );
+				}
 
 				echo "\n";
-	        }
+			}
 
-	        echo "\n" . __( "Using the {$wp_filesystem->method} method of the WP filesystem API" ) . "\n";
+			echo "\n" . __( "Using the {$wp_filesystem->method} method of the WP filesystem API" ) . "\n";
 
 			$is_readable = $wp_filesystem->is_readable( $root ) == 1;
 			$is_writable = $wp_filesystem->is_writable( $root ) == 1;
 
 			if ( $is_readable  && $is_writable ) {
-	        	echo __( "The wp-content folder IS readable and IS writable by this method" );
+				echo __( "The wp-content folder IS readable and IS writable by this method" );
 			} elseif ( $is_readable && ! $is_writable ) {
 				echo __( "The wp-content folder IS readable but IS NOT writable by this method" );
 			} elseif ( ! $is_readable && $is_writable ) {
@@ -1455,9 +1447,9 @@ class AceIDE
 				$is_readable = $wp_filesystem->is_readable( $root . '/plugins' ) == 1;
 				$is_writable = $wp_filesystem->is_writable( $root . '/plugins' ) == 1;
 
-		        // plugins folder editable
+				// plugins folder editable
 				if ( $is_readable  && $is_writable ) {
-		        	echo __( "The wp-content/plugins folder IS readable and IS writable by this method" );
+					echo __( "The wp-content/plugins folder IS readable and IS writable by this method" );
 				} elseif ( $is_readable && ! $is_writable ) {
 					echo __( "The wp-content/plugins folder IS readable but IS NOT writable by this method" );
 				} elseif ( ! $is_readable && $is_writable ) {
@@ -1471,9 +1463,9 @@ class AceIDE
 				$is_readable = $wp_filesystem->is_readable( $root . '/themes' ) == 1;
 				$is_writable = $wp_filesystem->is_writable( $root . '/themes' ) == 1;
 
-		        // plugins folder editable
+				// plugins folder editable
 				if ( $is_readable  && $is_writable ) {
-		        	echo __( "The wp-content/themes folder IS readable and IS writable by this method" );
+					echo __( "The wp-content/themes folder IS readable and IS writable by this method" );
 				} elseif ( $is_readable && ! $is_writable ) {
 					echo __( "The wp-content/themes folder IS readable but IS NOT writable by this method" );
 				} elseif ( ! $is_readable && $is_writable ) {
@@ -1540,7 +1532,7 @@ class AceIDE
 
 			function the_filetree() {
 				jQuery('#aceide_file_browser').fileTree({ script: ajaxurl }, function(parent, file) {
-				    if ( jQuery(parent).hasClass("create_new") ) { // create new file/folder
+					if ( jQuery(parent).hasClass("create_new") ) { // create new file/folder
 						// to create a new item we need to know the name of it so show input
 
 						var item = eval('('+file+')');
@@ -1551,9 +1543,9 @@ class AceIDE
 						jQuery("div.new_" + item.type).show();
 						jQuery("div.new_" + item.type + " input[name='new_" + item.type + "']").focus();
 						jQuery("div.new_" + item.type + " input[name='new_" + item.type + "']").attr("rel", file);
-				    } else if ( jQuery(".aceide_tab[rel='"+file+"']").length > 0) {  // focus existing tab
+					} else if ( jQuery(".aceide_tab[rel='"+file+"']").length > 0) {  // focus existing tab
 						jQuery(".aceide_tab[sessionrel='"+ jQuery(".aceide_tab[rel='"+file+"']").attr("sessionrel") +"']").click();// focus the already open tab
-				    } else { // open file
+					} else { // open file
 						var image_pattern = new RegExp("(\\.jpg$|\\.gif$|\\.png$|\\.bmp$)");
 						if (image_pattern.test(file)) {
 							// it's an image so open it for editing
@@ -1561,17 +1553,17 @@ class AceIDE
 							// using modal+iframe
 							if ("lets not" == "use the modal for now") {
 
-							 var NewDialog = jQuery('<div id="MenuDialog">\
-								<iframe src="http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&target=<?php echo get_bloginfo( 'url' ) . "?action=aceide_image_save";?>&url=<?php echo get_bloginfo( 'url' ) . "/wp-content";?>' + file + '&title=Edit image&service=Save back to AceIDE" width="100%" height="600px"> </iframe>\
-							    </div>');
-							    NewDialog.dialog({
+								var NewDialog = jQuery('<div id="MenuDialog">\
+									<iframe src="http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&target=<?php echo get_bloginfo( 'url' ) . "?action=aceide_image_save";?>&url=<?php echo get_bloginfo( 'url' ) . "/wp-content";?>' + file + '&title=Edit image&service=Save back to AceIDE" width="100%" height="600px"> </iframe>\
+									</div>');
+								NewDialog.dialog({
 									modal: true,
 									title: "title",
 									show: 'clip',
 									hide: 'clip',
 									width:'800',
 									height:'600'
-							    });
+								});
 							} else { // open in new tab/window
 								var data = { action: 'aceide_image_edit_key', file: file, _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 								var image_data = '';
@@ -1580,7 +1572,7 @@ class AceIDE
 									// with the response (which is a nonce), build the json data to pass to the image editor. The edit key (nonce) is only valid to edit this image
 									image_data = file+'::'+response;
 								});
-	                            jQuery.ajaxSetup({async:true});// enable async again
+								jQuery.ajaxSetup({async:true});// enable async again
 
 								window.open('http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&url=<?php echo $app_url. "/wp-content";?>' + file + '&opt=' + image_data + '&title=Edit image&service=Save back to AceIDE&target=<?php echo urlencode( $app_url . "/wp-admin/admin.php?aceide_save_image=yes" ) ; ?>');
 							}
@@ -1594,7 +1586,7 @@ class AceIDE
 
 							jQuery('#filename').val(file);
 						}
-				    }
+					}
 
 				});
 			}
@@ -1811,11 +1803,11 @@ class AceIDE
 
 		<div id="poststuff" class="metabox-holder has-right-sidebar">
 			<div id="side-info-column" class="inner-sidebar">
-            <div id="aceide_info">
-                <div id="aceide_info_content"></div>
-            </div>
-            <br style="clear:both;" />
-                 <div id="aceide_color_assist">
+            	<div id="aceide_info">
+                	<div id="aceide_info_content"></div>
+            	</div>
+            	<br style="clear:both;" />
+                <div id="aceide_color_assist">
                     <div class="close_color_picker"><a href="close-color-picker">x</a></div>
                     <h3><?php _e( 'Colour Assist' ); ?></h3>
                     <img src='<?php echo plugins_url( "images/color-wheel.png", __FILE__ ); ?>' />
@@ -1824,53 +1816,51 @@ class AceIDE
                 </div>
 
 				<div id="submitdiv" class="postbox ">
-				  <h3 class="hndle"><span>Files</span></h3>
-				  <div class="inside">
-					<div class="submitbox" id="submitpost">
-					  <div id="minor-publishing">
-					  </div>
-					  <div id="major-publishing-actions">
-						<div id="aceide_file_browser"></div>
-						<br style="clear:both;" />
-						<div class="new_file new_item_inputs">
-							<label for="new_folder"><?php _e( 'File name' ); ?></label><input class="has_data" name="new_file" type="text" rel="" value="" placeholder="<?php esc_attr_e( 'Filename' ); ?>" />
-							<a href="#" id="aceide_create_new_file" class="button-primary"><?php _e( 'CREATE' ); ?></a>
+					<h3 class="hndle"><span>Files</span></h3>
+					<div class="inside">
+						<div class="submitbox" id="submitpost">
+							<div id="minor-publishing"></div>
+							<div id="major-publishing-actions">
+								<div id="aceide_file_browser"></div>
+								<br style="clear:both;" />
+								<div class="new_file new_item_inputs">
+									<label for="new_folder"><?php _e( 'File name' ); ?></label>
+									<input class="has_data" name="new_file" type="text" rel="" value="" placeholder="<?php esc_attr_e( 'Filename' ); ?>" />
+									<a href="#" id="aceide_create_new_file" class="button-primary"><?php _e( 'CREATE' ); ?></a>
+								</div>
+								<div class="new_directory new_item_inputs">
+									<label for="new_directory"><?php _e( 'Directory name' ); ?></label><input class="has_data" name="new_directory" type="text" rel="" value="" placeholder="<?php esc_attr_e( 'Folder' ); ?>" />
+									<a href="#" id="aceide_create_new_directory" class="button-primary"><?php esc_html_e( 'CREATE' ); ?></a>
+								</div>
+								<div class="clear"></div>
+							</div>
 						</div>
-						<div class="new_directory new_item_inputs">
-							<label for="new_directory"><?php _e( 'Directory name' ); ?></label><input class="has_data" name="new_directory" type="text" rel="" value="" placeholder="<?php esc_attr_e( 'Folder' ); ?>" />
-							<a href="#" id="aceide_create_new_directory" class="button-primary"><?php esc_html_e( 'CREATE' ); ?></a>
-						</div>
-						<div class="clear"></div>
-					  </div>
 					</div>
-				  </div>
 				</div>
-
-
 			</div>
 
 			<div id="post-body">
 				<div id="aceide_toolbar" class="quicktags-toolbar">
-				  <div id="aceide_toolbar_tabs"> </div>
-				  <div id="dialog_window_minimized_container"></div>
+					<div id="aceide_toolbar_tabs"> </div>
+					<div id="dialog_window_minimized_container"></div>
 				</div>
 
 				<div id="aceide_toolbar_buttons">
-				  <div id="aceide_message"></div>
- 				  <a class="button restore" style="display:none;" title="<?php esc_attr_e( 'Restore the active tab' ); ?>" href="#"><?php _e( 'Restore &#10012;' ); ?></a>
+					<div id="aceide_message"></div>
+					<a class="button restore" style="display:none;" title="<?php esc_attr_e( 'Restore the active tab' ); ?>" href="#"><?php _e( 'Restore &#10012;' ); ?></a>
                 </div>
 				<div id='fancyeditordiv'></div>
 
 				<form id="aceide_save_container" action="" method="get">
-                  <div id="aceide_footer_message"></div>
-                  <div id="aceide_footer_message_last_saved"></div>
-                  <div id="aceide_footer_message_unsaved"></div>
+					<div id="aceide_footer_message"></div>
+					<div id="aceide_footer_message_last_saved"></div>
+					<div id="aceide_footer_message_unsaved"></div>
 
-                  <a href="#" id="aceide_save" alt="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" title="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" class="button-primary"><?php esc_html_e( 'SAVE FILE' ); ?></a>
+                  	<a href="#" id="aceide_save" alt="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" title="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" class="button-primary"><?php esc_html_e( 'SAVE FILE' ); ?></a>
                     <a href="#" style="display:none;" id="aceide_git" alt="Open the Git overlay" title="Open the Git overlay" class="button-secondary"><?php esc_html_e( 'Git' ); ?></a>
                     <input type="hidden" id="filename" name="filename" value="" />
 					<?php
-					   	if ( function_exists( 'wp_nonce_field' ) ) {
+						if ( function_exists( 'wp_nonce_field' ) ) {
 							wp_nonce_field('plugin-name-action_aceidenonce');
 						}
 					?>
@@ -1920,8 +1910,8 @@ class AceIDE
 		?>
 	<div id="editor_find_dialog" title="<?php esc_attr_e( 'Find...' ); ?>" style="padding: 0px; display: none;">
 		<?php if ( false ): ?>
-	    <ul>
-	        <li><a href="#find-inline"><?php esc_html_e( 'Text' ); ?></a></li>
+		<ul>
+			<li><a href="#find-inline"><?php esc_html_e( 'Text' ); ?></a></li>
         	<li><a href="#find-func"><?php esc_html_e( 'Function' ); ?></a></li>
         </ul>
 		<?php endif; ?>
@@ -1964,5 +1954,3 @@ class AceIDE
 
     }
 }
-
-$aceide = new AceIDE();
