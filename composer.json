@@ -1,0 +1,10 @@
+{
+    "name": "aceide/aceide",
+    "description": "Ace-embedded WordPress IDE",
+    "type": "Wordpress Plugin",
+    "require": {
+        "nikic/php-parser": "0.9.4",
+        "teqneers/php-stream-wrapper-for-git": "0.2.2",
+        "phpseclib/phpseclib": "^2.0"
+    }
+}

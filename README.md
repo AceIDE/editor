@@ -44,15 +44,16 @@ As with most plugins this one is open source. For issue tracking, further inform
 **Please read CONTRIBUTING.md before submitting a pull request.**
 
 ### Installation
+1. Run `composer install` to install project dependencies
 1. Upload the AceIDE folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Access AceIDE by clicking the AceIDE menu item in your main administration menu
 
 ### Screenshots
 1. Editor view, showing line numbers and syntax highlighting.
-2. Image editor in action
-3. Showing auto complete, function reference and file tree.
-4. Default colour picker image
+1. Image editor in action
+1. Showing auto complete, function reference and file tree.
+1. Default colour picker image
 
 ### Changelog
 Please have a look at CHANGELOG.md
