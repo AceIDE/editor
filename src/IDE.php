@@ -94,10 +94,17 @@ class IDE
 		);
 	}
 
-	public static function check_perms() {
+	public static function check_perms( $check_referrer=true ) {
 		$capability = ( is_multisite() ? 'manage_network_themes' : 'create_users' );
 
-		check_admin_referer( 'plugin-name-action_aceidenonce' );
+		if ( defined( 'DISALLOW_FILE_EDIT' ) && ! apply_filters( 'aceide_override_disallow_file_edit', ! DISALLOW_FILE_EDIT ) ) {
+			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
+		}
+
+		if ( $check_referrer ) {
+			check_admin_referer( 'plugin-name-action_aceidenonce' );
+		}
+
 		if ( ! current_user_can( $capability ) ) {
 			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
 		}
@@ -254,22 +261,10 @@ class IDE
 	public function save_image() {
 		global $wp_filesystem;
 
-		$filennonce = split( "::", $_POST["opt"] ); // file::nonce
-
-		// check the user has a valid nonce
-		// we are checking two variations of the nonce, one as-is and another that we have removed a trailing zero from
-		// this is to get around some sort of bug where a nonce generated on another page has a trailing zero and a nonce generated/checked here doesn't have the zero
-		if ( ! wp_verify_nonce( $filennonce[1], 'aceide_image_edit' . $filennonce[0] ) &&
-			 ! wp_verify_nonce( rtrim($filennonce[1], "0") , 'aceide_image_edit' . $filennonce[0] ) ) {
-			die( __( 'Security check' ) ); // die because both checks failed
-		}
-		// check the user has the permissions
-		if ( ! current_user_can( 'edit_themes' ) ) {
-			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
-		}
+		self::check_perms();
 
 		$_POST['content']  = base64_decode( $_POST["data"] ); // image content
-		$_POST['filename'] = $filennonce[0]; // filename
+		$_POST['filename'] = start( split( '::', $_POST['opt'] ) ); // filename
 
 		// setup wp_filesystem api
 		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
@@ -339,19 +334,17 @@ class IDE
 		}
 		echo "\n\n";
 
-		// check the user has the permissions
-		check_admin_referer( 'plugin-name-action_aceidenonce' );
-		if ( ! current_user_can( 'edit_themes' ) ) {
-			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
-		}
-
 		if ( defined( 'ACEIDE_FS_METHOD_FORCED_ELSEWHERE' ) ) {
 			echo __( sprintf(
 				"WordPress filesystem API has been forced to use the %s method by another plugin/WordPress",
 				ACEIDE_FS_METHOD_FORCED
-			) );
+			) ) . "\n";
 		}
-		echo "\n\n";
+
+		if ( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT ) {
+			echo __( 'WordPress constant "DISALLOW_FILE_EDIT" defined but overridden by the "aceide_override_disallow_file_edit" filter.' ) . "\n";
+		}
+		echo "\n";
 
 		// setup wp_filesystem api
 		$aceide_filesystem_before = $wp_filesystem;
@@ -469,6 +462,11 @@ class IDE
 	public function add_my_menu_page() {
 		global $wp_version;
 
+		// We should not even display a menu item if we can't edit files
+		if ( defined( 'DISALLOW_FILE_EDIT' ) && ! apply_filters( 'aceide_override_disallow_file_edit', ! DISALLOW_FILE_EDIT ) ) {
+			return;
+		}
+
 		if ( version_compare( $wp_version, '3.8', '<' ) ) {
 			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'create_users', "aceide", array( &$this, 'my_menu_page' ) );
 		} else {
@@ -478,6 +476,11 @@ class IDE
 
 	public function add_my_menu_icon() {
 		global $wp_version;
+
+		// We should not even display a menu icon if we can't edit files
+		if ( defined( 'DISALLOW_FILE_EDIT' ) && ! apply_filters( 'aceide_override_disallow_file_edit', ! DISALLOW_FILE_EDIT ) ) {
+			return;
+		}
 
 		if ( version_compare( $wp_version, '3.8', '<' ) ):
 ?>
@@ -496,9 +499,8 @@ class IDE
 	}
 
 	public function my_menu_page() {
-		if ( ! current_user_can( 'edit_themes' ) ) {
-			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
-		}
+		// Do not check for a nonce, however check other permissions
+		self::check_perms( false );
 
 		$app_url = get_bloginfo('url'); // need to make this https if we are currently looking on the site using https (even though https for admin might not be forced it can still cause issues)
 		if ( is_ssl() ) {
@@ -711,6 +713,9 @@ class IDE
 	}
 
 	public function print_find_dialog() {
+		// Do not check for a nonce, however check other permissions
+		self::check_perms( false );
+
 		?>
 	<div id="editor_find_dialog" title="<?php esc_attr_e( 'Find...' ); ?>" style="padding: 0px; display: none;">
 		<?php if ( false ): ?>
@@ -756,6 +761,7 @@ class IDE
 	}
 
 	public function print_settings_dialog() {
-
+		// Do not check for a nonce, however check other permissions
+		self::check_perms( false );
 	}
 }

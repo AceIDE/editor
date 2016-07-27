@@ -25,6 +25,7 @@ class GitOps implements Module
 	}
 
 	public function add_git_js() {
+		IDE::check_perms( false );
 		?>
 	<script type="text/javascript">
 		(function($) {
@@ -188,6 +189,7 @@ class GitOps implements Module
 	}
 
 	public function add_git_html() {
+		IDE::check_perms( false );
 		?>
 	<div id="gitdiv">
 		<a class="button git_settings" href="#"><?php _e( 'GIT SETTINGS <em>setting local repo location, keys etc</em>' ); ?></a>
