@@ -700,7 +700,9 @@ class IDE
 					<div id="aceide_footer_message_unsaved"></div>
 
 				  	<a href="#" id="aceide_save" alt="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" title="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" class="button-primary"><?php esc_html_e( 'SAVE FILE' ); ?></a>
-					<a href="#" style="display:none;" id="aceide_git" alt="Open the Git overlay" title="Open the Git overlay" class="button-secondary"><?php esc_html_e( 'Git' ); ?></a>
+					<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ): ?>
+					<a href="#" id="aceide_git" alt="Open the Git overlay" title="Open the Git overlay" class="button-secondary"><?php esc_html_e( 'Git' ); ?></a>
+					<?php endif; ?>
 					<input type="hidden" id="filename" name="filename" value="" />
 					<?php
 						if ( function_exists( 'wp_nonce_field' ) ) {
