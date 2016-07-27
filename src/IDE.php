@@ -94,6 +94,12 @@ class IDE
 		);
 	}
 
+	public static function check_perms() {
+		check_admin_referer( 'plugin-name-action_aceidenonce' );
+		if ( ! current_user_can( 'edit_themes' ) ) {
+			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
+		}
+	}
 
 	public function hide_wp_sidebar_nav( $classes ) {
 		global $hook_suffix;
@@ -176,10 +182,7 @@ class IDE
 		global $wp_filesystem;
 
 		// check the user has the permissions
-		check_admin_referer( 'plugin-name-action_aceidenonce' );
-		if ( ! current_user_can( 'edit_themes' ) ) {
-			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
-		}
+		self::check_perms();
 
 		// setup wp_filesystem api
 		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );

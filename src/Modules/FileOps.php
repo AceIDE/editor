@@ -2,6 +2,7 @@
 
 namespace AceIDE\Editor\Modules;
 
+use AceIDE\Editor\IDE;
 use PHPParser_Lexer;
 use PHPParser_Parser;
 
@@ -21,18 +22,11 @@ class FileOps implements Module
 		);
 	}
 
-	protected function check_perms() {
-		check_admin_referer( 'plugin-name-action_aceidenonce' );
-		if ( ! current_user_can( 'edit_themes' ) ) {
-			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
-		}
-	}
-
 	public function get_file() {
 		global $wp_filesystem;
 
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		// setup wp_filesystem api
 		$url         = wp_nonce_url( 'admin.php?page=aceide','plugin-name-action_aceidenonce' );
@@ -59,7 +53,7 @@ class FileOps implements Module
 		global $wp_filesystem, $current_user;
 
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$is_php = false;
 
@@ -156,7 +150,7 @@ die();
 		global $wp_filesystem;
 
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
@@ -200,7 +194,7 @@ die();
 		global $wp_filesystem;
 
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
@@ -237,7 +231,7 @@ die();
 		global $wp_filesystem;
 
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
@@ -283,7 +277,7 @@ die();
 		global $wp_filesystem;
 
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
 		$form_fields = null; // for now, but at some point the login info should be passed in here
@@ -322,7 +316,7 @@ die();
 		global $wp_filesystem;
 
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$root      = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
 		$file_name = $root . stripslashes( $_POST['filename'] );
@@ -566,7 +560,7 @@ die();
 		global $wp_filesystem;
 
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$root      = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
 		$file_name = $root . stripslashes( $_POST['filename'] );

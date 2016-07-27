@@ -2,6 +2,7 @@
 
 namespace AceIDE\Editor\Modules;
 
+use AceIDE\Editor\IDE;
 use phpseclib\Crypt\RSA as Crypt_RSA;
 
 class GitOps implements Module
@@ -226,13 +227,6 @@ class GitOps implements Module
 		<?php
 	}
 
-	protected function check_perms() {
-		check_admin_referer( 'plugin-name-action_aceidenonce' );
-		if ( !current_user_can( 'edit_themes' ) ) {
-			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
-		}
-	}
-
 	public function git_ssh_gen() {
 		// errors need to be on while experimental
 		error_reporting( E_ALL );
@@ -302,7 +296,7 @@ class GitOps implements Module
 
 	public function git_status() {
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$this->git_open_repo(); // make sure git repo is open
 
@@ -342,7 +336,7 @@ class GitOps implements Module
 
 	public function git_log() {
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$this->git_open_repo(); // make sure git repo is open
 
@@ -382,7 +376,7 @@ class GitOps implements Module
 
 	public function git_init() {
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$this->git_open_repo(); // make sure git repo is open
 
@@ -408,7 +402,7 @@ class GitOps implements Module
 
 	public function git_clone() {
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$this->git_open_repo(); // make sure git repo is open
 
@@ -459,7 +453,7 @@ class GitOps implements Module
 
 	public function git_push() {
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$this->git_open_repo(); // make sure git repo is open
 
@@ -493,7 +487,7 @@ class GitOps implements Module
 
 	public function git_diff() {
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$this->git_open_repo(); // make sure git repo is open
 
@@ -528,7 +522,7 @@ class GitOps implements Module
 
 	public function git_commit() {
 		// check the user has the permissions
-		$this->check_perms();
+		IDE::check_perms();
 
 		$this->git_open_repo(); // make sure git repo is open
 
