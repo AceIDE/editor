@@ -95,7 +95,7 @@ class IDE
 	}
 
 	public static function check_perms() {
-		$capability = ( is_multisite() ? 'manage_network_themes' : 'edit_files' );
+		$capability = ( is_multisite() ? 'manage_network_themes' : 'create_users' );
 
 		check_admin_referer( 'plugin-name-action_aceidenonce' );
 		if ( ! current_user_can( $capability ) ) {
@@ -245,10 +245,7 @@ class IDE
 
 	public function image_edit_key() {
 		// check the user has the permissions
-		check_admin_referer( 'plugin-name-action_aceidenonce' );
-		if ( ! current_user_can( 'edit_themes' ) ) {
-			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
-		}
+		self::check_perms();
 
 		// create a nonce based on the image path
 		echo wp_create_nonce( 'aceide_image_edit' . $_POST['file'] );
@@ -327,6 +324,9 @@ class IDE
 
 	public function startup_check() {
 		global $wp_filesystem, $wp_version;
+
+		// check the user has the permissions
+		self::check_perms();
 
 		echo "\n\n\n\n" . __( 'ACEIDE STARTUP CHECKS' ) . "\n";
 		echo "___________________ \n\n";
@@ -470,9 +470,9 @@ class IDE
 		global $wp_version;
 
 		if ( version_compare( $wp_version, '3.8', '<' ) ) {
-			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'edit_themes', "aceide", array( &$this, 'my_menu_page' ) );
+			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'create_users', "aceide", array( &$this, 'my_menu_page' ) );
 		} else {
-			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'edit_themes', "aceide", array( &$this, 'my_menu_page' ), 'dashicons-editor-code' );
+			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'create_users', "aceide", array( &$this, 'my_menu_page' ), 'dashicons-editor-code' );
 		}
 	}
 

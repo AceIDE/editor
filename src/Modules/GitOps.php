@@ -228,6 +228,9 @@ class GitOps implements Module
 	}
 
 	public function git_ssh_gen() {
+		// check the user has the permissions
+		IDE::check_perms();
+
 		// errors need to be on while experimental
 		error_reporting( E_ALL );
 		ini_set( "display_errors", 1 );
@@ -269,6 +272,9 @@ class GitOps implements Module
 	}
 
 	protected function git_open_repo() {
+		// check the user has the permissions
+		IDE::check_perms();
+
 		// errors need to be on while experimental
 		error_reporting( E_ALL );
 		ini_set( "display_errors", 1 );
