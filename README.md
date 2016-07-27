@@ -12,8 +12,8 @@ This plugin performs best in the Chrome web browser.
 Contributors: [WPsites][5], [Thomas Wieczorek][6], Shane Thompson  
 Tags: code, theme editor, plugin editor, code editor  
 Requires at least: 3.0  
-Tested up to: 4.3.1  
-Stable tag: 2.4.0  
+Tested up to: 4.5.3  
+Stable tag: 2.5.0  
 
 ### Current Features:
 - Syntax highlighting
