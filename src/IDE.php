@@ -4,7 +4,7 @@ namespace AceIDE\Editor;
 
 use AceIDE\Editor\Modules\Module;
 
-class AceIDE
+class IDE
 {
 	public $site_url, $plugin_url;
 	private $menu_hook;

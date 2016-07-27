@@ -18,7 +18,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $fileops = new AceIDE\Editor\Modules\FileOps;
 $gitops = new AceIDE\Editor\Modules\GitOps;
-$aceide = new AceIDE\Editor\AceIDE;
+$ide = new AceIDE\Editor\IDE;
 
-$aceide->extend($fileops);
-$aceide->extend($gitops);
+$ide->extend($fileops);
+$ide->extend($gitops);
