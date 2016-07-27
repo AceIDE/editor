@@ -418,36 +418,43 @@ class IDE
 			}
 			echo "\n";
 
-			// This code assumes that the root is the wp-content directory
 			if ($is_readable || $is_writable) {
-				$is_readable = $wp_filesystem->is_readable( $root . '/plugins' ) == 1;
-				$is_writable = $wp_filesystem->is_writable( $root . '/plugins' ) == 1;
+				$real_root = trailingslashit(realpath($root));
+				$real_wpc  = trailingslashit(WP_CONTENT_DIR);
+				$wp_content_accessible = (strpos($real_wpc, $real_root) !== false);
 
-				// plugins folder editable
-				if ( $is_readable  && $is_writable ) {
-					echo __( "The wp-content/plugins folder IS readable and IS writable by this method" );
-				} elseif ( $is_readable && ! $is_writable ) {
-					echo __( "The wp-content/plugins folder IS readable but IS NOT writable by this method" );
-				} elseif ( ! $is_readable && $is_writable ) {
-					echo __( "The wp-content/plugins folder IS NOT readable but IS writable by this method" );
+				if ($wp_content_accessible) {
+					$is_readable = $wp_filesystem->is_readable( $real_wpc . 'plugins' ) == 1;
+					$is_writable = $wp_filesystem->is_writable( $real_wpc . 'plugins' ) == 1;
+
+					// plugins folder editable
+					if ( $is_readable  && $is_writable ) {
+						echo __( "The wp-content/plugins folder IS readable and IS writable by this method" );
+					} elseif ( $is_readable && ! $is_writable ) {
+						echo __( "The wp-content/plugins folder IS readable but IS NOT writable by this method" );
+					} elseif ( ! $is_readable && $is_writable ) {
+						echo __( "The wp-content/plugins folder IS NOT readable but IS writable by this method" );
+					} else {
+						echo __( "The wp-content/plugins folder IS NOT readable and IS NOT writable by this method" );
+					}
+					echo "\n";
+
+					// themes folder editable
+					$is_readable = $wp_filesystem->is_readable( $real_wpc . 'themes' ) == 1;
+					$is_writable = $wp_filesystem->is_writable( $real_wpc . 'themes' ) == 1;
+
+					// plugins folder editable
+					if ( $is_readable  && $is_writable ) {
+						echo __( "The wp-content/themes folder IS readable and IS writable by this method" );
+					} elseif ( $is_readable && ! $is_writable ) {
+						echo __( "The wp-content/themes folder IS readable but IS NOT writable by this method" );
+					} elseif ( ! $is_readable && $is_writable ) {
+						echo __( "The wp-content/themes folder IS NOT readable but IS writable by this method" );
+					} else {
+						echo __( "The wp-content/themes folder IS NOT readable and IS NOT writable by this method" );
+					}
 				} else {
-					echo __( "The wp-content/plugins folder IS NOT readable and IS NOT writable by this method" );
-				}
-				echo "\n";
-
-				// themes folder editable
-				$is_readable = $wp_filesystem->is_readable( $root . '/themes' ) == 1;
-				$is_writable = $wp_filesystem->is_writable( $root . '/themes' ) == 1;
-
-				// plugins folder editable
-				if ( $is_readable  && $is_writable ) {
-					echo __( "The wp-content/themes folder IS readable and IS writable by this method" );
-				} elseif ( $is_readable && ! $is_writable ) {
-					echo __( "The wp-content/themes folder IS readable but IS NOT writable by this method" );
-				} elseif ( ! $is_readable && $is_writable ) {
-					echo __( "The wp-content/themes folder IS NOT readable but IS writable by this method" );
-				} else {
-					echo __( "The wp-content/themes folder IS NOT readable and IS NOT writable by this method" );
+					echo __( "The wp-content folder is not accessible from the current AceIDE root directory" );
 				}
 				echo "\n";
 			}
