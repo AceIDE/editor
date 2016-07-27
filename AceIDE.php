@@ -16,4 +16,9 @@ if ( !file_exists( __DIR__ . '/vendor/' ) ) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+$fileops = new AceIDE\Editor\Modules\FileOps;
+$gitops = new AceIDE\Editor\Modules\GitOps;
 $aceide = new AceIDE\Editor\AceIDE;
+
+$aceide->extend($fileops);
+$aceide->extend($gitops);
