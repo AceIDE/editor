@@ -99,8 +99,10 @@ class IDE
 		global $hook_suffix;
 
 		if ( apply_filters( 'aceide_sidebar_folded', $hook_suffix === $this->menu_hook ) ) {
-			return  str_replace( "auto-fold", "", $classes ) . ' folded';
+			$classes = str_replace( "auto-fold", "", $classes ) . ' folded';
 		}
+
+		return $classes;
 	}
 
 	public function hide_wp_update_nag() {
