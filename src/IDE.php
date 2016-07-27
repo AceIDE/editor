@@ -95,8 +95,10 @@ class IDE
 	}
 
 	public static function check_perms() {
+		$capability = ( is_multisite() ? 'manage_network_themes' : 'edit_files' );
+
 		check_admin_referer( 'plugin-name-action_aceidenonce' );
-		if ( ! current_user_can( 'edit_themes' ) ) {
+		if ( ! current_user_can( $capability ) ) {
 			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
 		}
 	}
