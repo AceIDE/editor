@@ -381,7 +381,7 @@ class IDE
 
 			// wp-content user and group
 			printf(
-				__( 'wp-content owner/group = %s:%s' ),
+				__( 'Root folder owner/group = %s:%s' ),
 				$wp_filesystem->owner( $root ),
 				$wp_filesystem->group( $root )
 			);
@@ -392,11 +392,11 @@ class IDE
 				$files = $wp_filesystem->dirlist( $root );
 				if ( count( $files ) > 0) {
 					printf(
-						__( 'wp-content folder exists and contains %d files' ),
+						__( 'Root folder exists and contains %d files' ),
 						count( $files )
 					);
 				} else {
-					echo __( 'wp-content folder exists but we cannot read it\'s contents' );
+					echo __( 'Root folder exists but we cannot read it\'s contents' );
 				}
 
 				echo "\n";
@@ -408,16 +408,17 @@ class IDE
 			$is_writable = $wp_filesystem->is_writable( $root ) == 1;
 
 			if ( $is_readable  && $is_writable ) {
-				echo __( "The wp-content folder IS readable and IS writable by this method" );
+				echo __( "The root folder IS readable and IS writable by this method" );
 			} elseif ( $is_readable && ! $is_writable ) {
-				echo __( "The wp-content folder IS readable but IS NOT writable by this method" );
+				echo __( "The root folder IS readable but IS NOT writable by this method" );
 			} elseif ( ! $is_readable && $is_writable ) {
-				echo __( "The wp-content folder IS NOT readable but IS writable by this method" );
+				echo __( "The root folder IS NOT readable but IS writable by this method" );
 			} else {
-				echo __( "The wp-content folder IS NOT readable and IS NOT writable by this method" );
+				echo __( "The root folder IS NOT readable and IS NOT writable by this method" );
 			}
 			echo "\n";
 
+			// This code assumes that the root is the wp-content directory
 			if ($is_readable || $is_writable) {
 				$is_readable = $wp_filesystem->is_readable( $root . '/plugins' ) == 1;
 				$is_writable = $wp_filesystem->is_writable( $root . '/plugins' ) == 1;
