@@ -148,6 +148,67 @@ die();
 		die( $result ); // this is required to return a proper result
 	}
 
+	public function create_new() {
+		// check the user has the permissions
+		IDE::check_perms();
+
+		// setup wp_filesystem api
+		global $wp_filesystem;
+
+		$url         = wp_nonce_url( 'admin.php?page=aceide','plugin-name-action_aceidenonce' );
+		$form_fields = null; // for now, but at some point the login info should be passed in here
+		$creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+
+		if ( false === $creds ) {
+			// no credentials yet, just produced a form for the user to fill in
+			return true; // stop the normal page form from displaying
+		}
+
+		if ( ! WP_Filesystem( $creds ) ) {
+			return false;
+		}
+
+		$root = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
+
+		// check all required vars are passed
+		if ( strlen( $_POST['path'] ) > 0 && strlen( $_POST['type'] ) > 0 && strlen( $_POST['file'] ) > 0 ) {
+			$filename = $_POST['file'];
+			$special_chars = array( "?", "[", "]", "/", "\\", "=", "<", ">", ":", ";", ",", "'", "\"", "&", "$", "#", "*", "(", ")", "|", "~", "`", "!", "{", "}", chr( 0 ) );
+			$filename = preg_replace( "#\x{00a0}#siu", ' ', $filename );
+			$filename = str_replace( $special_chars, '', $filename );
+			$filename = str_replace( array( '%20', '+' ), '-', $filename );
+			$filename = preg_replace( '/[\r\n\t -]+/', '-', $filename );
+
+			$path = $_POST['path'];
+
+			if ( $_POST['type'] == "directory" ) {
+				$write_result = $wp_filesystem->mkdir( $root . $path . $filename, FS_CHMOD_DIR );
+
+				if ( $write_result ) {
+					die( "1" ); // created
+				} else {
+					echo "Problem creating directory" . $root . $path . $filename;
+				}
+			} else if ( $_POST['type'] == "file" ) {
+				// write the file
+				$write_result = $wp_filesystem->put_contents(
+				$root . $path . $filename,
+				'',
+				FS_CHMOD_FILE // predefined mode settings for WP files
+				);
+
+				if ( $write_result ) {
+				die( "1" ); // created
+				} else {
+				printf( __( "Problem creating file %s" ), $root . $path . $filename );
+				}
+			}
+		}
+
+		echo "An error has occurred creating the file.";
+		die(); // this is required to return a proper result
+	}
+
 	public function rename_file() {
 		global $wp_filesystem;
 
