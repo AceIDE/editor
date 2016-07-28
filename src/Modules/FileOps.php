@@ -2,6 +2,7 @@
 
 namespace AceIDE\Editor\Modules;
 
+use WP_Error;
 use AceIDE\Editor\IDE;
 use PHPParser_Lexer;
 use PHPParser_Parser;
@@ -19,6 +20,7 @@ class FileOps implements Module
 			array( 'wp_ajax_aceide_unzip_file',    array( &$this, 'unzip_file' ) ),
 			array( 'wp_ajax_aceide_zip_file',      array( &$this, 'zip_file' ) ),
 			array( 'wp_ajax_aceide_create_new',    array( &$this, 'create_new' ) ),
+			array( 'wp_ajax_aceide_move_file',     array( &$this, 'move_file' ) ),
 		);
 	}
 
@@ -222,6 +224,59 @@ die();
 
 		if ( ! $deleted ) {
 			echo __( 'The file couldn\'t be deleted.' );
+		}
+
+		exit;
+	}
+
+	public function move_file() {
+		global $wp_filesystem;
+
+		// check the user has the permissions
+		IDE::check_perms();
+
+		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
+		$form_fields = null; // for now, but at some point the login info should be passed in here
+		$creds       = request_filesystem_credentials( $url, FS_METHOD, false, false, $form_fields );
+
+		if ( false === $creds ) {
+			// no credentials yet, just produced a form for the user to fill in
+			return true; // stop the normal page form from displaying
+		}
+
+		if ( ! WP_Filesystem( $creds ) ) {
+			echo __( "Cannot initialise the WP file system API" );
+			exit;
+		}
+
+		$root        = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
+		$source      = $root . stripslashes( $_POST['source'] );
+		$destination = $root . stripslashes( $_POST['destination'] );
+
+		if ( ! $wp_filesystem->exists( $source ) ) {
+			echo __( 'The source file doesn\'t exist!' );
+			exit;
+		}
+
+		if ( !$wp_filesystem->exists( $destination ) ) {
+			echo __( 'The destination directory does not exist!' );
+			exit;
+		}
+
+        if ( !$wp_filesystem->is_dir( $destination ) ) {
+            echo __( 'The destination is not a directory!' );
+            exit;
+        }
+
+        $destination .= '/' . basename( $source );
+
+		// Move instead of rename
+		$moved = $wp_filesystem->move( $source, $destination );
+
+		if ( !$moved ) {
+			echo __( 'The file could not be renamed!' );
+		} else {
+		    echo '1';
 		}
 
 		exit;

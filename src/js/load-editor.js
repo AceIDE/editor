@@ -1128,23 +1128,79 @@ function display_goto_dialog() {
 }
 
 function filetree_drag_initializer() {
-    var current_element = null;
-
+	var coverup = document.getElementById("drag_coverup"),
+	    dragged_element = null;
     // Allows us to keep dataTransfer in the jQuery event
     jQuery.event.props.push("dataTransfer");
     jQuery('#aceide_file_browser').on('dragstart', '[draggable=true]', function(e) {
-        current_element = this;
+        e.stopPropagation();
+
+        dragged_element = this;
+
+        var drag_html = this.cloneNode();
+        drag_html.appendChild(this.getElementsByTagName('a')[0].cloneNode(true));
+        coverup.appendChild(drag_html);
 
         e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', this.innerHTML);
-    }).on('dragover', '[draggable=true]', function(e) {
+        e.dataTransfer.setData("text", this.childNodes[0].getAttribute("rel"));
+        e.dataTransfer.setDragImage(coverup, 0, 0);
+    }).on('dragover', 'li.directory > a', function(e) {
+        // Stop child nodes displaying the ability to receive this item
+        if (jQuery(dragged_element).find(this).size())
+            return;
+
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";
+
+        jQuery(this).parent().addClass("allowDrop");
+
         return false;
-    }).on('dragleave', '[draggable=true]', function(e) {
-    }).on('dragend', '[draggable=true]', function(e) {
-        current_element = null;
+    }).on('dragleave', 'li.directory > a', function(e) {
+        jQuery(this).parent().removeClass("allowDrop");
+    }).on('dragend', function() {
+        // Just to make sure it's always empty
+        jQuery(coverup).empty();
+
+        // And our styling resets
+        jQuery("#aceide_file_browser .allowDrop").removeClass("allowDrop");
+    }).on('drop', 'li.directory', function(e) {
+        e.stopPropagation();
         e.preventDefault();
+
+        if (jQuery(dragged_element).find(this).size())
+            return;
+
+        var source      = jQuery(dragged_element).children("a").attr("rel");
+        var destination = jQuery(this).children("a").attr("rel");
+
+        var data = { action: 'aceide_move_file', source: source, destination: destination, _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
+
+        jQuery.post(ajaxurl, data, function(response) {
+            if (response == "1") {
+                if (jQuery("ul.jqueryFileTree a[rel='"+ source +"']").parents('ul').size() < 2) {
+                    // We are moving something to the root folder so regenerate the whole filetree
+                    the_filetree();
+                    return;
+                }
+
+                // click the source once to hide
+                jQuery("ul.jqueryFileTree a[rel='"+ source +"']").closest('ul').parent().click();
+
+				// click the destination once to hide
+				jQuery("ul.jqueryFileTree a[rel='" + destination + "']").parent().children("a").click();
+
+                //click the parent once again to show with new folder and focus on this area
+                jQuery("ul.jqueryFileTree a[rel='"+ source +"']").parent().children("a").click();
+				jQuery("ul.jqueryFileTree a[rel='" + destination + "']").parent().children("a").click();
+            } else if (response == "-1") {
+        		alert("Permission/security problem. Refresh AceIDE and try again.");
+            } else {
+                alert("Error: " + response);
+            }
+        });
+
+        dragged_element = null;
+
         return false;
     });
 }

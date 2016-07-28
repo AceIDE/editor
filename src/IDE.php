@@ -2,6 +2,7 @@
 
 namespace AceIDE\Editor;
 
+use WP_Error;
 use AceIDE\Editor\Modules\Module;
 
 class IDE
@@ -668,6 +669,7 @@ class IDE
 				<div id="submitdiv" class="postbox ">
 					<h3 class="hndle"><span>Files</span></h3>
 					<div class="inside">
+					    <ul id="drag_coverup" class="jqueryFileTree" style="position: absolute; background-color: white; z-index: -1;"></ul>
 						<div class="submitbox" id="submitpost">
 							<div id="minor-publishing"></div>
 							<div id="major-publishing-actions">

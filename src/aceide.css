@@ -681,6 +681,11 @@ ul.jqueryFileTree a {
 	outline: none !important;
 }
 
+.jqueryFileTree LI.allowDrop > a {
+    background: #3ca924;
+    color: #fff;
+}
+
 #aceide_file_browser .aceide-context-menu {
 	position: absolute;
 	background: white;
