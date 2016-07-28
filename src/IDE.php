@@ -542,7 +542,7 @@ class IDE
 					} else if ( jQuery(".aceide_tab[rel='"+file+"']").length > 0) {  // focus existing tab
 						jQuery(".aceide_tab[sessionrel='"+ jQuery(".aceide_tab[rel='"+file+"']").attr("sessionrel") +"']").click();// focus the already open tab
 					} else { // open file
-						var image_pattern = new RegExp("(\\.jpg$|\\.gif$|\\.png$|\\.bmp$)");
+						var image_pattern = new RegExp("\\.(jpg|gif|png|bmp)$");
 						if (image_pattern.test(file)) {
 							// it's an image so open it for editing
 
