@@ -513,6 +513,9 @@ function aceide_set_file_contents(file, callback_func){
 			else if (/\.js$/.test(currentFilename)) {
 				mode = require("ace/mode/javascript").Mode;
 			}
+			else if (/\.twig$/.test(currentFilename)) {
+			    mode = require("ace/mode/twig").Mode;
+			}
 			else {
 				mode = require("ace/mode/php").Mode; //default to PHP
 
