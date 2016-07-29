@@ -7,7 +7,7 @@ use AceIDE\Editor\Modules\Module;
 
 class IDE
 {
-	private $ace_version = '1.2.0';
+	private $ace_version = '1.2.4';
 
 	public $site_url, $plugin_url;
 	private $menu_hook;
@@ -157,7 +157,7 @@ class IDE
 		wp_enqueue_script( 'ace-mode-php', "{$plugin_path}js/ace-{$ver}/mode-php.js" );
 		wp_enqueue_script( 'ace-mode-twig', "{$plugin_path}js/ace-{$ver}/mode-twig.js" );
 		// include ace theme
-		wp_enqueue_script( 'ace-theme', "{$plugin_path}js/ace-1.2.0/theme-dawn.js" ); // ambiance looks really nice for high contrast
+		wp_enqueue_script( 'ace-theme', "{$plugin_path}js/ace-{$ver}/theme-dawn.js" ); // ambiance looks really nice for high contrast
 		// load emmet
 		wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_path}js/ace-{$ver}/ext-emmet.js" );
 		wp_enqueue_script( 'aceide-emmet', "{$plugin_path}js/emmet.js" );
