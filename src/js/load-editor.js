@@ -18,15 +18,15 @@ var editor_options = {resizer:{}};
 
 function onSessionChange(e)  {
 
-    //set the document as unsaved
-    jQuery(".aceide_tab.active", "#aceide_toolbar").data( "unsaved", true);
-    jQuery("#aceide_footer_message_unsaved").html("[ Document contains unsaved content &#9998; ]").show();
+	//set the document as unsaved
+	jQuery(".aceide_tab.active", "#aceide_toolbar").data( "unsaved", true);
+	jQuery("#aceide_footer_message_unsaved").html("[ Document contains unsaved content &#9998; ]").show();
 
 	if( editor.getSession().enable_autocomplete === false){
-        return;
+		return;
 	}
 
-    //don't continue with autocomplete if /n entered
+	//don't continue with autocomplete if /n entered
 	try {
 		if ( e.data.text.charCodeAt(0) === 10 ){
 			return;
@@ -128,16 +128,16 @@ function onSessionChange(e)  {
 
 	if( typeof ac !== 'undefined' ){
 
-        //add editor click listener
-        //editor clicks should hide the autocomplete dropdown
-        editor.container.addEventListener('click', function(e){
+		//add editor click listener
+		//editor clicks should hide the autocomplete dropdown
+		editor.container.addEventListener('click', function(e){
 
-            aceide_close_autocomplete();
+			aceide_close_autocomplete();
 
-            autocompleting=false;
-            autocompletelength = 2;
+			autocompleting=false;
+			autocompletelength = 2;
 
-        }, false);
+		}, false);
 
 	} //end - create initial autocomplete dropdown and related actions
 
@@ -247,26 +247,26 @@ function onSessionChange(e)  {
 
 		jQuery("#ac_child").click(function(item){
 			//get the link node and pass to select AC item function
-            if (typeof item.srcElement != 'undefined'){
-                var link_node = item.srcElement; //works on chrome
-            }else{
-                var link_node = item.target; //works on Firefox etc
-            }
+			if (typeof item.srcElement != 'undefined'){
+				var link_node = item.srcElement; //works on chrome
+			}else{
+				var link_node = item.target; //works on Firefox etc
+			}
 
-            selectACitem(link_node);
+			selectACitem(link_node);
 		});
 
 		jQuery("#ac_child a").mouseover(function(item){
 			//show the code in the info panel
 
-            //get the link ID
-            if (typeof item.srcElement != 'undefined'){
-                var link_id = item.srcElement.id; //works on chrome
-            }else{
-                var link_id = item.target.id; //works on Firefox etc
-            }
+			//get the link ID
+			if (typeof item.srcElement != 'undefined'){
+				var link_id = item.srcElement.id; //works on chrome
+			}else{
+				var link_id = item.target.id; //works on Firefox etc
+			}
 
-            if (link_id == '') return; //if the link doesn't have an id it's not valid so just stop
+			if (link_id == '') return; //if the link doesn't have an id it's not valid so just stop
 
 
 			//if this command item is enabled
@@ -302,27 +302,27 @@ function onSessionChange(e)  {
 }
 
 function onSessionScroll(e) {
-    var lh = editor.renderer.lineHeight,
-        new_height = 0, mod = 0;
+	var lh = editor.renderer.lineHeight,
+		new_height = 0, mod = 0;
 
-    // If we scroll to exactly the top of a line, this condition shall be 0.
-    if (e % lh) {
-        // We have not landed where we need to.
-        // The variable "mod" will know how many pixels to move.
-        mod = e % lh;
+	// If we scroll to exactly the top of a line, this condition shall be 0.
+	if (e % lh) {
+		// We have not landed where we need to.
+		// The variable "mod" will know how many pixels to move.
+		mod = e % lh;
 
-        // Now we know how many pixels to move, we need to deterime direction.
+		// Now we know how many pixels to move, we need to deterime direction.
 		//  We need to figure out another method
-        if (mod > (lh/2)) {
-            new_height = (e+mod);   // Down
-        } else {
-            new_height = (e-mod);   // Up
-        }
+		if (mod > (lh/2)) {
+			new_height = (e+mod);   // Down
+		} else {
+			new_height = (e-mod);   // Up
+		}
 
-        // This will trigger this event call again however will not trigger more
-        // than once because new_height will be a perfect modulus of 0.
-        //editor.session.setScrollTop(new_height);
-    }
+		// This will trigger this event call again however will not trigger more
+		// than once because new_height will be a perfect modulus of 0.
+		//editor.session.setScrollTop(new_height);
+	}
 }
 
 function token_test(){
@@ -343,21 +343,21 @@ function aceide_close_autocomplete(){
 }
 
 function selectionChanged(e)  {
-    var selected_text = editor.getSession().doc.getTextRange(editor.getSelectionRange());
+	var selected_text = editor.getSession().doc.getTextRange(editor.getSelectionRange());
 
-    //check for hex colour match
-    if ( selected_text.match('^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$')  != null ){
+	//check for hex colour match
+	if ( selected_text.match('^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$')  != null ){
 
-        var therange = editor.getSelectionRange();
-        therange.end.column = therange.start.column;
-        therange.start.column = therange.start.column-1;
+		var therange = editor.getSelectionRange();
+		therange.end.column = therange.start.column;
+		therange.start.column = therange.start.column-1;
 
-        // only show color assist if the character before the selection indicates a hex color (#)
+		// only show color assist if the character before the selection indicates a hex color (#)
 	    if ( editor.getSession().doc.getTextRange( therange ) == "#" ){
-            jQuery("#aceide_color_assist").show();
+			jQuery("#aceide_color_assist").show();
 	    }
 
-    }
+	}
 }
 
 function aceide_function_help() {
@@ -397,12 +397,12 @@ function aceide_function_help() {
 
 				//output command info
 				jQuery("#aceide_info_content").html(
-                    "<strong class='aceide_func_highlight_black'>Function: </strong><strong class='aceide_func_highlight'>" + key  + "(</strong><br />" +
+					"<strong class='aceide_func_highlight_black'>Function: </strong><strong class='aceide_func_highlight'>" + key  + "(</strong><br />" +
 								   "<span class='aceide_func_desc'>" + autocomplete_wordpress[key].desc + "</span><br /><br /><em class='aceide_func_params'>" +
 								   param_text + "</em>"+
 								   "<strong class='aceide_func_highlight'>)</strong> " +
 								   returns_text +
-                                   "<p><a href='http://codex.wordpress.org/Function_Reference/" + key  + "' target='_blank'>See " + key  + "() in the WordPress codex</a></p>"
+									"<p><a href='http://codex.wordpress.org/Function_Reference/" + key  + "' target='_blank'>See " + key  + "() in the WordPress codex</a></p>"
 								   );
 			  }
 
@@ -438,7 +438,7 @@ function aceide_function_help() {
 								   param_text + "</em>" +
 								   "<strong class='aceide_func_highlight'>)</strong>" +
 								   returns_text +
-                                   "<p><a href='http://php.net/manual/en/function." + key.replace(/_/g, "-")  + ".php' target='_blank'>See " + key  + "() in the PHP manual</a></p>"
+									"<p><a href='http://php.net/manual/en/function." + key.replace(/_/g, "-")  + ".php' target='_blank'>See " + key  + "() in the PHP manual</a></p>"
 								   );
 
 			  }
@@ -448,7 +448,7 @@ function aceide_function_help() {
 
 
 	}
-      catch(err)
+	  catch(err)
 	{
 	//Handle errors here
 	}
@@ -476,12 +476,12 @@ function aceide_set_file_contents(file, callback_func){
 		saved_editor_sessions[last_added_editor_session].on('change', onSessionChange);
 		saved_undo_manager[last_added_editor_session] = new UndoManager(editor.getSession().getUndoManager());//new undo manager for this session
 
-        saved_editor_sessions[last_added_editor_session].on("changeScrollTop", onSessionScroll);
+		saved_editor_sessions[last_added_editor_session].on("changeScrollTop", onSessionScroll);
 
 		last_added_editor_session++; //increment session counter
 
 		//add click event for the new tab.
-        //We are actually clearing the click event and adding it again for all tab elements, it's the only way I could get the click handler listening on all dynamically added tabs
+		//We are actually clearing the click event and adding it again for all tab elements, it's the only way I could get the click handler listening on all dynamically added tabs
 		jQuery(".aceide_tab").off('click').on("click", function(event){
 			event.preventDefault();
 
@@ -493,21 +493,21 @@ function aceide_set_file_contents(file, callback_func){
 			saved_editor_sessions[ clicksesh ].setUndoManager(saved_undo_manager[ clicksesh ]);
 			editor.setSession( saved_editor_sessions[ clicksesh ] );
 
-            //set this tab as active
-            jQuery(".aceide_tab").removeClass('active');
-            jQuery(this).addClass('active');
+			//set this tab as active
+			jQuery(".aceide_tab").removeClass('active');
+			jQuery(this).addClass('active');
 
 			var currentFilename = jQuery(this).attr('rel');
 			var mode;
 
-            //turn autocomplete off initially, then enable as needed
-            editor.getSession().enable_autocomplete = false;
+			//turn autocomplete off initially, then enable as needed
+			editor.getSession().enable_autocomplete = false;
 
-            //set the editor mode based on file name
+			//set the editor mode based on file name
 			if (/\.css$/.test(currentFilename)) {
 				mode = require("ace/mode/css").Mode;
 			}
-            else if (/\.less$/.test(currentFilename)) {
+			else if (/\.less$/.test(currentFilename)) {
 				mode = require("ace/mode/less").Mode;
 			}
 			else if (/\.js$/.test(currentFilename)) {
@@ -519,44 +519,44 @@ function aceide_set_file_contents(file, callback_func){
 			else {
 				mode = require("ace/mode/php").Mode; //default to PHP
 
-                //only enable session change / auto complete for PHP
-                if (/\.php$/.test(currentFilename))
-                    editor.getSession().enable_autocomplete = true;
+				//only enable session change / auto complete for PHP
+				if (/\.php$/.test(currentFilename))
+					editor.getSession().enable_autocomplete = true;
 			}
 			editor.getSession().setMode(new mode());
 
-            editor.getSession().on('change', onSessionChange);
+			editor.getSession().on('change', onSessionChange);
 
-            editor.getSession().selection.on('changeSelection', selectionChanged);
+			editor.getSession().selection.on('changeSelection', selectionChanged);
 
 			editor.resize();
 			editor.focus();
 			//make a note of current editor
 			current_editor_session = clicksesh;
 
-            //hide/show the restore button if it's a php file and the restore url is set (i.e saved in this session)
-            if ( /\.php$/i.test( currentFilename ) && jQuery(".aceide_tab.active", "#aceide_toolbar").data( "backup" ) != undefined ){
-                jQuery("#aceide_toolbar_buttons .button.restore").show();
-            }else{
-                jQuery("#aceide_toolbar_buttons .button.restore").hide();
-            }
+			//hide/show the restore button if it's a php file and the restore url is set (i.e saved in this session)
+			if ( /\.php$/i.test( currentFilename ) && jQuery(".aceide_tab.active", "#aceide_toolbar").data( "backup" ) != undefined ){
+				jQuery("#aceide_toolbar_buttons .button.restore").show();
+			}else{
+				jQuery("#aceide_toolbar_buttons .button.restore").hide();
+			}
 
-            //show hide unsaved content message
-            if (  jQuery(".aceide_tab.active", "#aceide_toolbar").data( "unsaved" ) ){
-                jQuery("#aceide_footer_message_unsaved").html("[ Document contains unsaved content &#9998; ]").show();
-            }else{
-                jQuery("#aceide_footer_message_unsaved").hide();
-            }
+			//show hide unsaved content message
+			if (  jQuery(".aceide_tab.active", "#aceide_toolbar").data( "unsaved" ) ){
+				jQuery("#aceide_footer_message_unsaved").html("[ Document contains unsaved content &#9998; ]").show();
+			}else{
+				jQuery("#aceide_footer_message_unsaved").hide();
+			}
 
-            //show last saved message if it's been saved
-            if ( jQuery(".aceide_tab.active", "#aceide_toolbar").data( "lastsave" ) != undefined){
-                jQuery("#aceide_footer_message_last_saved").html("<strong>Last saved: </strong>" + jQuery(".aceide_tab.active", "#aceide_toolbar").data( "lastsave" ) ).show();
-            }else{
-                jQuery("#aceide_footer_message_last_saved").hide();
-            }
+			//show last saved message if it's been saved
+			if ( jQuery(".aceide_tab.active", "#aceide_toolbar").data( "lastsave" ) != undefined){
+				jQuery("#aceide_footer_message_last_saved").html("<strong>Last saved: </strong>" + jQuery(".aceide_tab.active", "#aceide_toolbar").data( "lastsave" ) ).show();
+			}else{
+				jQuery("#aceide_footer_message_last_saved").hide();
+			}
 
-            //hide the message if we have a fresh tab
-            jQuery("#aceide_message").hide();
+			//hide the message if we have a fresh tab
+			jQuery("#aceide_message").hide();
 		});
 
 		//add click event for tab close.
@@ -571,30 +571,30 @@ function aceide_set_file_contents(file, callback_func){
 					return;
 			}
 
-            //if the currently selected tab is being removed then remember to make the first tab active
-            if ( jQuery("#aceide_tab_"+clicksesh).hasClass('active') ) {
-                activeFallback = true;
-            }else{
-                activeFallback = false;
-            }
+			//if the currently selected tab is being removed then remember to make the first tab active
+			if ( jQuery("#aceide_tab_"+clicksesh).hasClass('active') ) {
+				activeFallback = true;
+			}else{
+				activeFallback = false;
+			}
 
-            //remove tab
-            jQuery(this).parent().remove();
+			//remove tab
+			jQuery(this).parent().remove();
 
-            //clear session and undo
-    	   saved_undo_manager[clicksesh] = undefined;
+			//clear session and undo
+		   saved_undo_manager[clicksesh] = undefined;
 		   saved_editor_sessions[clicksesh] = undefined;
 
-           //Clear the active editor if all tabs closed or activate first tab if required since the active tab may have been deleted
-           if (jQuery(".aceide_tab").length == 0){
-               editor.getSession().setValue( "" );
-           }else if ( activeFallback ){
-               jQuery( "#" + jQuery(".aceide_tab")[0].id ).click();
-           }
+		   //Clear the active editor if all tabs closed or activate first tab if required since the active tab may have been deleted
+		   if (jQuery(".aceide_tab").length == 0){
+			   editor.getSession().setValue( "" );
+		   }else if ( activeFallback ){
+			   jQuery( "#" + jQuery(".aceide_tab")[0].id ).click();
+		   }
 
 		});
 
-    		jQuery("#"+the_id).click();
+			jQuery("#"+the_id).click();
 
 	if (callback_func != null) {
 		callback_func(response);
@@ -606,51 +606,51 @@ function aceide_set_file_contents(file, callback_func){
 }
 
 function saveDocument() {
-    // Make sure there is actually a document open
-    jQuery("#aceide_message").stop(true,true);
-    if (jQuery("#aceide_message").is(":visible")) {
-    	jQuery("#aceide_message").fadeOut(50);
+	// Make sure there is actually a document open
+	jQuery("#aceide_message").stop(true,true);
+	if (jQuery("#aceide_message").is(":visible")) {
+		jQuery("#aceide_message").fadeOut(50);
 	}
 
 	var the_tab = jQuery("#aceide_toolbar_tabs .active");
 	var current_document_index = the_tab.attr('id').replace('aceide_tab_', '');
 	the_tab.removeClass( 'modified' );
 
-    // Display notification to show we are attempting to save
-    jQuery("#aceide_message")
-        .removeClass('error')
-        .removeClass('teapot')
-        .addClass('success')
-        .html('Saving...')
+	// Display notification to show we are attempting to save
+	jQuery("#aceide_message")
+		.removeClass('error')
+		.removeClass('teapot')
+		.addClass('success')
+		.html('Saving...')
 		.fadeIn(200);
 
 	//ajax call to save the file and generate a backup if needed
 	var data = { action: 'aceide_save_file', filename: jQuery('input[name=filename]').val(),  _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val(), content: editor.getSession().getValue() };
 	jQuery.post(ajaxurl, data, function(response) {
-        var regexchk=/\".*:::.*\"/;
-        var saved_when = Date();
+		var regexchk=/\".*:::.*\"/;
+		var saved_when = Date();
 
-        if ( regexchk.test(response) ){
-            //store the resulting backup file name just incase we need to restore later
-            //temp note: you can then access the data like so  jQuery(".aceide_tab.active", "#aceide_toolbar").data( "backup" );
-            user_nonce_addition = response.match(/:::(.*)\"$/)[1]; //need this to send with restore request
-            jQuery(".aceide_tab.active", "#aceide_toolbar").data( "backup", response.replace(/(^\"|:::.*\"$)/g, "") );
-            jQuery(".aceide_tab.active", "#aceide_toolbar").data( "lastsave",  saved_when );
-            jQuery(".aceide_tab.active", "#aceide_toolbar").data( "unsaved", false);
+		if ( regexchk.test(response) ){
+			//store the resulting backup file name just incase we need to restore later
+			//temp note: you can then access the data like so  jQuery(".aceide_tab.active", "#aceide_toolbar").data( "backup" );
+			user_nonce_addition = response.match(/:::(.*)\"$/)[1]; //need this to send with restore request
+			jQuery(".aceide_tab.active", "#aceide_toolbar").data( "backup", response.replace(/(^\"|:::.*\"$)/g, "") );
+			jQuery(".aceide_tab.active", "#aceide_toolbar").data( "lastsave",  saved_when );
+			jQuery(".aceide_tab.active", "#aceide_toolbar").data( "unsaved", false);
 
-            if ( /\.php$/i.test( data.filename ) )
-                jQuery("#aceide_toolbar_buttons .button.restore").show();
+			if ( /\.php$/i.test( data.filename ) )
+				jQuery("#aceide_toolbar_buttons .button.restore").show();
 
-            jQuery("#aceide_footer_message_last_saved").html("<strong>Last saved: </strong>" + saved_when).show();
-            jQuery("#aceide_footer_message_unsaved").hide();
+			jQuery("#aceide_footer_message_last_saved").html("<strong>Last saved: </strong>" + saved_when).show();
+			jQuery("#aceide_footer_message_unsaved").hide();
 
-            jQuery("#aceide_message").html('<strong>File saved &#10004;</strong>')
-    		.show()
-            .delay(2000)
+			jQuery("#aceide_message").html('<strong>File saved &#10004;</strong>')
+			.show()
+			.delay(2000)
 			.fadeOut(600);
-        }else{
-            alert("error: " + response);
-        }
+		}else{
+			alert("error: " + response);
+		}
 	});
 }
 
@@ -683,251 +683,251 @@ function selectACitem (item) {
 }
 
 function update_scroll_bars_for_resizer() {
-    if ( jQuery( ".ace_scroller" ).css( 'overflowX' ) != 'scroll' ) {
-        var height = jQuery( ".ace_sb" ).height();
-        jQuery( ".ace_sb" ).height( height-16 );
-    }
+	if ( jQuery( ".ace_scroller" ).css( 'overflowX' ) != 'scroll' ) {
+		var height = jQuery( ".ace_sb" ).height();
+		jQuery( ".ace_sb" ).height( height-16 );
+	}
 }
 
 // Initiate editor settings
 function load_editor_settings() {
-    var theme        = localStorage.custom_editor_theme;
-    var fontSize     = localStorage.custom_editor_fontSize;
-    var folding      = localStorage.custom_editor_folding;
-    var fade_fold    = localStorage.custom_editor_fade_folding;
-    var wrap         = localStorage.custom_editor_wrap;
-    var wrap_limit   = localStorage.custom_editor_wrap_limit;
-    var select_style = localStorage.custom_editor_full_line_select;
-    var highlight    = localStorage.custom_editor_highlight_current_line;
-    var invisibles   = localStorage.custom_editor_invisibles;
-    var indents      = localStorage.custom_editor_indent_guides;
-    var anim_scroll  = localStorage.custom_editor_animate_scrolling;
-    var show_gutter  = localStorage.custom_editor_show_gutter;
-    var use_tabs     = localStorage.custom_editor_use_tabs;
-    var word_hglt    = localStorage.custom_editor_highlight_selected_word;
-    var behaviours   = localStorage.custom_editor_behaviours;
+	var theme        = localStorage.custom_editor_theme;
+	var fontSize     = localStorage.custom_editor_fontSize;
+	var folding      = localStorage.custom_editor_folding;
+	var fade_fold    = localStorage.custom_editor_fade_folding;
+	var wrap         = localStorage.custom_editor_wrap;
+	var wrap_limit   = localStorage.custom_editor_wrap_limit;
+	var select_style = localStorage.custom_editor_full_line_select;
+	var highlight    = localStorage.custom_editor_highlight_current_line;
+	var invisibles   = localStorage.custom_editor_invisibles;
+	var indents      = localStorage.custom_editor_indent_guides;
+	var anim_scroll  = localStorage.custom_editor_animate_scrolling;
+	var show_gutter  = localStorage.custom_editor_show_gutter;
+	var use_tabs     = localStorage.custom_editor_use_tabs;
+	var word_hglt    = localStorage.custom_editor_highlight_selected_word;
+	var behaviours   = localStorage.custom_editor_behaviours;
 
-    // Defaults
-    if ( theme === undefined )          theme       = "ace/theme/textmate";
-    if ( fontSize === undefined )       fontSize    = "12";
-    if ( fade_fold === undefined )      fade_fold   = "0";
-    if ( wrap === undefined )           wrap        = "1";
-    if ( wrap_limit === undefined )     wrap_limit  = "0";
-    if ( highlight === undefined )      highlight   = "1";
-    if ( invisibles === undefined )     invisibles  = "0";
-    if ( indents === undefined )        indents     = "1";
-    if ( anim_scroll === undefined )    anim_scroll = "1";
-    if ( show_gutter === undefined )    show_gutter = "1";
-    if ( use_tabs === undefined )       use_tabs    = "1";
-    if ( word_hglt === undefined )      word_hglt   = "1";
-    if ( behaviours === undefined )     behaviours  = "0";
+	// Defaults
+	if ( theme === undefined )          theme       = "ace/theme/textmate";
+	if ( fontSize === undefined )       fontSize    = "12";
+	if ( fade_fold === undefined )      fade_fold   = "0";
+	if ( wrap === undefined )           wrap        = "1";
+	if ( wrap_limit === undefined )     wrap_limit  = "0";
+	if ( highlight === undefined )      highlight   = "1";
+	if ( invisibles === undefined )     invisibles  = "0";
+	if ( indents === undefined )        indents     = "1";
+	if ( anim_scroll === undefined )    anim_scroll = "1";
+	if ( show_gutter === undefined )    show_gutter = "1";
+	if ( use_tabs === undefined )       use_tabs    = "1";
+	if ( word_hglt === undefined )      word_hglt   = "1";
+	if ( behaviours === undefined )     behaviours  = "0";
 
-    // Check invalid fold styling
-    if ( !editor.session.$foldStyles[folding] )        folding = "markbegin";
-    if ( select_style != "text" && select_style != "line" ) select_style = "line";
+	// Check invalid fold styling
+	if ( !editor.session.$foldStyles[folding] )        folding = "markbegin";
+	if ( select_style != "text" && select_style != "line" ) select_style = "line";
 
-    // Set
-    editor.setTheme( theme );
-    editor.setFontSize( fontSize + 'px' );
-    editor.session.setFoldStyle( folding );
-    editor.setSelectionStyle( select_style );
+	// Set
+	editor.setTheme( theme );
+	editor.setFontSize( fontSize + 'px' );
+	editor.session.setFoldStyle( folding );
+	editor.setSelectionStyle( select_style );
 
-    editor.$blockScrolling = Infinity;
-    editor.setOption("showPrintMargin", false);
+	editor.$blockScrolling = Infinity;
+	editor.setOption("showPrintMargin", false);
 
-    // Boolean values
-    editor.session.setUseSoftTabs( use_tabs == false );         // soft tab is space
+	// Boolean values
+	editor.session.setUseSoftTabs( use_tabs == false );         // soft tab is space
 	editor.setHighlightActiveLine( highlight == true );
-    editor.renderer.setShowInvisibles( invisibles == true );
+	editor.renderer.setShowInvisibles( invisibles == true );
 try {
-    editor.renderer.setDisplayIndentGuides( indents == true );
+	editor.renderer.setDisplayIndentGuides( indents == true );
 } catch(error) {
 window.console && console.error( 'setDisplayIndentGuides not supported' );
 }
-    editor.renderer.setAnimatedScroll( anim_scroll == true );
-    editor.renderer.setShowGutter( show_gutter == true );
-    editor.setHighlightSelectedWord( word_hglt == true );
-    editor.setBehavioursEnabled( behaviours == true );
-    editor.setFadeFoldWidgets( fade_fold == true );
+	editor.renderer.setAnimatedScroll( anim_scroll == true );
+	editor.renderer.setShowGutter( show_gutter == true );
+	editor.setHighlightSelectedWord( word_hglt == true );
+	editor.setBehavioursEnabled( behaviours == true );
+	editor.setFadeFoldWidgets( fade_fold == true );
 
-    // To also allow for free range - free by default
-    if ( wrap == true ) {
-        if ( wrap_limit != "0" ) {
-            // Normal wrap
-            editor.session.setWrapLimitRange(wrap_limit,wrap_limit);
-        } else {
-            // 0 represents free scrolling
-            editor.session.setUseWrapMode(true);
-            editor.session.setWrapLimitRange(null, null);
-            editor.renderer.setPrintMarginColumn(80);
-        }
-    } else {
-        editor.session.setUseWrapMode(false);
-        editor.renderer.setPrintMarginColumn(80);
-    }
+	// To also allow for free range - free by default
+	if ( wrap == true ) {
+		if ( wrap_limit != "0" ) {
+			// Normal wrap
+			editor.session.setWrapLimitRange(wrap_limit,wrap_limit);
+		} else {
+			// 0 represents free scrolling
+			editor.session.setUseWrapMode(true);
+			editor.session.setWrapLimitRange(null, null);
+			editor.renderer.setPrintMarginColumn(80);
+		}
+	} else {
+		editor.session.setUseWrapMode(false);
+		editor.renderer.setPrintMarginColumn(80);
+	}
 }
 
 function display_editor_settings() {
-    // Create HTML dialog
-    if ( !jQuery( "#editor_settings_dialog" ).length ) {
-        // Ensure settings are loaded...
-        load_editor_settings();
+	// Create HTML dialog
+	if ( !jQuery( "#editor_settings_dialog" ).length ) {
+		// Ensure settings are loaded...
+		load_editor_settings();
 
-        // Create nodes
-        var theme       = jQuery( '<input>' ).attr({
-            type:       'text',
-            id:         'editor_theme_setting',
-            class:      'ipt-sel'
-        });
+		// Create nodes
+		var theme       = jQuery( '<input>' ).attr({
+			type:       'text',
+			id:         'editor_theme_setting',
+			class:      'ipt-sel'
+		});
 
-        var fontSize    = jQuery( '<input>' ).attr({
-            type:       'number',
-            id:         'editor_font_size_setting',
-            class:      'number'
-        });
-        var fadeFold    = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_fade_fold_setting'
-        });
-        var wrap        = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_wrap_setting'
-        });
-        var wrap_limit  = jQuery( '<input>' ).attr({
-            type:       'number',
-            id:         'editor_wrap_limit_setting',
-            class:      'number'
-        });
-        var hglt_ln     = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_highlight_line_setting'
-        });
-        var invisibles  = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_show_invisibles'
-        });
-        var indentguide = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_display_indent_guides_setting'
-        });
-        var anim_scroll = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_animate_scroll_setting'
-        });
-        var show_gutter = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_show_gutter_setting'
-        });
-        var use_tabs    = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_use_tabs_setting'
-        });
-        var word_hglt   = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_word_highlight'
-        });
-        var behaviours  = jQuery( '<input>' ).attr({
-            type:       'checkbox',
-            id:         'editor_behaviours_setting'
-        });
+		var fontSize    = jQuery( '<input>' ).attr({
+			type:       'number',
+			id:         'editor_font_size_setting',
+			class:      'number'
+		});
+		var fadeFold    = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_fade_fold_setting'
+		});
+		var wrap        = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_wrap_setting'
+		});
+		var wrap_limit  = jQuery( '<input>' ).attr({
+			type:       'number',
+			id:         'editor_wrap_limit_setting',
+			class:      'number'
+		});
+		var hglt_ln     = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_highlight_line_setting'
+		});
+		var invisibles  = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_show_invisibles'
+		});
+		var indentguide = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_display_indent_guides_setting'
+		});
+		var anim_scroll = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_animate_scroll_setting'
+		});
+		var show_gutter = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_show_gutter_setting'
+		});
+		var use_tabs    = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_use_tabs_setting'
+		});
+		var word_hglt   = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_word_highlight'
+		});
+		var behaviours  = jQuery( '<input>' ).attr({
+			type:       'checkbox',
+			id:         'editor_behaviours_setting'
+		});
 
-        var folding     = jQuery( '<select>' ).attr({
-                id:     'editor_folding_setting',
-                class:  'ipt-sel'
-            });
-        jQuery( '<option>' ).attr({
-                value:      "manual",
-                selected:   editor.session.$foldStyle == "manual"
-            }).text( 'Manual').appendTo( folding );
-        jQuery( '<option>' ).attr({
-                value:      "markbegin",
-                selected:   ( editor.session.$foldStyle != "manual" && editor.session.$foldStyle != "markbeginend" )
-            }).text( 'Beginning' ).appendTo( folding );
-        jQuery( '<option>' ).attr({
-                value:      "markbeginend",
-                selected:   editor.session.$foldStyle == "markbeginend"
-            }).text( 'Beginning And End' ).appendTo( folding );
-
-
-        // Add Listeners
-        jQuery( theme ).blur(function() {
-            localStorage.custom_editor_theme = jQuery( this ).val();
-        });
-        jQuery( fontSize ).change(function() {
-            localStorage.custom_editor_fontSize = jQuery( this ).val();
-        });
-        jQuery( fadeFold ).change(function() {
-            localStorage.custom_editor_fade_folding = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( wrap ).change(function() {
-            localStorage.custom_editor_wrap = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( wrap_limit ).change(function() {
-            localStorage.custom_editor_wrap_limit = jQuery( this ).val();
-        });
-        jQuery( hglt_ln ).change(function() {
-            localStorage.custom_editor_highlight_current_line = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( invisibles ).change(function() {
-            localStorage.custom_editor_invisibles = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( indentguide ).change(function() {
-            localStorage.custom_editor_indent_guides = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( anim_scroll ).change(function() {
-            localStorage.custom_editor_animate_scrolling = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( show_gutter ).change(function() {
-            localStorage.custom_editor_show_gutter = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( use_tabs ).change(function() {
-            localStorage.custom_editor_use_tabs = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( word_hglt ).change(function() {
-            localStorage.custom_editor_highlight_selected_word = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( behaviours ).change(function() {
-            localStorage.custom_editor_behaviours = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
-        });
-        jQuery( folding ).change(function() {
-            localStorage.custom_editor_folding = jQuery( this ).val();
-        });
-
-        // Glue together - create dialog content
-        var container   = jQuery("<div>").attr({
-            id:     "editor_settings_dialog",
-            title:  "Editor Settings"
-        }).css( "display", "none" );
-        var left        = jQuery( '<div>' ).attr({
-            class: "left"
-        });
-        var right       = jQuery( '<div>' ).attr({
-            class: "right"
-        });
-
-        jQuery( left )
-        .append(function() {
-            return jQuery( '<label>' ).text( "Theme: " ).append( theme );
-        })  // Theme
-        .append(function() {
-            return jQuery( '<label>' ).text( "Folding: ").append( folding );
-        })
-        .append(function() {
-            return jQuery( '<label>' ).text( "Font Size: " ).append( fontSize );
-        })  // Font Size
-        .append(function() {
-            return jQuery( '<label>' ).text( "Wrap Limit: " ).append( wrap_limit );
-        })  // Wrap Limit
-        .append(function() {
-            return jQuery( '<label>' ).text( "Wrap Long Text: " ).append( wrap );
-        })  // Wrap
-        .append(function() {
-            return jQuery( '<label>' ).text( "Fade Folders: " ).append( fadeFold );
-        }); // Fade
+		var folding     = jQuery( '<select>' ).attr({
+				id:     'editor_folding_setting',
+				class:  'ipt-sel'
+			});
+		jQuery( '<option>' ).attr({
+				value:      "manual",
+				selected:   editor.session.$foldStyle == "manual"
+			}).text( 'Manual').appendTo( folding );
+		jQuery( '<option>' ).attr({
+				value:      "markbegin",
+				selected:   ( editor.session.$foldStyle != "manual" && editor.session.$foldStyle != "markbeginend" )
+			}).text( 'Beginning' ).appendTo( folding );
+		jQuery( '<option>' ).attr({
+				value:      "markbeginend",
+				selected:   editor.session.$foldStyle == "markbeginend"
+			}).text( 'Beginning And End' ).appendTo( folding );
 
 
+		// Add Listeners
+		jQuery( theme ).blur(function() {
+			localStorage.custom_editor_theme = jQuery( this ).val();
+		});
+		jQuery( fontSize ).change(function() {
+			localStorage.custom_editor_fontSize = jQuery( this ).val();
+		});
+		jQuery( fadeFold ).change(function() {
+			localStorage.custom_editor_fade_folding = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( wrap ).change(function() {
+			localStorage.custom_editor_wrap = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( wrap_limit ).change(function() {
+			localStorage.custom_editor_wrap_limit = jQuery( this ).val();
+		});
+		jQuery( hglt_ln ).change(function() {
+			localStorage.custom_editor_highlight_current_line = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( invisibles ).change(function() {
+			localStorage.custom_editor_invisibles = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( indentguide ).change(function() {
+			localStorage.custom_editor_indent_guides = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( anim_scroll ).change(function() {
+			localStorage.custom_editor_animate_scrolling = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( show_gutter ).change(function() {
+			localStorage.custom_editor_show_gutter = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( use_tabs ).change(function() {
+			localStorage.custom_editor_use_tabs = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( word_hglt ).change(function() {
+			localStorage.custom_editor_highlight_selected_word = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( behaviours ).change(function() {
+			localStorage.custom_editor_behaviours = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		});
+		jQuery( folding ).change(function() {
+			localStorage.custom_editor_folding = jQuery( this ).val();
+		});
 
-        jQuery( right )
+		// Glue together - create dialog content
+		var container   = jQuery("<div>").attr({
+			id:     "editor_settings_dialog",
+			title:  "Editor Settings"
+		}).css( "display", "none" );
+		var left        = jQuery( '<div>' ).attr({
+			class: "left"
+		});
+		var right       = jQuery( '<div>' ).attr({
+			class: "right"
+		});
+
+		jQuery( left )
+		.append(function() {
+			return jQuery( '<label>' ).text( "Theme: " ).append( theme );
+		})  // Theme
+		.append(function() {
+			return jQuery( '<label>' ).text( "Folding: ").append( folding );
+		})
+		.append(function() {
+			return jQuery( '<label>' ).text( "Font Size: " ).append( fontSize );
+		})  // Font Size
+		.append(function() {
+			return jQuery( '<label>' ).text( "Wrap Limit: " ).append( wrap_limit );
+		})  // Wrap Limit
+		.append(function() {
+			return jQuery( '<label>' ).text( "Wrap Long Text: " ).append( wrap );
+		})  // Wrap
+		.append(function() {
+			return jQuery( '<label>' ).text( "Fade Folders: " ).append( fadeFold );
+		}); // Fade
+
+
+
+		jQuery( right )
 			.append(function() {
 				return jQuery( '<label>' ).text( "Highlight Current Line: " ).append( hglt_ln );
 			})  // Highlight Current Line
@@ -953,152 +953,152 @@ function display_editor_settings() {
 				return jQuery( '<label>' ).text( "Show Behaviours: " ).append( behaviours );
 			}); // Behaviours
 
-        jQuery( container ).append( left ).append( right );
+		jQuery( container ).append( left ).append( right );
 
-        jQuery( document.body ).append( container );
-    }
+		jQuery( document.body ).append( container );
+	}
 
-    // Update values
-    jQuery( '#editor_theme_setting' ).val( editor.getTheme() );
-    jQuery( '#editor_font_size_setting' ).val( editor.container.style.fontSize.replace('px','') || 12 );
-    jQuery( '#editor_fade_fold_setting' ).prop( 'checked', editor.getFadeFoldWidgets() );
-    jQuery( '#editor_wrap_setting' ).prop( 'checked', editor.session.getUseWrapMode() );
-    jQuery( '#editor_wrap_limit_setting' ).prop( 'checked', editor.session.getWrapLimit() || 0 );
-    jQuery( '#editor_highlight_line_setting' ).prop( 'checked', editor.getHighlightActiveLine() );
-    jQuery( '#editor_show_invisibles' ).prop( 'checked', editor.renderer.getShowInvisibles() );
-    jQuery( '#editor_display_indent_guides_setting' ).prop( 'checked', editor.renderer.getDisplayIndentGuides() );
-    jQuery( '#editor_animate_scroll_setting' ).prop( 'checked', editor.getAnimatedScroll() );
-    jQuery( '#editor_show_gutter_setting' ).prop( 'checked', editor.renderer.getShowGutter() );
-    jQuery( '#editor_use_tabs_setting' ).prop( 'checked', !editor.session.getUseSoftTabs() );
-    jQuery( '#editor_word_highlight' ).prop( 'checked', editor.getHighlightSelectedWord() );
-    jQuery( '#editor_behaviours_setting' ).prop( 'checked', editor.getBehavioursEnabled() );
-    jQuery( '#editor_folding_setting option' ).prop( 'selected', false );
-    jQuery( '#editor_folding_setting option[value="' + editor.session.$foldStyle + '"]' ).prop( 'selected', true );
+	// Update values
+	jQuery( '#editor_theme_setting' ).val( editor.getTheme() );
+	jQuery( '#editor_font_size_setting' ).val( editor.container.style.fontSize.replace('px','') || 12 );
+	jQuery( '#editor_fade_fold_setting' ).prop( 'checked', editor.getFadeFoldWidgets() );
+	jQuery( '#editor_wrap_setting' ).prop( 'checked', editor.session.getUseWrapMode() );
+	jQuery( '#editor_wrap_limit_setting' ).prop( 'checked', editor.session.getWrapLimit() || 0 );
+	jQuery( '#editor_highlight_line_setting' ).prop( 'checked', editor.getHighlightActiveLine() );
+	jQuery( '#editor_show_invisibles' ).prop( 'checked', editor.renderer.getShowInvisibles() );
+	jQuery( '#editor_display_indent_guides_setting' ).prop( 'checked', editor.renderer.getDisplayIndentGuides() );
+	jQuery( '#editor_animate_scroll_setting' ).prop( 'checked', editor.getAnimatedScroll() );
+	jQuery( '#editor_show_gutter_setting' ).prop( 'checked', editor.renderer.getShowGutter() );
+	jQuery( '#editor_use_tabs_setting' ).prop( 'checked', !editor.session.getUseSoftTabs() );
+	jQuery( '#editor_word_highlight' ).prop( 'checked', editor.getHighlightSelectedWord() );
+	jQuery( '#editor_behaviours_setting' ).prop( 'checked', editor.getBehavioursEnabled() );
+	jQuery( '#editor_folding_setting option' ).prop( 'selected', false );
+	jQuery( '#editor_folding_setting option[value="' + editor.session.$foldStyle + '"]' ).prop( 'selected', true );
 
-    // Display Dialog
-    jQuery( "#editor_settings_dialog" ).dialog({
-        height: "264",
-        width: "550",
-        modal: true,
-        resizable: false,
-        show: "fade",
-        close: load_editor_settings
-    });
+	// Display Dialog
+	jQuery( "#editor_settings_dialog" ).dialog({
+		height: "264",
+		width: "550",
+		modal: true,
+		resizable: false,
+		show: "fade",
+		close: load_editor_settings
+	});
 }
 
 function display_find_dialog() {
 /*
-    if ( !jQuery( "#editor_find_dialog" ).length ) {
-        // Generate dialog
-        var container   = jQuery( '<div>' ).attr({
-            id:     "editor_find_dialog",
-            title:  "Find..."
-        }).css( "padding", "0px" );
+	if ( !jQuery( "#editor_find_dialog" ).length ) {
+		// Generate dialog
+		var container   = jQuery( '<div>' ).attr({
+			id:     "editor_find_dialog",
+			title:  "Find..."
+		}).css( "padding", "0px" );
 
-        var find_ipt    = jQuery( '<input>' ).attr({
-            type: "search",
-            name: "find"
-        });
-        var replace_ipt = jQuery( '<input>' ).attr({
-            type: "search",
-            name: "replace"
-        });
-        var find_btn    = jQuery( '<input>' ).attr({
-            type: "submit",
-            name: "submit",
-            value: "Find",
-            class: "action_button"
-        });
-        var replace_btn = jQuery( '<input>' ).attr({
-            type: "button",
-            name: "replace",
-            value: "Replace",
-            class: "action_button"
-        });
-        var rep_all_btn = jQuery( '<input>' ).attr({
-            type: "button",
-            name: "replace_all",
-            value: "Replace All",
-            class: "action_button"
-        });
-        var cancel_btn  = jQuery( '<input>' ).attr({
-            type: "button",
-            name: "cancel",
-            value: "Cancel",
-            class: "action_button"
-        });
-        var wrap        = jQuery( '<input>' ).attr({
-            type: "checkbox",
-            name: "wrap",
-        }).prop( "checked", true );
-        var sensitive   = jQuery( '<input>' ).attr({
-            type: "checkbox",
-            name: "case"
-        }).prop( "checked", false );
-        var whole       = jQuery( '<input>' ).attr({
-            type: "checkbox",
-            name: "whole"
-        }).prop( "checked", false );
-        var regEx       = jQuery( '<input>' ).attr({
-            type: "checkbox",
-            name: "regexp"
-        }).prop( "checked", false );
+		var find_ipt    = jQuery( '<input>' ).attr({
+			type: "search",
+			name: "find"
+		});
+		var replace_ipt = jQuery( '<input>' ).attr({
+			type: "search",
+			name: "replace"
+		});
+		var find_btn    = jQuery( '<input>' ).attr({
+			type: "submit",
+			name: "submit",
+			value: "Find",
+			class: "action_button"
+		});
+		var replace_btn = jQuery( '<input>' ).attr({
+			type: "button",
+			name: "replace",
+			value: "Replace",
+			class: "action_button"
+		});
+		var rep_all_btn = jQuery( '<input>' ).attr({
+			type: "button",
+			name: "replace_all",
+			value: "Replace All",
+			class: "action_button"
+		});
+		var cancel_btn  = jQuery( '<input>' ).attr({
+			type: "button",
+			name: "cancel",
+			value: "Cancel",
+			class: "action_button"
+		});
+		var wrap        = jQuery( '<input>' ).attr({
+			type: "checkbox",
+			name: "wrap",
+		}).prop( "checked", true );
+		var sensitive   = jQuery( '<input>' ).attr({
+			type: "checkbox",
+			name: "case"
+		}).prop( "checked", false );
+		var whole       = jQuery( '<input>' ).attr({
+			type: "checkbox",
+			name: "whole"
+		}).prop( "checked", false );
+		var regEx       = jQuery( '<input>' ).attr({
+			type: "checkbox",
+			name: "regexp"
+		}).prop( "checked", false );
 
-        var fromTop     = jQuery( '<input>' ).attr({
-            type: "radio",
-            name: "direction",
-            value: "0"
-        }).prop( "checked", false );
-        var fromBottom  = jQuery( '<input>' ).attr({
-            type: "radio",
-            name: "direction",
-            value: "1"
-        }).prop( "checked", true );
-
-
-        var buttons         = jQuery( '<div>' )
-                                .attr( "class", "right" )
-                                .append( find_btn )
-                                .append( replace_btn )
-                                .append( rep_all_btn )
-                                .append( cancel_btn );
-        var find_label      = jQuery( '<label>' ).attr( "class", "left" ).text( " Find" ).append( find_ipt );
-        var replace_label   = jQuery( '<label>' ).attr( "class", "left" ).text( " Replace" ).append( replace_ipt );
-        var wrap_label      = jQuery( '<label>' ).text( " Wrap Around" ).prepend( wrap );
-        var sensitive_label = jQuery( '<label>' ).text( " Case Sensitive" ).prepend( sensitive );
-        var whole_label     = jQuery( '<label>' ).text( " Match Whole Word" ).prepend( whole );
-        var regex_label     = jQuery( '<label>' ).text( " Regular Expression" ).prepend( regEx );
-
-        var fromTopLabel    = jQuery( '<label>' ).text( " Up" ).prepend( fromTop );
-        var fromBottomLabel = jQuery( '<label>' ).text( " Down" ).prepend( fromBottom );
-
-        var direction       = jQuery( '<div>' ).attr( "class", "search_direction" ).text( "Direction:" ).append( fromTopLabel ).append( fromBottomLabel );
-        var clear           = jQuery( '<div>' ).attr( 'class', 'clear' ).height( 20 );
+		var fromTop     = jQuery( '<input>' ).attr({
+			type: "radio",
+			name: "direction",
+			value: "0"
+		}).prop( "checked", false );
+		var fromBottom  = jQuery( '<input>' ).attr({
+			type: "radio",
+			name: "direction",
+			value: "1"
+		}).prop( "checked", true );
 
 
-        var innerContainer = jQuery( '<form>' ).css({
-            position: "relative",
-            padding: "4px",
-            margin: "0px",
-            height: "100%",
-            overflow: "hidden",
-            width: "400px"
-        })
-        .append( find_label )
-        .append( replace_label )
-        .append( clear )
-        .append( wrap_label )
-        .append( sensitive_label )
-        .append( whole_label )
-        .append( regex_label )
-        .append( direction )
-        .append( buttons )
+		var buttons         = jQuery( '<div>' )
+								.attr( "class", "right" )
+								.append( find_btn )
+								.append( replace_btn )
+								.append( rep_all_btn )
+								.append( cancel_btn );
+		var find_label      = jQuery( '<label>' ).attr( "class", "left" ).text( " Find" ).append( find_ipt );
+		var replace_label   = jQuery( '<label>' ).attr( "class", "left" ).text( " Replace" ).append( replace_ipt );
+		var wrap_label      = jQuery( '<label>' ).text( " Wrap Around" ).prepend( wrap );
+		var sensitive_label = jQuery( '<label>' ).text( " Case Sensitive" ).prepend( sensitive );
+		var whole_label     = jQuery( '<label>' ).text( " Match Whole Word" ).prepend( whole );
+		var regex_label     = jQuery( '<label>' ).text( " Regular Expression" ).prepend( regEx );
+
+		var fromTopLabel    = jQuery( '<label>' ).text( " Up" ).prepend( fromTop );
+		var fromBottomLabel = jQuery( '<label>' ).text( " Down" ).prepend( fromBottom );
+
+		var direction       = jQuery( '<div>' ).attr( "class", "search_direction" ).text( "Direction:" ).append( fromTopLabel ).append( fromBottomLabel );
+		var clear           = jQuery( '<div>' ).attr( 'class', 'clear' ).height( 20 );
 
 
-        container.append( innerContainer );
+		var innerContainer = jQuery( '<form>' ).css({
+			position: "relative",
+			padding: "4px",
+			margin: "0px",
+			height: "100%",
+			overflow: "hidden",
+			width: "400px"
+		})
+		.append( find_label )
+		.append( replace_label )
+		.append( clear )
+		.append( wrap_label )
+		.append( sensitive_label )
+		.append( whole_label )
+		.append( regex_label )
+		.append( direction )
+		.append( buttons )
 
-        jQuery( document.body ).append( container );
-    }
+
+		container.append( innerContainer );
+
+		jQuery( document.body ).append( container );
+	}
 */
 
 	// Initiate the search box with the current selection
@@ -1109,13 +1109,13 @@ function display_find_dialog() {
 
 	jQuery( "#editor_find_dialog" ).find( "input[name='find']" ).val( value );
 
-    jQuery( "#editor_find_dialog" ).dialog({
-        height: "206",
-        width: "408",
-        resizable: false,
-        show: "fade",
-        hide: "fade"
-    });
+	jQuery( "#editor_find_dialog" ).dialog({
+		height: "206",
+		width: "408",
+		resizable: false,
+		show: "fade",
+		hide: "fade"
+	});
 
 }
 
@@ -1133,182 +1133,182 @@ function display_goto_dialog() {
 function filetree_drag_initializer() {
 	var coverup = document.getElementById("drag_coverup"),
 	    dragged_element = null;
-    // Allows us to keep dataTransfer in the jQuery event
-    jQuery.event.props.push("dataTransfer");
-    jQuery('#aceide_file_browser').on('dragstart', '[draggable=true]', function(e) {
-        e.stopPropagation();
+	// Allows us to keep dataTransfer in the jQuery event
+	jQuery.event.props.push("dataTransfer");
+	jQuery('#aceide_file_browser').on('dragstart', '[draggable=true]', function(e) {
+		e.stopPropagation();
 
-        dragged_element = this;
+		dragged_element = this;
 
-        var drag_html = this.cloneNode();
-        drag_html.appendChild(this.getElementsByTagName('a')[0].cloneNode(true));
-        coverup.appendChild(drag_html);
+		var drag_html = this.cloneNode();
+		drag_html.appendChild(this.getElementsByTagName('a')[0].cloneNode(true));
+		coverup.appendChild(drag_html);
 
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData("text", this.childNodes[0].getAttribute("rel"));
-        e.dataTransfer.setDragImage(coverup, 0, 0);
-    }).on('dragover', 'li.directory > a', function(e) {
-        // Stop child nodes displaying the ability to receive this item
-        if (jQuery(dragged_element).find(this).size())
-            return;
+		e.dataTransfer.effectAllowed = 'move';
+		e.dataTransfer.setData("text", this.childNodes[0].getAttribute("rel"));
+		e.dataTransfer.setDragImage(coverup, 0, 0);
+	}).on('dragover', 'li.directory > a', function(e) {
+		// Stop child nodes displaying the ability to receive this item
+		if (jQuery(dragged_element).find(this).size())
+			return;
 
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
+		e.preventDefault();
+		e.dataTransfer.dropEffect = "move";
 
-        jQuery(this).parent().addClass("allowDrop");
+		jQuery(this).parent().addClass("allowDrop");
 
-        return false;
-    }).on('dragleave', 'li.directory > a', function(e) {
-        jQuery(this).parent().removeClass("allowDrop");
-    }).on('dragend', function() {
-        // Just to make sure it's always empty
-        jQuery(coverup).empty();
+		return false;
+	}).on('dragleave', 'li.directory > a', function(e) {
+		jQuery(this).parent().removeClass("allowDrop");
+	}).on('dragend', function() {
+		// Just to make sure it's always empty
+		jQuery(coverup).empty();
 
-        // And our styling resets
-        jQuery("#aceide_file_browser .allowDrop").removeClass("allowDrop");
-    }).on('drop', 'li.directory', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
+		// And our styling resets
+		jQuery("#aceide_file_browser .allowDrop").removeClass("allowDrop");
+	}).on('drop', 'li.directory', function(e) {
+		e.stopPropagation();
+		e.preventDefault();
 
-        if (jQuery(dragged_element).find(this).size())
-            return;
+		if (jQuery(dragged_element).find(this).size())
+			return;
 
-        var source      = jQuery(dragged_element).children("a").attr("rel");
-        var destination = jQuery(this).children("a").attr("rel");
+		var source      = jQuery(dragged_element).children("a").attr("rel");
+		var destination = jQuery(this).children("a").attr("rel");
 
-        var data = { action: 'aceide_move_file', source: source, destination: destination, _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
+		var data = { action: 'aceide_move_file', source: source, destination: destination, _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
-        jQuery.post(ajaxurl, data, function(response) {
-            if (response == "1") {
-                if (jQuery("ul.jqueryFileTree a[rel='"+ source +"']").parents('ul').size() < 2) {
-                    // We are moving something to the root folder so regenerate the whole filetree
-                    the_filetree();
-                    return;
-                }
+		jQuery.post(ajaxurl, data, function(response) {
+			if (response == "1") {
+				if (jQuery("ul.jqueryFileTree a[rel='"+ source +"']").parents('ul').size() < 2) {
+					// We are moving something to the root folder so regenerate the whole filetree
+					the_filetree();
+					return;
+				}
 
-                // click the source once to hide
-                jQuery("ul.jqueryFileTree a[rel='"+ source +"']").closest('ul').parent().click();
+				// click the source once to hide
+				jQuery("ul.jqueryFileTree a[rel='"+ source +"']").closest('ul').parent().click();
 
 				// click the destination once to hide
 				jQuery("ul.jqueryFileTree a[rel='" + destination + "']").parent().children("a").click();
 
-                //click the parent once again to show with new folder and focus on this area
-                jQuery("ul.jqueryFileTree a[rel='"+ source +"']").parent().children("a").click();
+				//click the parent once again to show with new folder and focus on this area
+				jQuery("ul.jqueryFileTree a[rel='"+ source +"']").parent().children("a").click();
 				jQuery("ul.jqueryFileTree a[rel='" + destination + "']").parent().children("a").click();
-            } else if (response == "-1") {
-        		alert("Permission/security problem. Refresh AceIDE and try again.");
-            } else {
-                alert("Error: " + response);
-            }
-        });
+			} else if (response == "-1") {
+				alert("Permission/security problem. Refresh AceIDE and try again.");
+			} else {
+				alert("Error: " + response);
+			}
+		});
 
-        dragged_element = null;
+		dragged_element = null;
 
-        return false;
-    });
+		return false;
+	});
 }
 
 jQuery(document).ready(function($) {
 	$("#aceide_save").click(saveDocument);
 
-    // Find dialog actions
-    $("#editor_find_dialog form" ).submit(function( e ) {
-        e.preventDefault();
-        var options = {};
+	// Find dialog actions
+	$("#editor_find_dialog form" ).submit(function( e ) {
+		e.preventDefault();
+		var options = {};
 
-        var direction   = jQuery( "#editor_find_dialog input[name='direction']" ).prop("checked");
-        var start;
+		var direction   = jQuery( "#editor_find_dialog input[name='direction']" ).prop("checked");
+		var start;
 
-        if ( direction ) {
-            start = editor.getSelectionRange().start;
-        } else {
-            start = editor.getSelectionRange().end;
-        }
+		if ( direction ) {
+			start = editor.getSelectionRange().start;
+		} else {
+			start = editor.getSelectionRange().end;
+		}
 
-        options.needle          = jQuery( "#editor_find_dialog input[name='find']" ).val();
-        options.backwards       = direction;
-        options.wrap            = jQuery( "#editor_find_dialog input[name='wrap']" ).prop("checked");
-        options.caseSensitive   = jQuery( "#editor_find_dialog input[name='case']" ).prop("checked");
-        options.wholeWord       = jQuery( "#editor_find_dialog input[name='whole']" ).prop("checked");
-        options.range           = null;
-        options.regExp          = jQuery( "#editor_find_dialog input[name='regexp']" ).prop("checked");
-        options.start           = start;
-        options.skipCurrent     = false;
+		options.needle          = jQuery( "#editor_find_dialog input[name='find']" ).val();
+		options.backwards       = direction;
+		options.wrap            = jQuery( "#editor_find_dialog input[name='wrap']" ).prop("checked");
+		options.caseSensitive   = jQuery( "#editor_find_dialog input[name='case']" ).prop("checked");
+		options.wholeWord       = jQuery( "#editor_find_dialog input[name='whole']" ).prop("checked");
+		options.range           = null;
+		options.regExp          = jQuery( "#editor_find_dialog input[name='regexp']" ).prop("checked");
+		options.start           = start;
+		options.skipCurrent     = false;
 
-        editor.find(options.needle, options);
-        return false;
-    });
-    $("#editor_find_dialog input[name='replace']").click(function( e ) {
-        e.preventDefault();
-        var options = {};
+		editor.find(options.needle, options);
+		return false;
+	});
+	$("#editor_find_dialog input[name='replace']").click(function( e ) {
+		e.preventDefault();
+		var options = {};
 
-        var direction   = jQuery( "#editor_find_dialog input[name='direction']" ).prop("checked");
-        var replacement = jQuery( "#editor_find_dialog input[name='replace']" ).val();
-        var start       = editor.getSelectionRange().start;
+		var direction   = jQuery( "#editor_find_dialog input[name='direction']" ).prop("checked");
+		var replacement = jQuery( "#editor_find_dialog input[name='replace']" ).val();
+		var start       = editor.getSelectionRange().start;
 
 
-        options.needle          = jQuery( "#editor_find_dialog input[name='find']" ).val();
-        options.backwards       = direction;
-        options.wrap            = jQuery( "#editor_find_dialog input[name='wrap']" ).prop("checked");
-        options.caseSensitive   = jQuery( "#editor_find_dialog input[name='case']" ).prop("checked");
-        options.wholeWord       = jQuery( "#editor_find_dialog input[name='whole']" ).prop("checked");
-        options.range           = null;
-        options.regExp          = jQuery( "#editor_find_dialog input[name='regexp']" ).prop("checked");
-        options.start           = start;
-        options.skipCurrent     = false;
+		options.needle          = jQuery( "#editor_find_dialog input[name='find']" ).val();
+		options.backwards       = direction;
+		options.wrap            = jQuery( "#editor_find_dialog input[name='wrap']" ).prop("checked");
+		options.caseSensitive   = jQuery( "#editor_find_dialog input[name='case']" ).prop("checked");
+		options.wholeWord       = jQuery( "#editor_find_dialog input[name='whole']" ).prop("checked");
+		options.range           = null;
+		options.regExp          = jQuery( "#editor_find_dialog input[name='regexp']" ).prop("checked");
+		options.start           = start;
+		options.skipCurrent     = false;
 
-        editor.replace(replacement, options);
-        editor.find(options.needle, options);
-    });
-    $("#editor_find_dialog input[name='replace_all']").click(function( e ) {
-        e.preventDefault();
-        var options = {};
+		editor.replace(replacement, options);
+		editor.find(options.needle, options);
+	});
+	$("#editor_find_dialog input[name='replace_all']").click(function( e ) {
+		e.preventDefault();
+		var options = {};
 
-        var direction   = jQuery( "#editor_find_dialog input[name='direction']" ).prop("checked");
-        var replacement = jQuery( "#editor_find_dialog input[name='replace']" ).val();
-        var start       = editor.getSelectionRange().start;
+		var direction   = jQuery( "#editor_find_dialog input[name='direction']" ).prop("checked");
+		var replacement = jQuery( "#editor_find_dialog input[name='replace']" ).val();
+		var start       = editor.getSelectionRange().start;
 
-        options.needle          = jQuery( "#editor_find_dialog input[name='find']" ).val();
-        options.backwards       = direction;
-        options.wrap            = jQuery( "#editor_find_dialog input[name='wrap']" ).prop("checked");
-        options.caseSensitive   = jQuery( "#editor_find_dialog input[name='case']" ).prop("checked");
-        options.wholeWord       = jQuery( "#editor_find_dialog input[name='whole']" ).prop("checked");
-        options.range           = null;
-        options.regExp          = jQuery( "#editor_find_dialog input[name='regexp']" ).prop("checked");
-        options.start           = start;
-        options.skipCurrent     = false;
+		options.needle          = jQuery( "#editor_find_dialog input[name='find']" ).val();
+		options.backwards       = direction;
+		options.wrap            = jQuery( "#editor_find_dialog input[name='wrap']" ).prop("checked");
+		options.caseSensitive   = jQuery( "#editor_find_dialog input[name='case']" ).prop("checked");
+		options.wholeWord       = jQuery( "#editor_find_dialog input[name='whole']" ).prop("checked");
+		options.range           = null;
+		options.regExp          = jQuery( "#editor_find_dialog input[name='regexp']" ).prop("checked");
+		options.start           = start;
+		options.skipCurrent     = false;
 
-        editor.replaceAll(replacement, options);
-    });
-    $("#editor_find_dialog input[name='cancel']").click(function( e ) {
-        e.preventDefault();
-        jQuery( "#editor_find_dialog" ).dialog( "close" );
-        editor.focus();
-    });
+		editor.replaceAll(replacement, options);
+	});
+	$("#editor_find_dialog input[name='cancel']").click(function( e ) {
+		e.preventDefault();
+		jQuery( "#editor_find_dialog" ).dialog( "close" );
+		editor.focus();
+	});
 
-    // drag and drop colour picker image
-    $("#aceide_color_assist").on('drop', function(e) {
-        e.preventDefault();
-        e.originalEvent.dataTransfer.items[0].getAsString(function(url){
-                $(".ImageColorPickerCanvas", $("#side-info-column") ).remove();
-                $("img", $("#aceide_color_assist")).attr('src', url );
+	// drag and drop colour picker image
+	$("#aceide_color_assist").on('drop', function(e) {
+		e.preventDefault();
+		e.originalEvent.dataTransfer.items[0].getAsString(function(url){
+				$(".ImageColorPickerCanvas", $("#side-info-column") ).remove();
+				$("img", $("#aceide_color_assist")).attr('src', url );
 
-        });
-    });
+		});
+	});
 
-    $("#aceide_color_assist").on('dragover', function(e) {
-        $(this).addClass("hover");
-    }).on('dragleave', function(e) {
-        $(this).removeClass("hover");
-    });
+	$("#aceide_color_assist").on('dragover', function(e) {
+		$(this).addClass("hover");
+	}).on('dragleave', function(e) {
+		$(this).removeClass("hover");
+	});
 
 
 	//add div for ace editor to latch on to
 	$('#template').prepend("<div style='width:80%;height:500px;margin-right:0!important;' id='fancyeditordiv'></div>");
 	//create the editor instance
 	editor = ace.edit("fancyeditordiv");
-    //turn off print margin
-    editor.setPrintMarginColumn(false);
+	//turn off print margin
+	editor.setPrintMarginColumn(false);
 	//set the editor theme
 	editor.setTheme("ace/theme/dawn");
 	//must always use scrollbar
@@ -1319,17 +1319,17 @@ jQuery(document).ready(function($) {
 	var intialData = "Use the file manager to find a file you wish edit, click the file name to edit. \n\n";
 
 
-    //startup info - usefull for debugging
-        var data = { action: 'aceide_startup_check', _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
+	//startup info - usefull for debugging
+		var data = { action: 'aceide_startup_check', _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
 		jQuery.post(ajaxurl, data, function(response) {
-            if (response == "-1"){
-    			intialData = intialData + "Permission/security problem with ajax request. Refresh AceIDE and try again. \n\n";
+			if (response == "-1"){
+				intialData = intialData + "Permission/security problem with ajax request. Refresh AceIDE and try again. \n\n";
 			} else {
-    		    intialData = intialData + response;
+			    intialData = intialData + response;
 			}
 
-            editor.getSession().setValue( intialData );
+			editor.getSession().setValue( intialData );
 
 		});
 
@@ -1378,7 +1378,7 @@ jQuery(document).ready(function($) {
 
 				//show command help panel for this command
 				aceide_function_help();
-                //console.log("handler is visible");
+				//console.log("handler is visible");
 
 			}else if( document.getElementById('ac').style.display === 'block'  ) {
 				var select=document.getElementById('ac');
@@ -1387,23 +1387,23 @@ jQuery(document).ready(function($) {
 				} else {
 					select.selectedIndex = select.selectedIndex-1;
 				}
-                 //console.log("ac is visible");
+				 //console.log("ac is visible");
 			} else {
 				var range = editor.getSelectionRange();
 				editor.clearSelection();
 
 /*				// If we have folds, let's skip past them
-                var fold    = editor.getSession().getFoldAt( range.start.row );
-                if ( fold !== null ) {
-                    range.end.row = fold.start.row;
-                }
+				var fold    = editor.getSession().getFoldAt( range.start.row );
+				if ( fold !== null ) {
+					range.end.row = fold.start.row;
+				}
 
 
-                // Do not go up on a tabbed space
-                if ( editor.session.getUseSoftTabs() ) {
-                    var tabsize     = editor.session.getTabSize();
-                    range.end.column = Math.round( range.end.column / tabsize ) * tabsize;
-                }
+				// Do not go up on a tabbed space
+				if ( editor.session.getUseSoftTabs() ) {
+					var tabsize     = editor.session.getTabSize();
+					range.end.column = Math.round( range.end.column / tabsize ) * tabsize;
+				}
 */
 				editor.moveCursorTo(range.end.row-1, range.end.column);
 			}
@@ -1625,7 +1625,7 @@ jQuery(document).ready(function($) {
 	});
 
 
-    // Add our resizer to the
+	// Add our resizer to the
 	$("#fancyeditordiv").prepend('<span id="resizer"></span>');
 
 	// Create resizer handle
@@ -1678,18 +1678,18 @@ jQuery(document).ready(function($) {
 		.find('a')
 		.bind('click', display_editor_settings);
 
-    $("#aceide_file_browser").on("contextmenu", ".directory > a, .file > a", display_context_menu);
+	$("#aceide_file_browser").on("contextmenu", ".directory > a, .file > a", display_context_menu);
 
-    // Figure out the correct size for the editor
-    (function() {
-        var size    = Math.max( ( $(document.body).height() - 230 ), 250 ),
-            lh      = editor.renderer.lineHeight;
+	// Figure out the correct size for the editor
+	(function() {
+		var size    = Math.max( ( $(document.body).height() - 230 ), 250 ),
+			lh      = editor.renderer.lineHeight;
 
-        size += lh - (size % lh);
-        size++;                     // Editor seems to always be 1px small
+		size += lh - (size % lh);
+		size++;                     // Editor seems to always be 1px small
 
-        $("#fancyeditordiv").height(size + 'px');
-    })();
+		$("#fancyeditordiv").height(size + 'px');
+	})();
 
 	editor.on('changeSession', function(e) {
 		update_scroll_bars_for_resizer();
