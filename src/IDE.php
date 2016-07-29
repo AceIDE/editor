@@ -7,6 +7,8 @@ use AceIDE\Editor\Modules\Module;
 
 class IDE
 {
+	private $ace_version = '1.2.0';
+
 	public $site_url, $plugin_url;
 	private $menu_hook;
 
@@ -141,33 +143,34 @@ class IDE
 	}
 
 	public function add_admin_js() {
-		$plugin_path =  plugin_dir_url( __FILE__ );
+		$plugin_path = trailingslashit(plugin_dir_url( __FILE__ ));
+		$ver = $this->ace_version;
 
 		// include file tree
 		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'jqueryFileTree.js', __FILE__ ) );
 		// include ace
-		wp_enqueue_script( 'ace', plugins_url( 'js/ace-1.2.0/ace.js', __FILE__ ) );
+		wp_enqueue_script( 'ace', "{$plugin_path}js/ace-{$ver}/ace.js" );
 		// include ace modes for css, javascript & php
-		wp_enqueue_script( 'ace-mode-css', $plugin_path . 'js/ace-1.2.0/mode-css.js' );
-		wp_enqueue_script( 'ace-mode-less', $plugin_path . 'js/ace-1.2.0/mode-less.js' );
-		wp_enqueue_script( 'ace-mode-javascript', $plugin_path . 'js/ace-1.2.0/mode-javascript.js' );
-		wp_enqueue_script( 'ace-mode-php', $plugin_path . 'js/ace-1.2.0/mode-php.js' );
-		wp_enqueue_script( 'ace-mode-twig', $plugin_path . 'js/ace-1.2.0/mode-twig.js' );
+		wp_enqueue_script( 'ace-mode-css', "{$plugin_path}js/ace-{$ver}/mode-css.js" );
+		wp_enqueue_script( 'ace-mode-less', "{$plugin_path}js/ace-{$ver}/mode-less.js" );
+		wp_enqueue_script( 'ace-mode-javascript', "{$plugin_path}js/ace-{$ver}/mode-javascript.js" );
+		wp_enqueue_script( 'ace-mode-php', "{$plugin_path}js/ace-{$ver}/mode-php.js" );
+		wp_enqueue_script( 'ace-mode-twig', "{$plugin_path}js/ace-{$ver}/mode-twig.js" );
 		// include ace theme
-		wp_enqueue_script( 'ace-theme', plugins_url( 'js/ace-1.2.0/theme-dawn.js', __FILE__ ) ); // ambiance looks really nice for high contrast
-		// wordpress-completion tags
-		wp_enqueue_script( 'aceide-wordpress-completion', plugins_url( 'js/autocomplete/wordpress.js', __FILE__ ) );
-		// php-completion tags
-		wp_enqueue_script( 'aceide-php-completion', plugins_url('js/autocomplete/php.js', __FILE__ ) );
-		// load editor
-		wp_enqueue_script( 'aceide-load-editor', plugins_url( 'js/load-editor.js', __FILE__ ) );
-		// load filetree menu
-		wp_enqueue_script( 'aceide-load-filetree-menu', plugins_url( 'js/load-filetree-menu.js', __FILE__ ) );
-		// load autocomplete dropdown
-		wp_enqueue_script( 'aceide-dd', plugins_url( 'js/jquery.dd.js', __FILE__ ) );
+		wp_enqueue_script( 'ace-theme', "{$plugin_path}js/ace-1.2.0/theme-dawn.js" ); // ambiance looks really nice for high contrast
 		// load emmet
-		wp_enqueue_script( 'aceide-ext-emmet', $plugin_path . 'js/ace-1.2.0/ext-emmet.js' );
-		wp_enqueue_script( 'aceide-emmet', $plugin_path . 'js/emmet.js');
+		wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_path}js/ace-{$ver}/ext-emmet.js" );
+		wp_enqueue_script( 'aceide-emmet', "{$plugin_path}js/emmet.js" );
+		// wordpress-completion tags
+		wp_enqueue_script( 'aceide-wordpress-completion', "{$plugin_path}js/autocomplete/wordpress.js" );
+		// php-completion tags
+		wp_enqueue_script( 'aceide-php-completion', "{$plugin_path}js/autocomplete/php.js" );
+		// load editor
+		wp_enqueue_script( 'aceide-load-editor', "{$plugin_path}js/load-editor.js" );
+		// load filetree menu
+		wp_enqueue_script( 'aceide-load-filetree-menu', "{$plugin_path}js/load-filetree-menu.js" );
+		// load autocomplete dropdown
+		wp_enqueue_script( 'aceide-dd', "{$plugin_path}js/jquery.dd.js" );
 
 		// load jquery ui
 		wp_enqueue_script( 'jquery-ui', plugins_url( 'js/jquery-ui-1.9.2.custom.min.js', __FILE__ ), array( 'jquery' ),  '1.9.2' );
