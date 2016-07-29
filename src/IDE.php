@@ -165,6 +165,9 @@ class IDE
 		wp_enqueue_script( 'aceide-load-filetree-menu', plugins_url( 'js/load-filetree-menu.js', __FILE__ ) );
 		// load autocomplete dropdown
 		wp_enqueue_script( 'aceide-dd', plugins_url( 'js/jquery.dd.js', __FILE__ ) );
+		// load emmet
+		wp_enqueue_script( 'aceide-ext-emmet', $plugin_path . 'js/ace-1.2.0/ext-emmet.js' );
+		wp_enqueue_script( 'aceide-emmet', $plugin_path . 'js/emmet.js');
 
 		// load jquery ui
 		wp_enqueue_script( 'jquery-ui', plugins_url( 'js/jquery-ui-1.9.2.custom.min.js', __FILE__ ), array( 'jquery' ),  '1.9.2' );
