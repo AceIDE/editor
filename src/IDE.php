@@ -556,7 +556,7 @@ class IDE
 							if ("lets not" == "use the modal for now") {
 
 								var NewDialog = jQuery('<div id="MenuDialog">\
-									<iframe src="http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&target=<?php echo get_bloginfo( 'url' ) . "?action=aceide_image_save";?>&url=<?php echo get_bloginfo( 'url' ) . "/wp-content";?>' + file + '&title=Edit image&service=Save back to AceIDE" width="100%" height="600px"> </iframe>\
+									<iframe src="http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&target=<?php echo get_bloginfo( 'url' ); ?>?action=aceide_image_save&url=<?php echo plugins_url( $root ); ?>' + file + '&title=Edit image&service=Save back to AceIDE" width="100%" height="600px"> </iframe>\
 									</div>');
 								NewDialog.dialog({
 									modal: true,
@@ -569,6 +569,7 @@ class IDE
 							} else { // open in new tab/window
 								var data = { action: 'aceide_image_edit_key', file: file, _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 								var image_data = '';
+								var image_title = encodeURIComponent(file.match(/(^|\/)([^\/]*$)/)[2]);
 								jQuery.ajaxSetup({async:false}); // we need to wait until we get the response before opening the window
 								jQuery.post(ajaxurl, data, function(response) {
 									// with the response (which is a nonce), build the json data to pass to the image editor. The edit key (nonce) is only valid to edit this image
@@ -576,7 +577,7 @@ class IDE
 								});
 								jQuery.ajaxSetup({async:true});// enable async again
 
-								window.open('http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&url=<?php echo $app_url. "/wp-content";?>' + file + '&opt=' + image_data + '&title=Edit image&service=Save back to AceIDE&target=<?php echo urlencode( $app_url . "/wp-admin/admin.php?aceide_save_image=yes" ) ; ?>');
+								window.open('http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&url=<?php echo plugins_url( $root ); ?>' + file + '&opt=' + image_data + '&title=' + image_title + '&service=Save back to AceIDE&target=<?php echo urlencode( $app_url . "/wp-admin/admin.php?aceide_save_image=yes" ) ; ?>');
 							}
 						} else {
 							jQuery(parent).addClass('wait');
