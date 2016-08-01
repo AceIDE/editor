@@ -147,7 +147,7 @@ class IDE
 		$ver = $this->ace_version;
 
 		// include file tree
-		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'jqueryFileTree.js', __FILE__ ) );
+		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'js/jqueryFileTree.js', __FILE__ ) );
 		// include ace
 		wp_enqueue_script( 'ace', "{$plugin_path}js/ace-{$ver}/ace.js" );
 		// include ace modes for css, javascript & php
@@ -172,11 +172,8 @@ class IDE
 		// load autocomplete dropdown
 		wp_enqueue_script( 'aceide-dd', "{$plugin_path}js/jquery.dd.js" );
 
-		// load jquery ui
-		wp_enqueue_script( 'jquery-ui', plugins_url( 'js/jquery-ui-1.9.2.custom.min.js', __FILE__ ), array( 'jquery' ),  '1.9.2' );
-
 		// load color picker
-		wp_enqueue_script( 'ImageColorPicker', plugins_url( 'js/ImageColorPicker.js', __FILE__ ), array( 'jquery' ),  '0.3' );
+		wp_enqueue_script( 'ImageColorPicker', plugins_url( 'js/ImageColorPicker.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-widget' ),  '0.3' );
 	}
 
 	public function add_admin_styles() {
@@ -184,7 +181,7 @@ class IDE
 		wp_register_style( 'aceide_style', plugins_url( 'aceide.css', __FILE__ ) );
 		wp_enqueue_style( 'aceide_style' );
 		// filetree styles
-		wp_register_style( 'aceide_filetree_style', plugins_url( 'jqueryFileTree.css', __FILE__ ) );
+		wp_register_style( 'aceide_filetree_style', plugins_url( 'css/jqueryFileTree.css', __FILE__ ) );
 		wp_enqueue_style( 'aceide_filetree_style' );
 		// autocomplete dropdown styles
 		wp_register_style( 'aceide_dd_style', plugins_url( 'dd.css', __FILE__ ) );
