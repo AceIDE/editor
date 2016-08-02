@@ -147,30 +147,30 @@ class IDE
 		$ver = $this->ace_version;
 
 		// include file tree
-		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'js/jqueryFileTree.js', __FILE__ ) );
+		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'js/jqueryFileTree.js', __FILE__ ), array( 'jquery' ) );
 		// include ace
 		wp_enqueue_script( 'ace', "{$plugin_path}js/ace-{$ver}/ace.js" );
 		// include ace modes for css, javascript & php
-		wp_enqueue_script( 'ace-mode-css', "{$plugin_path}js/ace-{$ver}/mode-css.js" );
-		wp_enqueue_script( 'ace-mode-less', "{$plugin_path}js/ace-{$ver}/mode-less.js" );
-		wp_enqueue_script( 'ace-mode-javascript', "{$plugin_path}js/ace-{$ver}/mode-javascript.js" );
-		wp_enqueue_script( 'ace-mode-php', "{$plugin_path}js/ace-{$ver}/mode-php.js" );
-		wp_enqueue_script( 'ace-mode-twig', "{$plugin_path}js/ace-{$ver}/mode-twig.js" );
+		wp_enqueue_script( 'ace-mode-css', "{$plugin_path}js/ace-{$ver}/mode-css.js", array( 'ace' ) );
+		wp_enqueue_script( 'ace-mode-less', "{$plugin_path}js/ace-{$ver}/mode-less.js", array( 'ace' ) );
+		wp_enqueue_script( 'ace-mode-javascript', "{$plugin_path}js/ace-{$ver}/mode-javascript.js", array( 'ace' ) );
+		wp_enqueue_script( 'ace-mode-php', "{$plugin_path}js/ace-{$ver}/mode-php.js", array( 'ace' ) );
+		wp_enqueue_script( 'ace-mode-twig', "{$plugin_path}js/ace-{$ver}/mode-twig.js", array( 'ace' ) );
 		// include ace theme
-		wp_enqueue_script( 'ace-theme', "{$plugin_path}js/ace-{$ver}/theme-dawn.js" ); // ambiance looks really nice for high contrast
+		wp_enqueue_script( 'ace-theme', "{$plugin_path}js/ace-{$ver}/theme-dawn.js", array( 'ace' ) ); // ambiance looks really nice for high contrast
 		// load emmet
-		wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_path}js/ace-{$ver}/ext-emmet.js" );
-		wp_enqueue_script( 'aceide-emmet', "{$plugin_path}js/emmet.js" );
+		wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_path}js/ace-{$ver}/ext-emmet.js", array( 'ace' ) );
+		wp_enqueue_script( 'aceide-emmet', "{$plugin_path}js/emmet.js", array( 'aceide-ext-emmet' ) );
 		// wordpress-completion tags
-		wp_enqueue_script( 'aceide-wordpress-completion', "{$plugin_path}js/autocomplete/wordpress.js" );
+		wp_enqueue_script( 'aceide-wordpress-completion', "{$plugin_path}js/autocomplete/wordpress.js", array( 'ace' ) );
 		// php-completion tags
-		wp_enqueue_script( 'aceide-php-completion', "{$plugin_path}js/autocomplete/php.js" );
+		wp_enqueue_script( 'aceide-php-completion', "{$plugin_path}js/autocomplete/php.js", array( 'ace' ) );
 		// load editor
-		wp_enqueue_script( 'aceide-load-editor', "{$plugin_path}js/load-editor.js" );
+		wp_enqueue_script( 'aceide-load-editor', "{$plugin_path}js/load-editor.js", array( 'ace', 'jquery', 'jquery-ui-core', 'jquery-ui-dialog' ) );
 		// load filetree menu
-		wp_enqueue_script( 'aceide-load-filetree-menu', "{$plugin_path}js/load-filetree-menu.js" );
+		wp_enqueue_script( 'aceide-load-filetree-menu', "{$plugin_path}js/load-filetree-menu.js", array( 'ace', 'jquery' ) );
 		// load autocomplete dropdown
-		wp_enqueue_script( 'aceide-dd', "{$plugin_path}js/jquery.dd.js" );
+		wp_enqueue_script( 'aceide-dd', "{$plugin_path}js/jquery.dd.js", array( 'ace', 'jquery' ) );
 
 		// load color picker
 		wp_enqueue_script( 'ImageColorPicker', plugins_url( 'js/ImageColorPicker.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-widget' ),  '0.3' );
