@@ -71,8 +71,14 @@ README.md
 .git
 .gitignore $SVNIGNORE" "$SVNPATH/trunk/"
 
-echo "Changing directory to SVN and committing to trunk"
+echo "Changing directory to SVN"
 cd $SVNPATH/trunk/
+
+
+echo "Installing composer dependencies"
+composer install --no-dev
+
+echo "Committing to trunk"
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 svn commit --username=$SVNUSER -m "$COMMITMSG"
