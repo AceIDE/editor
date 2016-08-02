@@ -520,13 +520,17 @@ class IDE
 			$app_url = str_replace( "http:", "https:", $app_url );
 		}
 
+		$url  = trailingslashit( site_url() );
+		$root = apply_filters( "aceide_file_root_url", WP_CONTENT_URL );
+		$root = str_replace( ABSPATH, $url, $root );
+
 		do_action('pre_output_aceide_menu_page');
 		do_action('pre_output_aceide_menu_page_scripts');
 		?>
 		<script>
 
 			var aceide_app_path = "<?php echo plugin_dir_url( __FILE__ ); ?>";
-			// dont think this is needed any more.. var aceide_file_root_url = "<?php echo apply_filters( "aceide_file_root_url", WP_CONTENT_URL ); ?>";
+			// dont think this is needed any more.. var aceide_file_root_url = "<?php echo $root ?>";
 			var user_nonce_addition = '';
 
 			function the_filetree() {
@@ -553,7 +557,7 @@ class IDE
 							if ("lets not" == "use the modal for now") {
 
 								var NewDialog = jQuery('<div id="MenuDialog">\
-									<iframe src="http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&target=<?php echo get_bloginfo( 'url' ); ?>?action=aceide_image_save&url=<?php echo plugins_url( $root ); ?>' + file + '&title=Edit image&service=Save back to AceIDE" width="100%" height="600px"> </iframe>\
+									<iframe src="http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&target=<?php echo get_bloginfo( 'url' ); ?>?action=aceide_image_save&url=<?php echo $root; ?>' + file + '&title=Edit image&service=Save back to AceIDE" width="100%" height="600px"> </iframe>\
 									</div>');
 								NewDialog.dialog({
 									modal: true,
