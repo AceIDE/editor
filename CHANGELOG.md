@@ -1,5 +1,17 @@
 ## AceIDE Changelog
 
+#### 2.5.0
+* WPide was forked into AceIDE!
+* Introduced composer as a dependency management solution
+* Massive code refactor to better follow Single Role Principle, and the WordPress PHP coding standards - introduces PHP namespacing into internal plugin code
+* Fixed WPide admin_body_class filter issue
+* Added multi-site support. (UNTESTED)
+* Added Drag n' Drop file moving
+* Added syntax highlighting for the Twig templating language  (http://twig.sensiolabs.org)
+* Added the Emmet plugin to create HTML nodes with CSS syntax (http://emmet.io)
+* Upgraded Ace to v1.2.4
+* Fixed SumoPaint link issues when the aceide_filesystem_root filter is not at default value
+
 #### 2.4.0
 * Context menu option added to file browser to rename, delete, download, zip, unzip!! thanks to shanept https://github.com/shanept for the code behind this.
   Right click on a folder/file in the file browser to see options (Thanks to https://github.com/shanept)
