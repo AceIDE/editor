@@ -1,4 +1,4 @@
-=== AceIDE WordPress Plugin ===
+=== AceIDE ===
 Contributors: WPsites, Thomas Wieczorek, shanept
 Tags: code, theme editor, plugin editor, code editor
 Requires at least: 3.0
