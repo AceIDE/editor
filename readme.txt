@@ -5,7 +5,7 @@ Requires at least: 3.0
 Tested up to: 4.5.3
 Stable tag: 2.5.0
 
-A fork of the WPide project, AceIDE is a WordPress code editor with the long term goal of becoming the ultimate environment to code/develop WordPress themes and plugins. You can edit any files in your wp-content, not just plugins and themes. Code completion will help you remember your WordPress/PHP commands providing function reference along the way. AceIDE allows you to work with multiple files, with basic features such as the tabbed editor, syntax highlighting and line numbers. It also provides some more advanced features such as syntax verification and automatic backups upon saving.
+A fork of the WPide project, AceIDE is a code editor with the long term goal of becoming the ultimate environment to develop themes and plugins.
 
 == Description ==
 AceIDE is a WordPress code editor with the long term goal of becoming the ultimate environment to code/develop WordPress themes and plugins. You can edit any files in your wp-content, not just plugins and themes. Code completion will help you remember your WordPress/PHP commands providing function reference along the way. AceIDE allows you to work with multiple files, with basic features such as the tabbed editor, syntax highlighting and line numbers. It also provides some more advanced features such as syntax verification and automatic backups upon saving.
