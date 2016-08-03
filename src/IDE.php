@@ -77,8 +77,6 @@ class IDE
 		return array (
 			array( 'admin_print_scripts-' . $this->menu_hook, array( &$this, 'add_admin_js' ) ),
 			array( 'admin_print_styles-'  . $this->menu_hook, array( &$this, 'add_admin_styles' ) ),
-			array( 'admin_print_footer_scripts',    array( &$this, 'print_find_dialog' ) ),
-			array( 'admin_print_footer_scripts',    array( &$this, 'print_settings_dialog' ) ),
 			array( 'wp_ajax_jqueryFileTree',        array( &$this, 'jqueryFileTree_get_list' ) ),
 
 			array( 'wp_ajax_aceide_image_edit_key', array( &$this, 'image_edit_key' )  ),
@@ -596,7 +594,7 @@ class IDE
 			}
 
 			jQuery(document).ready(function($) {
-//                $("#fancyeditordiv").css("height", ($('body').height()-120) + 'px' );
+//				$("#fancyeditordiv").css("height", ($('body').height()-120) + 'px' );
 
 				$(document).trigger('aceide:prefiletree');
 
@@ -678,7 +676,7 @@ class IDE
 				<div id="submitdiv" class="postbox ">
 					<h3 class="hndle"><span>Files</span></h3>
 					<div class="inside">
-					    <ul id="drag_coverup" class="jqueryFileTree" style="position: absolute; background-color: white; z-index: -1;"></ul>
+						<ul id="drag_coverup" class="jqueryFileTree" style="position: absolute; background-color: white; z-index: -1;"></ul>
 						<div class="submitbox" id="submitpost">
 							<div id="minor-publishing"></div>
 							<div id="major-publishing-actions">
@@ -730,59 +728,70 @@ class IDE
 				</form>
 			</div>
 		</div>
-		<?php
-	}
-
-	public function print_find_dialog() {
-		// Do not check for a nonce, however check other permissions
-		self::check_perms( false );
-
-		?>
-	<div id="editor_find_dialog" title="<?php esc_attr_e( 'Find...' ); ?>" style="padding: 0px; display: none;">
-		<?php if ( false ): ?>
-		<ul>
-			<li><a href="#find-inline"><?php esc_html_e( 'Text' ); ?></a></li>
-			<li><a href="#find-func"><?php esc_html_e( 'Function' ); ?></a></li>
-		</ul>
-		<?php endif; ?>
-		<form id="find-inline" style="position: relative; padding: 4px; margin: 0px; height: 100%; overflow: hidden; width: 400px;">
-			<label class="left"> <?php esc_html_e( 'Find' ); ?><input type="search" name="find" /></label>
-			<label class="left"> <?php esc_html_e( 'Replace' ); ?><input type="search" name="replace" /></label>
-			<div class="clear" style="height: 33px;"></div>
-
-			<label><input type="checkbox" name="wrap" checked="checked" /> <?php esc_html_e( 'Wrap Around' ); ?></label>
-			<label><input type="checkbox" name="case" /> <?php esc_html_e( 'Case Sensitive' ); ?></label>
-			<label><input type="checkbox" name="whole" /> <?php esc_html_e( 'Match Whole Word' ); ?></label>
-			<label><input type="checkbox" name="regexp" /> <?php esc_html_e( 'Regular Expression' ); ?></label>
-
-			<div class="search_direction">
-				<?php esc_html_e( 'Direction:' ); ?>
-				<label><input type="radio" name="direction" value="0" /> <?php esc_html_e( 'Up' ); ?></label>
-				<label><input type="radio" name="direction" value="1" checked="checked" /> <?php esc_html_e( 'Down' ); ?></label>
+		<div id="editor_find_dialog" title="<?php esc_attr_e( 'Find...' ); ?>" style="padding: 0px; display: none;">
+			<?php if ( false ): ?>
+			<ul>
+				<li><a href="#find-inline"><?php esc_html_e( 'Text' ); ?></a></li>
+				<li><a href="#find-func"><?php esc_html_e( 'Function' ); ?></a></li>
+			</ul>
+			<?php endif; ?>
+			<form id="find-inline" style="position: relative; padding: 4px; margin: 0px; height: 100%; overflow: hidden; width: 400px;">
+				<label class="left"> <?php esc_html_e( 'Find' ); ?><input type="search" name="find" /></label>
+				<label class="left"> <?php esc_html_e( 'Replace' ); ?><input type="search" name="replace" /></label>
+				<div class="clear" style="height: 33px;"></div>
+	
+				<label><input type="checkbox" name="wrap" checked="checked" /> <?php esc_html_e( 'Wrap Around' ); ?></label>
+				<label><input type="checkbox" name="case" /> <?php esc_html_e( 'Case Sensitive' ); ?></label>
+				<label><input type="checkbox" name="whole" /> <?php esc_html_e( 'Match Whole Word' ); ?></label>
+				<label><input type="checkbox" name="regexp" /> <?php esc_html_e( 'Regular Expression' ); ?></label>
+	
+				<div class="search_direction">
+					<?php esc_html_e( 'Direction:' ); ?>
+					<label><input type="radio" name="direction" value="0" /> <?php esc_html_e( 'Up' ); ?></label>
+					<label><input type="radio" name="direction" value="1" checked="checked" /> <?php esc_html_e( 'Down' ); ?></label>
+				</div>
+				<div class="right">
+					<input type="submit" name="submit" value="<?php esc_attr_e( 'Find' ); ?>" class="action_button" />
+					<input type="button" name="replace" value="<?php esc_attr_e( 'Replace' ); ?>" class="action_button" />
+					<input type="button" name="replace_all" value="<?php esc_attr_e( 'Replace All' ); ?>" class="action_button" />
+					<input type="button" name="cancel" value="<?php esc_attr_e( 'Cancel' ); ?>" class="action_button" />
+				</div>
+			</form>
+			<?php if ( false ): ?>
+			<form id="find-func">
+				<label class="left"> <?php esc_html_e( 'Function' ); ?><input type="search" name="find" /></label>
+				<div class="right">
+					<input type="submit" name="submit" value="<?php esc_attr_e( 'Find Function' ); ?>" class="action_button" />
+				</div>
+			</form>
+			<?php endif; ?>
+		</div>
+		<div id="editor_goto_dialog" title="<?php esc_attr_e( 'Go to...' ); ?>" style="padding: 0px; display: none;"></div>
+		<div id="editor_settings_dialog" style="padding: 10px 10px 5px; display: none;">
+			<div class="left">
+				<label><?php _e( 'Theme:' ); ?> <input type="text" id="editor_theme_setting" class="ipt-sel"></label>
+				<label><?php _e( 'Folding:' ); ?> <select id="editor_folding_setting" class="ipt-sel">
+					<option value="manual"><?php _e( 'Manual' ); ?></option>
+					<option value="markbegin" selected="selected"><?php _e( 'Beginning' ); ?></option>
+					<option value="markbeginend"><?php _e( 'Beginning And End' ); ?></option>
+				</select></label>
+				<label><?php _e( 'Font Size:' ); ?> <input type="number" id="editor_font_size_setting" class="number"></label>
+				<label><?php _e( 'Wrap Limit:' ); ?> <input type="number" id="editor_wrap_limit_setting" class="number"></label>
+				<label><?php _e( 'Wrap Long Text:' ); ?> <input type="checkbox" id="editor_wrap_setting"></label>
+				<label><?php _e( 'Fade Folders:' ); ?> <input type="checkbox" id="editor_fade_fold_setting"></label>
 			</div>
 			<div class="right">
-				<input type="submit" name="submit" value="<?php esc_attr_e( 'Find' ); ?>" class="action_button" />
-				<input type="button" name="replace" value="<?php esc_attr_e( 'Replace' ); ?>" class="action_button" />
-				<input type="button" name="replace_all" value="<?php esc_attr_e( 'Replace All' ); ?>" class="action_button" />
-				<input type="button" name="cancel" value="<?php esc_attr_e( 'Cancel' ); ?>" class="action_button" />
+				<label><?php _e( 'Highlight Current Line:' ); ?> <input type="checkbox" id="editor_highlight_line_setting"></label>
+				<label><?php _e( 'Show Invisible Characters:' ); ?> <input type="checkbox" id="editor_show_invisibles"></label>
+				<label><?php _e( 'Show Indent Guidelines:' ); ?> <input type="checkbox" id="editor_display_indent_guides_setting"></label>
+				<label><?php _e( 'Animate Scrollbar:' ); ?> <input type="checkbox" id="editor_animate_scroll_setting"></label>
+				<label><?php _e( 'Show Gutter:' ); ?> <input type="checkbox" id="editor_show_gutter_setting"></label>
+				<label><?php _e( 'Use Tabs:' ); ?> <input type="checkbox" id="editor_use_tabs_setting"></label>
+				<label><?php _e( 'Highlight Same Words:' ); ?> <input type="checkbox" id="editor_word_highlight"></label>
+				<label><?php _e( 'Show Behaviours:' ); ?> <input type="checkbox" id="editor_behaviours_setting"></label>
 			</div>
-		</form>
-		<?php if ( false ): ?>
-		<form id="find-func">
-			<label class="left"> <?php esc_html_e( 'Function' ); ?><input type="search" name="find" /></label>
-			<div class="right">
-				<input type="submit" name="submit" value="<?php esc_attr_e( 'Find Function' ); ?>" class="action_button" />
-			</div>
-		</form>
-		<?php endif; ?>
-	</div>
-	<div id="editor_goto_dialog" title="<?php esc_attr_e( 'Go to...' ); ?>" style="padding: 0px; display: none;"></div>
+		</div>
 <?php
 		do_action('post_output_aceide_menu_page_html');
-	}
-
-	public function print_settings_dialog() {
-		// Do not check for a nonce, however check other permissions
-		self::check_perms( false );
 	}
 }

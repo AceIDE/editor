@@ -12,7 +12,7 @@ class GitOps implements Module
 	public function setup_hooks() {
 		return array (
 			array( 'post_output_aceide_menu_page_scripts', array( &$this, 'add_git_js' ) ),
-			array( 'pre_output_aceide_menu_page_html',     array( &$this, 'add_git_html') ),
+			array( 'post_output_aceide_menu_page_html',    array( &$this, 'add_git_html') ),
 			array( 'wp_ajax_aceide_git_status',  array( &$this, 'git_status' ) ),
 			array( 'wp_ajax_aceide_git_diff',    array( &$this, 'git_diff' ) ),
 			array( 'wp_ajax_aceide_git_commit',  array( &$this, 'git_commit' ) ),
@@ -34,7 +34,8 @@ class GitOps implements Module
 				$('#gitdiv').dialog({
 					autoOpen: false,
 					title: 'Git',
-					width: 800
+					width: 800,
+					appendTo: jQuery("#wpbody-content")
 				});
 			});
 

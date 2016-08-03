@@ -739,11 +739,13 @@ function load_editor_settings() {
 	editor.session.setUseSoftTabs( use_tabs == false );         // soft tab is space
 	editor.setHighlightActiveLine( highlight == true );
 	editor.renderer.setShowInvisibles( invisibles == true );
-try {
-	editor.renderer.setDisplayIndentGuides( indents == true );
-} catch(error) {
-window.console && console.error( 'setDisplayIndentGuides not supported' );
-}
+
+    try {
+    	editor.renderer.setDisplayIndentGuides( indents == true );
+    } catch(error) {
+        window.console && console.error( 'setDisplayIndentGuides not supported' );
+    }
+
 	editor.renderer.setAnimatedScroll( anim_scroll == true );
 	editor.renderer.setShowGutter( show_gutter == true );
 	editor.setHighlightSelectedWord( word_hglt == true );
@@ -769,338 +771,84 @@ window.console && console.error( 'setDisplayIndentGuides not supported' );
 
 function display_editor_settings() {
 	// Create HTML dialog
-	if ( !jQuery( "#editor_settings_dialog" ).length ) {
+	if (!jQuery(".ui-dialog #editor_settings_dialog").length) {
 		// Ensure settings are loaded...
 		load_editor_settings();
 
-		// Create nodes
-		var theme       = jQuery( '<input>' ).attr({
-			type:       'text',
-			id:         'editor_theme_setting',
-			class:      'ipt-sel'
-		});
-
-		var fontSize    = jQuery( '<input>' ).attr({
-			type:       'number',
-			id:         'editor_font_size_setting',
-			class:      'number'
-		});
-		var fadeFold    = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_fade_fold_setting'
-		});
-		var wrap        = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_wrap_setting'
-		});
-		var wrap_limit  = jQuery( '<input>' ).attr({
-			type:       'number',
-			id:         'editor_wrap_limit_setting',
-			class:      'number'
-		});
-		var hglt_ln     = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_highlight_line_setting'
-		});
-		var invisibles  = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_show_invisibles'
-		});
-		var indentguide = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_display_indent_guides_setting'
-		});
-		var anim_scroll = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_animate_scroll_setting'
-		});
-		var show_gutter = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_show_gutter_setting'
-		});
-		var use_tabs    = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_use_tabs_setting'
-		});
-		var word_hglt   = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_word_highlight'
-		});
-		var behaviours  = jQuery( '<input>' ).attr({
-			type:       'checkbox',
-			id:         'editor_behaviours_setting'
-		});
-
-		var folding     = jQuery( '<select>' ).attr({
-				id:     'editor_folding_setting',
-				class:  'ipt-sel'
-			});
-		jQuery( '<option>' ).attr({
-				value:      "manual",
-				selected:   editor.session.$foldStyle == "manual"
-			}).text( 'Manual').appendTo( folding );
-		jQuery( '<option>' ).attr({
-				value:      "markbegin",
-				selected:   ( editor.session.$foldStyle != "manual" && editor.session.$foldStyle != "markbeginend" )
-			}).text( 'Beginning' ).appendTo( folding );
-		jQuery( '<option>' ).attr({
-				value:      "markbeginend",
-				selected:   editor.session.$foldStyle == "markbeginend"
-			}).text( 'Beginning And End' ).appendTo( folding );
-
-
 		// Add Listeners
-		jQuery( theme ).blur(function() {
-			localStorage.custom_editor_theme = jQuery( this ).val();
+		jQuery("#editor_theme_setting").blur(function() {
+			localStorage.custom_editor_theme = jQuery(this).val();
 		});
-		jQuery( fontSize ).change(function() {
+		jQuery("#editor_folding_setting").change(function() {
+			localStorage.custom_editor_folding = jQuery(this).val();
+		});
+		jQuery("#editor_font_size_setting").change(function() {
 			localStorage.custom_editor_fontSize = jQuery( this ).val();
 		});
-		jQuery( fadeFold ).change(function() {
-			localStorage.custom_editor_fade_folding = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_fade_fold_setting").change(function() {
+			localStorage.custom_editor_fade_folding = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( wrap ).change(function() {
-			localStorage.custom_editor_wrap = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_wrap_setting").change(function() {
+			localStorage.custom_editor_wrap = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( wrap_limit ).change(function() {
-			localStorage.custom_editor_wrap_limit = jQuery( this ).val();
+		jQuery("#editor_wrap_limit_setting").change(function() {
+			localStorage.custom_editor_wrap_limit = jQuery(this).val();
 		});
-		jQuery( hglt_ln ).change(function() {
-			localStorage.custom_editor_highlight_current_line = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_highlight_line_setting").change(function() {
+			localStorage.custom_editor_highlight_current_line = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( invisibles ).change(function() {
-			localStorage.custom_editor_invisibles = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_show_invisibles").change(function() {
+			localStorage.custom_editor_invisibles = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( indentguide ).change(function() {
-			localStorage.custom_editor_indent_guides = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_display_indent_guides_setting").change(function() {
+			localStorage.custom_editor_indent_guides = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( anim_scroll ).change(function() {
-			localStorage.custom_editor_animate_scrolling = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_animate_scroll_setting").change(function() {
+			localStorage.custom_editor_animate_scrolling = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( show_gutter ).change(function() {
-			localStorage.custom_editor_show_gutter = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_show_gutter_setting").change(function() {
+			localStorage.custom_editor_show_gutter = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( use_tabs ).change(function() {
-			localStorage.custom_editor_use_tabs = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_use_tabs_setting").change(function() {
+			localStorage.custom_editor_use_tabs = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( word_hglt ).change(function() {
-			localStorage.custom_editor_highlight_selected_word = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_word_highlight").change(function() {
+			localStorage.custom_editor_highlight_selected_word = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( behaviours ).change(function() {
-			localStorage.custom_editor_behaviours = ( jQuery( this ).is( ":checked" ) ? 1 : 0 );
+		jQuery("#editor_behaviours_setting").change(function() {
+			localStorage.custom_editor_behaviours = (jQuery(this).is(":checked") ? 1 : 0);
 		});
-		jQuery( folding ).change(function() {
-			localStorage.custom_editor_folding = jQuery( this ).val();
-		});
-
-		// Glue together - create dialog content
-		var container   = jQuery("<div>").attr({
-			id:     "editor_settings_dialog",
-			title:  "Editor Settings"
-		}).css( "display", "none" );
-		var left        = jQuery( '<div>' ).attr({
-			class: "left"
-		});
-		var right       = jQuery( '<div>' ).attr({
-			class: "right"
-		});
-
-		jQuery( left )
-		.append(function() {
-			return jQuery( '<label>' ).text( "Theme: " ).append( theme );
-		})  // Theme
-		.append(function() {
-			return jQuery( '<label>' ).text( "Folding: ").append( folding );
-		})
-		.append(function() {
-			return jQuery( '<label>' ).text( "Font Size: " ).append( fontSize );
-		})  // Font Size
-		.append(function() {
-			return jQuery( '<label>' ).text( "Wrap Limit: " ).append( wrap_limit );
-		})  // Wrap Limit
-		.append(function() {
-			return jQuery( '<label>' ).text( "Wrap Long Text: " ).append( wrap );
-		})  // Wrap
-		.append(function() {
-			return jQuery( '<label>' ).text( "Fade Folders: " ).append( fadeFold );
-		}); // Fade
-
-
-
-		jQuery( right )
-			.append(function() {
-				return jQuery( '<label>' ).text( "Highlight Current Line: " ).append( hglt_ln );
-			})  // Highlight Current Line
-			.append(function() {
-			   return jQuery( '<label>' ).text( "Show Invisible Characters: " ).append( invisibles );
-			})  // Invisible
-			.append(function() {
-				return jQuery( '<label>' ).text( "Show Indent Guidelines: " ).append( indentguide );
-			})  // Indent Guides
-			.append(function() {
-				return jQuery( '<label>' ).text( "Animate Scrollbar: ").append( anim_scroll );
-			})  // Animate Scrollbars
-			.append(function() {
-				return jQuery( '<label>' ).text( "Show Gutter: " ).append( show_gutter );
-			})  // Gutter
-			.append(function() {
-				return jQuery( '<label>' ).text( "Use Tabs: " ).append( use_tabs );
-			})  // Use tabs
-			.append(function() {
-				return jQuery( '<label>' ).text( "Highlight Same Words: " ).append( word_hglt );
-			})  // Word Highlight
-			.append(function() {
-				return jQuery( '<label>' ).text( "Show Behaviours: " ).append( behaviours );
-			}); // Behaviours
-
-		jQuery( container ).append( left ).append( right );
-
-		jQuery( document.body ).append( container );
 	}
 
 	// Update values
-	jQuery( '#editor_theme_setting' ).val( editor.getTheme() );
-	jQuery( '#editor_font_size_setting' ).val( editor.container.style.fontSize.replace('px','') || 12 );
-	jQuery( '#editor_fade_fold_setting' ).prop( 'checked', editor.getFadeFoldWidgets() );
-	jQuery( '#editor_wrap_setting' ).prop( 'checked', editor.session.getUseWrapMode() );
-	jQuery( '#editor_wrap_limit_setting' ).prop( 'checked', editor.session.getWrapLimit() || 0 );
-	jQuery( '#editor_highlight_line_setting' ).prop( 'checked', editor.getHighlightActiveLine() );
-	jQuery( '#editor_show_invisibles' ).prop( 'checked', editor.renderer.getShowInvisibles() );
-	jQuery( '#editor_display_indent_guides_setting' ).prop( 'checked', editor.renderer.getDisplayIndentGuides() );
-	jQuery( '#editor_animate_scroll_setting' ).prop( 'checked', editor.getAnimatedScroll() );
-	jQuery( '#editor_show_gutter_setting' ).prop( 'checked', editor.renderer.getShowGutter() );
-	jQuery( '#editor_use_tabs_setting' ).prop( 'checked', !editor.session.getUseSoftTabs() );
-	jQuery( '#editor_word_highlight' ).prop( 'checked', editor.getHighlightSelectedWord() );
-	jQuery( '#editor_behaviours_setting' ).prop( 'checked', editor.getBehavioursEnabled() );
-	jQuery( '#editor_folding_setting option' ).prop( 'selected', false );
-	jQuery( '#editor_folding_setting option[value="' + editor.session.$foldStyle + '"]' ).prop( 'selected', true );
+	jQuery('#editor_theme_setting').val(editor.getTheme());
+	jQuery('#editor_font_size_setting').val(editor.container.style.fontSize.replace('px','') || 12);
+	jQuery('#editor_fade_fold_setting').prop('checked', editor.getFadeFoldWidgets());
+	jQuery('#editor_wrap_setting').prop('checked', editor.session.getUseWrapMode());
+	jQuery('#editor_wrap_limit_setting').prop('checked', editor.session.getWrapLimit() || 0);
+	jQuery('#editor_highlight_line_setting').prop('checked', editor.getHighlightActiveLine());
+	jQuery('#editor_show_invisibles').prop('checked', editor.renderer.getShowInvisibles());
+	jQuery('#editor_display_indent_guides_setting').prop('checked', editor.renderer.getDisplayIndentGuides());
+	jQuery('#editor_animate_scroll_setting').prop('checked', editor.getAnimatedScroll());
+	jQuery('#editor_show_gutter_setting').prop('checked', editor.renderer.getShowGutter());
+	jQuery('#editor_use_tabs_setting').prop('checked', !editor.session.getUseSoftTabs());
+	jQuery('#editor_word_highlight').prop('checked', editor.getHighlightSelectedWord());
+	jQuery('#editor_behaviours_setting').prop('checked', editor.getBehavioursEnabled());
+	jQuery('#editor_folding_setting option').prop('selected', false);
+	jQuery('#editor_folding_setting option[value="' + editor.session.$foldStyle + '"]').prop('selected', true);
 
 	// Display Dialog
-	jQuery( "#editor_settings_dialog" ).dialog({
-		height: "264",
+	jQuery("#editor_settings_dialog").dialog({
 		width: "550",
 		modal: true,
 		resizable: false,
 		show: "fade",
-		close: load_editor_settings
-	});
+		close: load_editor_settings,
+		appendTo: jQuery("#wpbody-content")
+	}).dialog("moveToTop");
 }
 
 function display_find_dialog() {
-/*
-	if ( !jQuery( "#editor_find_dialog" ).length ) {
-		// Generate dialog
-		var container   = jQuery( '<div>' ).attr({
-			id:     "editor_find_dialog",
-			title:  "Find..."
-		}).css( "padding", "0px" );
-
-		var find_ipt    = jQuery( '<input>' ).attr({
-			type: "search",
-			name: "find"
-		});
-		var replace_ipt = jQuery( '<input>' ).attr({
-			type: "search",
-			name: "replace"
-		});
-		var find_btn    = jQuery( '<input>' ).attr({
-			type: "submit",
-			name: "submit",
-			value: "Find",
-			class: "action_button"
-		});
-		var replace_btn = jQuery( '<input>' ).attr({
-			type: "button",
-			name: "replace",
-			value: "Replace",
-			class: "action_button"
-		});
-		var rep_all_btn = jQuery( '<input>' ).attr({
-			type: "button",
-			name: "replace_all",
-			value: "Replace All",
-			class: "action_button"
-		});
-		var cancel_btn  = jQuery( '<input>' ).attr({
-			type: "button",
-			name: "cancel",
-			value: "Cancel",
-			class: "action_button"
-		});
-		var wrap        = jQuery( '<input>' ).attr({
-			type: "checkbox",
-			name: "wrap",
-		}).prop( "checked", true );
-		var sensitive   = jQuery( '<input>' ).attr({
-			type: "checkbox",
-			name: "case"
-		}).prop( "checked", false );
-		var whole       = jQuery( '<input>' ).attr({
-			type: "checkbox",
-			name: "whole"
-		}).prop( "checked", false );
-		var regEx       = jQuery( '<input>' ).attr({
-			type: "checkbox",
-			name: "regexp"
-		}).prop( "checked", false );
-
-		var fromTop     = jQuery( '<input>' ).attr({
-			type: "radio",
-			name: "direction",
-			value: "0"
-		}).prop( "checked", false );
-		var fromBottom  = jQuery( '<input>' ).attr({
-			type: "radio",
-			name: "direction",
-			value: "1"
-		}).prop( "checked", true );
-
-
-		var buttons         = jQuery( '<div>' )
-								.attr( "class", "right" )
-								.append( find_btn )
-								.append( replace_btn )
-								.append( rep_all_btn )
-								.append( cancel_btn );
-		var find_label      = jQuery( '<label>' ).attr( "class", "left" ).text( " Find" ).append( find_ipt );
-		var replace_label   = jQuery( '<label>' ).attr( "class", "left" ).text( " Replace" ).append( replace_ipt );
-		var wrap_label      = jQuery( '<label>' ).text( " Wrap Around" ).prepend( wrap );
-		var sensitive_label = jQuery( '<label>' ).text( " Case Sensitive" ).prepend( sensitive );
-		var whole_label     = jQuery( '<label>' ).text( " Match Whole Word" ).prepend( whole );
-		var regex_label     = jQuery( '<label>' ).text( " Regular Expression" ).prepend( regEx );
-
-		var fromTopLabel    = jQuery( '<label>' ).text( " Up" ).prepend( fromTop );
-		var fromBottomLabel = jQuery( '<label>' ).text( " Down" ).prepend( fromBottom );
-
-		var direction       = jQuery( '<div>' ).attr( "class", "search_direction" ).text( "Direction:" ).append( fromTopLabel ).append( fromBottomLabel );
-		var clear           = jQuery( '<div>' ).attr( 'class', 'clear' ).height( 20 );
-
-
-		var innerContainer = jQuery( '<form>' ).css({
-			position: "relative",
-			padding: "4px",
-			margin: "0px",
-			height: "100%",
-			overflow: "hidden",
-			width: "400px"
-		})
-		.append( find_label )
-		.append( replace_label )
-		.append( clear )
-		.append( wrap_label )
-		.append( sensitive_label )
-		.append( whole_label )
-		.append( regex_label )
-		.append( direction )
-		.append( buttons )
-
-
-		container.append( innerContainer );
-
-		jQuery( document.body ).append( container );
-	}
-*/
-
 	// Initiate the search box with the current selection
 	if ( !editor.session.selection.$isEmpty )
 		var value = editor.session.doc.getTextRange( editor.session.selection.getRange() );
@@ -1114,8 +862,9 @@ function display_find_dialog() {
 		width: "408",
 		resizable: false,
 		show: "fade",
-		hide: "fade"
-	});
+		hide: "fade",
+		appendTo: jQuery("#wpbody-content")
+	}).dialog("moveToTop");
 
 }
 
