@@ -236,12 +236,6 @@
 		line-height: 100%;
 	}
 
-    .inner-sidebar{
-        background-image: url(images/aceide_logo.jpg);
-        background-repeat: no-repeat;
-        background-position: top right;
-    }
-
     #fancyeditordiv{
         width:75%;
         height:1000px;
