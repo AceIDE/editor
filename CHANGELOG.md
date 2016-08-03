@@ -1,5 +1,9 @@
 ## AceIDE Changelog
 
+#### 2.5.1
+* Fixed dialog issues with Z order of find, settings and git dialogs
+* Fixed dialog close button mislocation
+
 #### 2.5.0
 * WPide was forked into AceIDE!
 * Introduced composer as a dependency management solution
