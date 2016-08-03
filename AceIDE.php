@@ -16,14 +16,14 @@ if ( !file_exists( __DIR__ . '/vendor/' ) ) {
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$fileops = new AceIDE\Editor\Modules\FileOps;
 $ide = new AceIDE\Editor\IDE;
+$fileops = new AceIDE\Editor\Modules\FileOps($ide);
 
 $ide->extend($fileops);
 
 // As long as the GitOps module is under development, let's only make it
 // available to WordPress users with WP_DEBUG enabled.
 if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-	$gitops = new AceIDE\Editor\Modules\GitOps;
+	$gitops = new AceIDE\Editor\Modules\GitOps($ide);
 	$ide->extend($gitops);
 }

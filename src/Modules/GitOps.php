@@ -9,10 +9,19 @@ class GitOps implements Module
 {
 	protected $git, $git_repo_path;
 
+	protected $menu_hook;
+
+	protected $ace_ide;
+
+	public function __construct( IDE $ide ) {
+		$this->ace_ide = $ide;
+	}
+
 	public function setup_hooks() {
 		return array (
-			array( 'post_output_aceide_menu_page_scripts', array( &$this, 'add_git_js' ) ),
-			array( 'post_output_aceide_menu_page_html',    array( &$this, 'add_git_html') ),
+			array( 'admin_menu', array( &$this, 'git_menu' ), 11 ),
+			array( 'post_output_aceide_menu_page_scripts', array( &$this, 'add_editor_js' ) ),
+			array( 'post_output_aceide_menu_page_html',    array( &$this, 'add_editor_html') ),
 			array( 'wp_ajax_aceide_git_status',  array( &$this, 'git_status' ) ),
 			array( 'wp_ajax_aceide_git_diff',    array( &$this, 'git_diff' ) ),
 			array( 'wp_ajax_aceide_git_commit',  array( &$this, 'git_commit' ) ),
@@ -24,7 +33,21 @@ class GitOps implements Module
 		);
 	}
 
-	public function add_git_js() {
+	public function git_menu() {
+		$parent_hook = $this->ace_ide->get_menu_hook();
+		$this->menu_hook = add_submenu_page( $parent_hook, 'Git Settings', 'Git Settings', 'create_users', "git-settings", array( &$this, 'git_settings_page' ) );
+	}
+
+	public function git_settings_page() {
+		IDE::check_perms( false );
+?>
+	<div class="wrap">
+		<h1>Git Settings</h1>
+	</div>
+<?php
+	}
+
+	public function add_editor_js() {
 		IDE::check_perms( false );
 		?>
 	<script type="text/javascript">
@@ -189,7 +212,7 @@ class GitOps implements Module
 		<?php
 	}
 
-	public function add_git_html() {
+	public function add_editor_html() {
 		IDE::check_perms( false );
 		?>
 	<div id="gitdiv">

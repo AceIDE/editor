@@ -470,6 +470,10 @@ class IDE
 		die();
 	}
 
+	public function get_menu_hook() {
+		return $this->menu_hook;
+	}
+
 	public function add_my_menu_page() {
 		global $wp_version;
 
@@ -739,12 +743,12 @@ class IDE
 				<label class="left"> <?php esc_html_e( 'Find' ); ?><input type="search" name="find" /></label>
 				<label class="left"> <?php esc_html_e( 'Replace' ); ?><input type="search" name="replace" /></label>
 				<div class="clear" style="height: 33px;"></div>
-	
+
 				<label><input type="checkbox" name="wrap" checked="checked" /> <?php esc_html_e( 'Wrap Around' ); ?></label>
 				<label><input type="checkbox" name="case" /> <?php esc_html_e( 'Case Sensitive' ); ?></label>
 				<label><input type="checkbox" name="whole" /> <?php esc_html_e( 'Match Whole Word' ); ?></label>
 				<label><input type="checkbox" name="regexp" /> <?php esc_html_e( 'Regular Expression' ); ?></label>
-	
+
 				<div class="search_direction">
 					<?php esc_html_e( 'Direction:' ); ?>
 					<label><input type="radio" name="direction" value="0" /> <?php esc_html_e( 'Up' ); ?></label>

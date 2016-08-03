@@ -9,6 +9,12 @@ use PHPParser_Parser;
 
 class FileOps implements Module
 {
+	protected $ace_ide;
+
+	public function __construct( IDE $ide ) {
+		$this->ace_ide = $ide;
+	}
+
 	public function setup_hooks() {
 		return array (
 			array( 'wp_ajax_aceide_get_file',      array( &$this, 'get_file' ) ),
