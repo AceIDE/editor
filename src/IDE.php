@@ -12,7 +12,7 @@ class IDE
 	public $site_url, $plugin_url;
 	private $menu_hook;
 
-	private $modules = [];
+	private $modules = array();
 
 	function __construct() {
 		$this->site_url = get_bloginfo('url');
