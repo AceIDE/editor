@@ -3,7 +3,7 @@ Contributors: shanept, WPsites, Thomas Wieczorek
 Tags: code, theme editor, plugin editor, code editor
 Requires at least: 3.0
 Tested up to: 4.6
-Stable tag: 2.5.1
+Stable tag: 2.5.2
 
 A fork of the WPide project, AceIDE is a code editor with the long term goal of becoming the ultimate environment to develop themes and plugins.
 
@@ -61,6 +61,9 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 1. Default colour picker image
 
 == Changelog ==
+= 2.5.2 =
+* Fixed AceIDE editor main class error on older versions of PHP for unknown shorthand array syntax
+
 = 2.5.1 =
 * Fixed dialog issues with Z order of find, settings and git dialogs
 * Fixed dialog close button mislocation

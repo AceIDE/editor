@@ -1,5 +1,8 @@
 ## AceIDE Changelog
 
+#### 2.5.2
+* Fixed AceIDE editor main class error on older versions of PHP for unknown shorthand array syntax
+
 #### 2.5.1
 * Fixed dialog issues with Z order of find, settings and git dialogs
 * Fixed dialog close button mislocation
