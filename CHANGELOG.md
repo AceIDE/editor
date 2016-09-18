@@ -1,5 +1,8 @@
 ## AceIDE Changelog
 
+#### 2.5.3
+* Added autocomplete for taxonomy functions add_term_meta, get_term_meta, update_term_meta and delete_term_meta
+
 #### 2.5.2
 * Fixed AceIDE editor main class error on older versions of PHP for unknown shorthand array syntax
 
