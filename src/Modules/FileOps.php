@@ -6,6 +6,7 @@ use WP_Error;
 use AceIDE\Editor\IDE;
 use PHPParser_Lexer;
 use PHPParser_Parser;
+use PclZip;
 
 class FileOps implements Module
 {
