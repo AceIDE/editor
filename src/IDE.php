@@ -264,10 +264,10 @@ class IDE
 	public function save_image() {
 		global $wp_filesystem;
 
-		self::check_perms();
+		self::check_perms(false);
 
-		$_POST['content']  = base64_decode( $_POST["data"] ); // image content
-		$_POST['filename'] = start( split( '::', $_POST['opt'] ) ); // filename
+		$filename = explode( '::', $_POST['opt'] );
+		$filename = reset( $filename ); // filename
 
 		// setup wp_filesystem api
 		$url         = wp_nonce_url( 'admin.php?page=aceide', 'plugin-name-action_aceidenonce' );
@@ -284,11 +284,7 @@ class IDE
 		}
 
 		// save a copy of the file and create a backup just in case
-		$root      = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
-		$file_name = $root . stripslashes( $_POST['filename'] );
-
-		// set backup filename
-		$backup_path = 'backups' . preg_replace( "#\.php$#i", "_" . date( "Y-m-d-H" ) . ".php", $_POST['filename'] );
+		$backup_path = 'backups' . preg_replace( "#\.php$#i", "_" . date( "Y-m-d-H" ) . ".php", $filename );
 		$backup_path = plugin_dir_path( __FILE__ ) . $backup_path;
 
 		// create backup directory if not there
@@ -297,15 +293,19 @@ class IDE
 			wp_mkdir_p( $new_file_info['dirname'] ); // should use the filesytem api here but there isn't a comparable command right now
 		}
 
+		// Find absolute path to save to
+		$root     = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
+		$filename = $root . stripslashes( $filename );
+
 		// do backup
-		$wp_filesystem->move( $file_name, $backup_path );
+		$wp_filesystem->move( $filename, $backup_path );
+
+		// retrieve new file
+		$edited = wp_remote_get( $_POST['url'] );
+		$edited = wp_remote_retrieve_body( $edited );
 
 		// save file
-		if ( $wp_filesystem->put_contents( $file_name, $_POST['content'] ) ) {
-			$result = "success";
-		}
-
-		if ( $result == "success" ) {
+		if ( $wp_filesystem->put_contents( $filename, $edited ) ) {
 			wp_die( sprintf(
 				'<p><strong>%s</strong> <br /><a href="JavaScript:window.close();">%s</a>.</p>',
 				__( 'Image saved.' ),
@@ -518,9 +518,11 @@ class IDE
 			$app_url = str_replace( "http:", "https:", $app_url );
 		}
 
-		$url  = trailingslashit( site_url() );
-		$root = apply_filters( "aceide_file_root_url", WP_CONTENT_URL );
-		$root = str_replace( ABSPATH, $url, $root );
+		$url    = trailingslashit( site_url() );
+		$root   = apply_filters( "aceide_filesystem_root", WP_CONTENT_DIR );
+		$root   = trailingslashit( $root );
+		$root   = str_replace( ABSPATH, $url, $root );
+		$root   = untrailingslashit( $root );
 
 		do_action('pre_output_aceide_menu_page');
 		do_action('pre_output_aceide_menu_page_scripts');
@@ -576,7 +578,7 @@ class IDE
 								});
 								jQuery.ajaxSetup({async:true});// enable async again
 
-								window.open('http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&url=<?php echo plugins_url( $root ); ?>' + file + '&opt=' + image_data + '&title=' + image_title + '&service=Save back to AceIDE&target=<?php echo urlencode( $app_url . "/wp-admin/admin.php?aceide_save_image=yes" ) ; ?>');
+								window.open('http://www.sumopaint.com/app/?key=ebcdaezjeojbfgih&url=<?php echo $root; ?>' + file + '&opt=' + image_data + '&title=' + image_title + '&service=Save back to AceIDE&target=<?php echo urlencode( $app_url . "/wp-admin/admin.php?aceide_save_image=yes" ) ; ?>');
 							}
 						} else {
 							jQuery(parent).addClass('wait');
@@ -739,12 +741,12 @@ class IDE
 				<label class="left"> <?php esc_html_e( 'Find' ); ?><input type="search" name="find" /></label>
 				<label class="left"> <?php esc_html_e( 'Replace' ); ?><input type="search" name="replace" /></label>
 				<div class="clear" style="height: 33px;"></div>
-	
+
 				<label><input type="checkbox" name="wrap" checked="checked" /> <?php esc_html_e( 'Wrap Around' ); ?></label>
 				<label><input type="checkbox" name="case" /> <?php esc_html_e( 'Case Sensitive' ); ?></label>
 				<label><input type="checkbox" name="whole" /> <?php esc_html_e( 'Match Whole Word' ); ?></label>
 				<label><input type="checkbox" name="regexp" /> <?php esc_html_e( 'Regular Expression' ); ?></label>
-	
+
 				<div class="search_direction">
 					<?php esc_html_e( 'Direction:' ); ?>
 					<label><input type="radio" name="direction" value="0" /> <?php esc_html_e( 'Up' ); ?></label>
