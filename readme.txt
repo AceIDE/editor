@@ -62,7 +62,7 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 
 == Changelog ==
 = 2.5.4 =
-* Fixed broken SumoPaint image manipulation functionality (see github issue #2)
+* Fixed broken SumoPaint image manipulation functionality (see github issue #3)
 
 = 2.5.3 =
 * Added autocomplete for taxonomy functions add_term_meta, get_term_meta, update_term_meta and delete_term_meta
