@@ -2,6 +2,7 @@
 
 #### 2.5.4
 * Fixed broken SumoPaint image manipulation functionality (see github issue #3)
+* Strips noise from other plugins upon opening files (see github issue #5)
 
 #### 2.5.3
 * Added autocomplete for taxonomy functions add_term_meta, get_term_meta, update_term_meta and delete_term_meta
