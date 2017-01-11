@@ -48,6 +48,7 @@ class FileOps implements Module
 		$root      = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
 		$file_name = $root . stripslashes($_POST['filename']);
 
+		echo '===FILE_CONTENTS_START===';
 		echo $wp_filesystem->get_contents($file_name);
 		die(); // this is required to return a proper result
 	}
