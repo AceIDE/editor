@@ -7,6 +7,7 @@ use AceIDE\Editor\IDE;
 use PHPParser_Lexer;
 use PHPParser_Parser;
 use PclZip;
+use ZipArchive;
 
 class FileOps implements Module
 {
