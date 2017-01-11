@@ -10,8 +10,11 @@ use PclZip;
 
 class FileOps implements Module
 {
-	public function setup_hooks() {
-		return array (
+	private $ide = null;
+
+	public function setup_hooks(IDE $ide) {
+		$this->ide = $ide;
+		$this->ide->add_actions( array (
 			array( 'wp_ajax_aceide_get_file',      array( &$this, 'get_file' ) ),
 			array( 'wp_ajax_aceide_save_file',     array( &$this, 'save_file' ) ),
 			array( 'wp_ajax_aceide_rename_file',   array( &$this, 'rename_file' ) ),
@@ -22,7 +25,7 @@ class FileOps implements Module
 			array( 'wp_ajax_aceide_zip_file',      array( &$this, 'zip_file' ) ),
 			array( 'wp_ajax_aceide_create_new',    array( &$this, 'create_new' ) ),
 			array( 'wp_ajax_aceide_move_file',     array( &$this, 'move_file' ) ),
-		);
+		) );
 	}
 
 	public function get_file() {

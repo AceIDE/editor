@@ -9,8 +9,11 @@ class GitOps implements Module
 {
 	protected $git, $git_repo_path;
 
-	public function setup_hooks() {
-		return array (
+	private $ide;
+
+	public function setup_hooks(IDE $ide) {
+		$this->ide = $ide;
+		$ide->add_actions( array(
 			array( 'post_output_aceide_menu_page_scripts', array( &$this, 'add_git_js' ) ),
 			array( 'post_output_aceide_menu_page_html',    array( &$this, 'add_git_html') ),
 			array( 'wp_ajax_aceide_git_status',  array( &$this, 'git_status' ) ),
@@ -21,7 +24,7 @@ class GitOps implements Module
 			array( 'wp_ajax_aceide_git_clone',   array( &$this, 'git_clone' ) ),
 			array( 'wp_ajax_aceide_git_push',    array( &$this, 'git_push' ) ),
 			array( 'wp_ajax_aceide_git_ssh_gen', array( &$this, 'git_ssh_gen' ) ),
-		);
+		) );
 	}
 
 	public function add_git_js() {

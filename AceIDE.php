@@ -18,8 +18,10 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $fileops = new AceIDE\Editor\Modules\FileOps;
 $ide = new AceIDE\Editor\IDE;
+$settings_page = new AceIDE\Editor\Modules\SettingsPage;
 
 $ide->extend($fileops);
+$ide->extend($settings_page);
 
 // As long as the GitOps module is under development, let's only make it
 // available to WordPress users with WP_DEBUG enabled.

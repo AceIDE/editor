@@ -20,7 +20,7 @@ class IDE
 		$actions = array (
 			array( 'admin_menu', array( &$this, 'add_my_menu_page' ) ),
 			array( 'admin_head', array( &$this, 'add_my_menu_icon' ) ),
-			array( 'admin_init', array( &$this, 'init_hooks' ) ),
+			array( 'plugins_loaded', array( &$this, 'init_hooks' ) ),
 		);
 
 		// hook for processing incoming image saves
@@ -49,8 +49,8 @@ class IDE
 	}
 
 	public function extend(Module $module) {
-		if (did_action('admin_init')) {
-			return new WP_Error( 'editor_extend', 'Can\'t extend after admin_init!' );
+		if (did_action('plugins_loaded')) {
+			return new WP_Error( 'editor_extend', 'Can\'t extend after plugins_loaded!' );
 		}
 
 		$this->modules[get_class($module)] = $module;
@@ -63,18 +63,20 @@ class IDE
 		$this->override_fs_method( 'direct' );
 
 		$hooks = $this->setup_hooks();
-		$this->add_actions($hooks);
 
 		foreach ($this->modules as $module) {
-			$hooks = $module->setup_hooks();
-			$this->add_actions($hooks);
+			$hooks = $module->setup_hooks($this);
 		}
 	}
 
 	public function setup_hooks() {
+		$this->add_actions( array( array( 'admin_init', array( &$this, 'admin_init' ) ) ) );
+	}
+
+	public function admin_init() {
 		// Uncomment any of these calls to add the functionality that you need.
 		// Will only enqueue on AceIDE page
-		return array (
+		$this->add_actions( array (
 			array( 'admin_print_scripts-' . $this->menu_hook, array( &$this, 'add_admin_js' ) ),
 			array( 'admin_print_styles-'  . $this->menu_hook, array( &$this, 'add_admin_styles' ) ),
 			array( 'wp_ajax_jqueryFileTree',        array( &$this, 'jqueryFileTree_get_list' ) ),
@@ -92,7 +94,7 @@ class IDE
 
 			// hide the update nag
 			array( 'admin_menu', array( &$this, 'hide_wp_update_nag' ) ),
-		);
+		) );
 	}
 
 	public static function check_perms( $check_referrer=true ) {
@@ -141,6 +143,8 @@ class IDE
 	}
 
 	public function add_admin_js() {
+		$this->register_theme_scripts();
+
 		$plugin_path = trailingslashit(plugin_dir_url( __FILE__ ));
 		$ver = $this->ace_version;
 
@@ -154,11 +158,11 @@ class IDE
 		wp_enqueue_script( 'ace-mode-javascript', "{$plugin_path}js/ace-{$ver}/mode-javascript.js", array( 'ace' ) );
 		wp_enqueue_script( 'ace-mode-php', "{$plugin_path}js/ace-{$ver}/mode-php.js", array( 'ace' ) );
 		wp_enqueue_script( 'ace-mode-twig', "{$plugin_path}js/ace-{$ver}/mode-twig.js", array( 'ace' ) );
-		// include ace theme
-		wp_enqueue_script( 'ace-theme', "{$plugin_path}js/ace-{$ver}/theme-dawn.js", array( 'ace' ) ); // ambiance looks really nice for high contrast
+		// load theme
+		wp_enqueue_script( 'ace-' . get_option( 'aceide.theme', 'theme-dawn' ) );
 		// load emmet
-		wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_path}js/ace-{$ver}/ext-emmet.js", array( 'ace' ) );
-		wp_enqueue_script( 'aceide-emmet', "{$plugin_path}js/emmet.js", array( 'aceide-ext-emmet' ) );
+		wp_enqueue_script( 'ace-ext-emmet', "{$plugin_path}js/ace-{$ver}/ext-emmet.js", array( 'ace' ) );
+		wp_enqueue_script( 'aceide-emmet', "{$plugin_path}js/emmet.js", array( 'ace-ext-emmet' ) );
 		// wordpress-completion tags
 		wp_enqueue_script( 'aceide-wordpress-completion', "{$plugin_path}js/autocomplete/wordpress.js", array( 'ace' ) );
 		// php-completion tags
@@ -172,6 +176,21 @@ class IDE
 
 		// load color picker
 		wp_enqueue_script( 'ImageColorPicker', plugins_url( 'js/ImageColorPicker.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-widget' ),  '0.3' );
+	}
+
+	public function register_theme_scripts() {
+		$plugin_path = trailingslashit(plugin_dir_url( __FILE__ ));
+		$ver = $this->ace_version;
+
+		$themes = glob( dirname( __FILE__ ) . "/js/ace-{$ver}/theme-*.js" );
+
+		foreach ( $themes as $theme ) {
+			$theme = substr( basename( $theme ), 0, -3 );
+			// handle becomes 'aceide-theme-XXX'
+			$handle = 'ace-' . $theme;
+
+			wp_register_script( $handle, "{$plugin_path}js/ace-{$ver}/{$theme}.js", array( 'ace' ) );
+		}
 	}
 
 	public function add_admin_styles() {
@@ -468,6 +487,10 @@ class IDE
 		echo __( " If the file tree to the right is empty there is a possibility that your server permissions are not compatible with this plugin. \n The startup information above may shed some light on things. \n Paste that information into the support forum for further assistance." );
 
 		die();
+	}
+
+	public function get_menu_hook() {
+		return $this->menu_hook;
 	}
 
 	public function add_my_menu_page() {
