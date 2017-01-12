@@ -3,6 +3,7 @@
 namespace AceIDE\Editor\Modules;
 
 use AceIDE\Editor\IDE;
+use TQ\Vcs\Cli\CallException;
 use TQ\Git\Repository\Repository;
 use TQ\Git\Cli\Binary as GitBinary;
 use phpseclib\Crypt\RSA as Crypt_RSA;
@@ -578,7 +579,7 @@ class GitOps implements Module
 
 		try {
 			$this->git_open_repo(); // make sure git repo is open
-		} catch (\InvalidArgumentException $e) {
+		} catch ( \InvalidArgumentException $e ) {
 			$this->invalidRepository();
 			return;
 		}
@@ -596,10 +597,16 @@ class GitOps implements Module
 		// get the current user to be used for the commit
 		$current_user = wp_get_current_user();
 
-		$this->git->add( $files );
-		$this->git->commit( sanitize_text_field( stripslashes( $_POST['gitmessage'] ) ) , $files, "{$current_user->user_firstname} {$current_user->user_lastname} <{$current_user->user_email}>" );
+		try {
+			$this->git->add( $files );
+			$this->git->commit( sanitize_text_field( stripslashes( $_POST['gitmessage'] ) ) , $files, "{$current_user->user_firstname} {$current_user->user_lastname} <{$current_user->user_email}>" );
 
-		// output our status
+			// output our status
+			echo '<p class="green">' . __( 'Successfully committed changes' ). '</p>';
+		} catch ( CallException $e ) {
+			echo '<p class="red">' . sprintf( __( 'Unsuccessful commit: "%s"' ), $e->getMessage() ) . '</p>';
+		}
+
 		$this->git_status();
 
 		die(); // this is required to return a proper result
