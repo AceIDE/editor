@@ -3,25 +3,22 @@
 namespace AceIDE\Editor\Modules;
 
 use AceIDE\Editor\IDE;
+use TQ\Git\Repository\Repository;
+use TQ\Git\Cli\Binary as GitBinary;
 use phpseclib\Crypt\RSA as Crypt_RSA;
 
 class GitOps implements Module
 {
 	protected $git, $git_repo_path;
 
-	protected $menu_hook;
-
-	protected $ace_ide;
-
-	public function __construct( IDE $ide ) {
-		$this->ace_ide = $ide;
-	}
+	private $ide;
 
 	public function setup_hooks() {
-		return array (
-			array( 'admin_menu', array( &$this, 'git_menu' ), 11 ),
-			array( 'post_output_aceide_menu_page_scripts', array( &$this, 'add_editor_js' ) ),
-			array( 'post_output_aceide_menu_page_html',    array( &$this, 'add_editor_html') ),
+		/* $this->ide = $ide;
+		$ide->add_actions( */
+		return array(
+			array( 'post_output_aceide_menu_page_scripts', array( &$this, 'add_git_js' ) ),
+			array( 'post_output_aceide_menu_page_html',    array( &$this, 'add_git_html') ),
 			array( 'wp_ajax_aceide_git_status',  array( &$this, 'git_status' ) ),
 			array( 'wp_ajax_aceide_git_diff',    array( &$this, 'git_diff' ) ),
 			array( 'wp_ajax_aceide_git_commit',  array( &$this, 'git_commit' ) ),
@@ -33,21 +30,7 @@ class GitOps implements Module
 		);
 	}
 
-	public function git_menu() {
-		$parent_hook = $this->ace_ide->get_menu_hook();
-		$this->menu_hook = add_submenu_page( $parent_hook, 'Git Settings', 'Git Settings', 'create_users', "git-settings", array( &$this, 'git_settings_page' ) );
-	}
-
-	public function git_settings_page() {
-		IDE::check_perms( false );
-?>
-	<div class="wrap">
-		<h1>Git Settings</h1>
-	</div>
-<?php
-	}
-
-	public function add_editor_js() {
+	public function add_git_js() {
 		IDE::check_perms( false );
 		?>
 	<script type="text/javascript">
@@ -212,7 +195,7 @@ class GitOps implements Module
 		<?php
 	}
 
-	public function add_editor_html() {
+	public function add_git_html() {
 		IDE::check_perms( false );
 		?>
 	<div id="gitdiv">
@@ -315,22 +298,26 @@ class GitOps implements Module
 
 		$this->git_repo_path = $root . sanitize_text_field( $_POST['gitpath'] );
 		$gitbinary = sanitize_text_field( stripslashes( $_POST['gitbinary'] ) );
-		/*
-			if ( $gitbinary==="I'll guess.." ) { // the binary path
-				$thebinary = TQ\Git\Cli\Binary::locateBinary();
-				$this->git = TQ\Git\Repository\Repository::open( $this->git_repo_path, new TQ\Git\Cli\Binary( $thebinary ), 0755 );
-			} else {
-				$thebinary = $_POST['gitbinary'];
-				$this->git = TQ\Git\Repository\Repository::open( $this->git_repo_path, new TQ\Git\Cli\Binary( $thebinary ), 0755 );
-			}
-		*/
+
+		if ( $gitbinary==="I'll guess..." ) { // the binary path
+			$thebinary = GitBinary::locateBinary();
+		} else {
+			$thebinary = $_POST['gitbinary'];
+		}
+
+		$this->git = Repository::open( $this->git_repo_path, new GitBinary( $thebinary ), false, 0755 );
 	}
 
 	public function git_status() {
 		// check the user has the permissions
 		IDE::check_perms();
 
-		$this->git_open_repo(); // make sure git repo is open
+		try {
+			$this->git_open_repo(); // make sure git repo is open
+		} catch (\InvalidArgumentException $e) {
+			$this->invalidRepository();
+			return;
+		}
 
 		// echo branch
 		$branch = $this->git->getCurrentBranch();
@@ -370,7 +357,12 @@ class GitOps implements Module
 		// check the user has the permissions
 		IDE::check_perms();
 
-		$this->git_open_repo(); // make sure git repo is open
+		try {
+			$this->git_open_repo(); // make sure git repo is open
+		} catch (\InvalidArgumentException $e) {
+			$this->invalidRepository();
+			return;
+		}
 
 		$log = $this->git->getLog(50);
 
@@ -378,7 +370,7 @@ class GitOps implements Module
 		foreach ( $log as $item ) {
 			$matches   = array();
 			$log_array = array();
-			$bits      = explode( "\n", $item );
+			$bits      = explode( PHP_EOL, $item );
 
 			foreach ( $bits as $bit ) {
 				if ( preg_match_all( "#(.*): (.*)#iS", trim( $bit ), $matches ) ) {
@@ -393,11 +385,24 @@ class GitOps implements Module
 			$message = explode( end( $log_array ), $item );
 			$commit  = explode( reset( $log_array ), $item );
 
-			$log_array['message'] = trim( $message[2] );
+			$msg_parts = explode( PHP_EOL, trim( end( $message ) ), 2 );
+
+			if ( !isset( $msg_parts[1] ) ) {
+				$msg_parts[1] = '';
+			}
+
+			$log_array['message_first_line'] = $msg_parts[0];
+			$log_array['long_message'] = trim( preg_replace( '/(^|[\r\n]+)[\s]+?[\r\n]/', '', $msg_parts[1] ), PHP_EOL );
+			$log_array['long_message'] = nl2br( str_replace( ' ', '&nbsp;', $log_array['long_message']) );
+
+			if ( !empty( $log_array['long_message'] ) ) {
+				$log_array['long_message'] = '<br /><br />' . $log_array['long_message'];
+			}
+
 			$log_array['commit']  = trim( str_replace( array( "commit ", "Author:" ), "", $commit[0] ) );
 
 			echo '<span class="input_row">';
-			echo "<span class='message'>{$log_array['message']}</span> {$log_array['AuthorDate']} <span style='float:right;'>ID: {$log_array['commit']}</span> ";
+			echo "<span class='message'><b>{$log_array['message_first_line']}</b>{$log_array['long_message']}</span> {$log_array['AuthorDate']} <span style='float:right;'>ID: {$log_array['commit']}</span> ";
 			echo "</span>";
 		}
 		echo "</div>";
@@ -410,7 +415,12 @@ class GitOps implements Module
 		// check the user has the permissions
 		IDE::check_perms();
 
-		$this->git_open_repo(); // make sure git repo is open
+		try {
+			$this->git_open_repo(); // make sure git repo is open
+		} catch (\InvalidArgumentException $e) {
+			$this->invalidRepository();
+			return;
+		}
 
 		// create the local repo path if it doesn't exist
 		if ( ! file_exists( $this->git->getRepositoryPath() ) ) {
@@ -436,7 +446,12 @@ class GitOps implements Module
 		// check the user has the permissions
 		IDE::check_perms();
 
-		$this->git_open_repo(); // make sure git repo is open
+		try {
+			$this->git_open_repo(); // make sure git repo is open
+		} catch (\InvalidArgumentException $e) {
+			$this->invalidRepository();
+			return;
+		}
 
 		// just incase it's a private repo we will setup the keys
 		$sshpath = preg_replace( "#/$#", "", $_POST['sshpath'] ); // get path replacing end slash if entered
@@ -446,7 +461,7 @@ class GitOps implements Module
 		putenv( 'ACEIDE_SSH_PATH=' . $sshpath ); // no trailing slash - pass wp-content path to Git wrapper script
 		putenv( 'HOME='. plugin_dir_path( __FILE__ ) . 'git' ); // no trailing slash - set home to the git directory (this may not be needed)
 
-		if ( $_POST['repo_path'] === '' || is_null( $_POST['repo_path'] ) ) {
+		if ( $_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['repo_path'] === '' || is_null( $_POST['repo_path'] ) ) {
 			echo '<span class="input_row">
 				<label>' . __( 'Clone a remote repository by entering it\'s remote path' ) . '</label>
 				<input type="text" name="repo_path" id="repo_path" value=""> <em>' . __( 'It will be cloned into the repository path/folder defined in the Git settings.' ) . '</em>
@@ -487,7 +502,12 @@ class GitOps implements Module
 		// check the user has the permissions
 		IDE::check_perms();
 
-		$this->git_open_repo(); // make sure git repo is open
+		try {
+			$this->git_open_repo(); // make sure git repo is open
+		} catch (\InvalidArgumentException $e) {
+			$this->invalidRepository();
+			return;
+		}
 
 		$sshpath = preg_replace( "#/$#", "", $_POST['sshpath'] ); // get path replacing end slash if entered
 
@@ -502,7 +522,7 @@ class GitOps implements Module
 		putenv( 'HOME=' . plugin_dir_path( __FILE__ ) . 'git' ); // no trailing slash - set home to the git directory (this may not be needed)
 
 		echo '<pre>';
-		$push_result = $this->git->push();
+		$push_result = $this->git->getGit()->{'push'}( '', null, "{$current_user->user_firstname} {$current_user->user_lastname} <{$current_user->user_email}>" );
 		echo '</pre>';
 
 		if ( $push_result === '' ) {
@@ -521,33 +541,33 @@ class GitOps implements Module
 		// check the user has the permissions
 		IDE::check_perms();
 
-		$this->git_open_repo(); // make sure git repo is open
+		try {
+			$this->git_open_repo(); // make sure git repo is open
+		} catch (\InvalidArgumentException $e) {
+			$this->invalidRepository();
+			return;
+		}
 
 		$file = sanitize_text_field( base64_decode( $_POST['file']) );
 
-		$result = $this->git->getBinary()->{'diff'}( $this->git->getRepositoryPath(), array (
+//		$result = $this->git->getDiff( $file );
+		$result = ($this->git->getGit()->{'diff'}( $this->git->getRepositoryPath(), array (
 			$file
-		));
+		)))->getStdOut();
 
 		// return $result->getStdOut(); // still not getting enough output from the push...
-		if ( $result->getStdErr() === '' ) {
-			$diff_lines = explode( "\n", $result->getStdOut() );
-			foreach ( $diff_lines as $a_line ) {
-				if ( preg_match( "#^\+#", $a_line ) ) {
-					$a_class = 'plus';
-				} elseif ( preg_match("#^\-#", $a_line ) ) {
-					$a_class = 'minus';
-				} else {
-					$a_class = '';
-				}
-
-				echo "<span class='diff_line {$a_class}'>{$a_line}</span>";
+		$diff_lines = explode( "\n", esc_html( $result ) );
+		foreach ( $diff_lines as $a_line ) {
+			if ( preg_match( "#^\+#", $a_line ) ) {
+				$a_class = 'plus';
+			} elseif ( preg_match("#^\-#", $a_line ) ) {
+				$a_class = 'minus';
+			} else {
+				$a_class = '';
 			}
-		} else {
-			echo $result->getStdErr();
-		}
 
-		echo '<strong>' . __( 'Diff' ) . '</strong>'  . $diff_table;
+			echo "<span class='diff_line {$a_class}'>{$a_line}</span>";
+		}
 
 		die(); // this is required to return a proper result
 	}
@@ -556,11 +576,16 @@ class GitOps implements Module
 		// check the user has the permissions
 		IDE::check_perms();
 
-		$this->git_open_repo(); // make sure git repo is open
+		try {
+			$this->git_open_repo(); // make sure git repo is open
+		} catch (\InvalidArgumentException $e) {
+			$this->invalidRepository();
+			return;
+		}
 
 		// putenv("GIT_AUTHOR_NAME=AceIDE"); // author can be set using env but for now we set it during the commit
 		// putenv("GIT_AUTHOR_EMAIL=shanept@iinet.net.au");
-		putenv( "GIT_COMMITTER_NAME=AceIDE" ); // commiter details, shows under author on github
+		putenv( "GIT_COMMITTER_NAME=Shane Thompson" ); // commiter details, shows under author on github
 		putenv( "GIT_COMMITTER_EMAIL=shanept@iinet.net.au" );
 
 		$files = array();
@@ -578,5 +603,11 @@ class GitOps implements Module
 		$this->git_status();
 
 		die(); // this is required to return a proper result
+	}
+
+	private function invalidRepository() {
+		echo '<div class="invalid-repo">';
+		echo __('The specified path is not a valid git repository.');
+		echo '</div>';
 	}
 }

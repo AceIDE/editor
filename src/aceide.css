@@ -352,7 +352,7 @@
     }
     .git_log .input_row .message{
         display:block;
-        font-weight:bold;
+        font-weight:normal;
         margin-bottom:10px;
     }
 
@@ -367,7 +367,7 @@
 
     #gitdiv .button{
         text-align: center;
-        height: inherit;
+        height: 45px;
         line-height: 130%;
         padding-top: 10px;
         font-weight:bold;

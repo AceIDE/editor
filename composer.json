@@ -4,7 +4,7 @@
     "type": "Wordpress Plugin",
     "require": {
         "nikic/php-parser": "0.9.4",
-        "teqneers/php-stream-wrapper-for-git": "0.2.2",
+        "teqneers/php-stream-wrapper-for-git": "^1.0.0",
         "phpseclib/phpseclib": "^2.0"
     },
     "autoload": {

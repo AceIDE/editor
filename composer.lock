@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9321067b95737fd0c07b49a0f69eb16b",
-    "content-hash": "d1aad9017c5c1dfac9dffab4253cb249",
+    "hash": "428cfbe00267dff330fdf9db8d3a5b63",
+    "content-hash": "42f4d2c6e4c5bc2f356aacadaba0879b",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -145,25 +145,32 @@
         },
         {
             "name": "teqneers/php-stream-wrapper-for-git",
-            "version": "v0.2.2",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/teqneers/PHP-Stream-Wrapper-for-Git.git",
-                "reference": "404a5ca0f3a50bfe46e54d18680314159c242147"
+                "reference": "715eea710fd95d58f4afc9bdcb607c0c314dc11e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/teqneers/PHP-Stream-Wrapper-for-Git/zipball/404a5ca0f3a50bfe46e54d18680314159c242147",
-                "reference": "404a5ca0f3a50bfe46e54d18680314159c242147",
+                "url": "https://api.github.com/repos/teqneers/PHP-Stream-Wrapper-for-Git/zipball/715eea710fd95d58f4afc9bdcb607c0c314dc11e",
+                "reference": "715eea710fd95d58f4afc9bdcb607c0c314dc11e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
+            "require-dev": {
+                "knplabs/gaufrette": "~0.2",
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "knplabs/gaufrette": "to use the Gaufrette adapter"
+            },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "TQ\\Git": "src/TQ"
+                    "TQ": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -177,13 +184,14 @@
                     "homepage": "http://opensource.teqneers.de/"
                 }
             ],
-            "description": "Git Streamwrapper for PHP",
+            "description": "Git Stream Wrapper for PHP",
             "homepage": "https://github.com/teqneers/PHP-Stream-Wrapper-for-Git",
             "keywords": [
                 "git",
+                "stream-wrapper",
                 "streamwrapper"
             ],
-            "time": "2011-12-30 13:07:48"
+            "time": "2015-11-26 15:23:29"
         }
     ],
     "packages-dev": [],
