@@ -14,6 +14,8 @@ class GitOps implements Module
 
 	private $ide;
 
+	private $error_message;
+
 	public function setup_hooks() {
 		/* $this->ide = $ide;
 		$ide->add_actions( */
@@ -347,7 +349,11 @@ class GitOps implements Module
 
 		// output the commit message box
 		echo '<div id="gitdivcommit"><label>Commit message</label><br /><input type="text" id="gitmessage" name="message" class="message" />
-			<p><a href="#" class="button-primary">' . __( 'Commit the staged changes' ) . '</a></p></div>';
+			<p><a href="#" class="button-primary">' . __( 'Commit the staged changes' ) . '</a></p>';
+
+		do_action('git_div_message');
+
+		echo '</div>';
 
 		die(); // this is required to return a proper result
 	}
@@ -602,14 +608,33 @@ class GitOps implements Module
 			$this->git->commit( sanitize_text_field( stripslashes( $_POST['gitmessage'] ) ) , $files, "{$current_user->user_firstname} {$current_user->user_lastname} <{$current_user->user_email}>" );
 
 			// output our status
-			echo '<p class="green">' . __( 'Successfully committed changes' ). '</p>';
+			$this->commit_success();
 		} catch ( CallException $e ) {
-			echo '<p class="red">' . sprintf( __( 'Unsuccessful commit: "%s"' ), $e->getMessage() ) . '</p>';
+			$this->commit_failure($e);
 		}
 
 		$this->git_status();
 
 		die(); // this is required to return a proper result
+	}
+
+	private function commit_success() {
+		add_action('git_div_message', array( &$this, 'display_commit_success_message' ) );
+	}
+
+	public function display_commit_success_message() {
+		remove_action( 'git_div_message', array( &$this, __FUNCTION__ ) );
+		echo '<p class="green">' . __( 'Successfully committed changes' ). '</p>';
+	}
+
+	private function commit_failure(CallException $e) {
+		$this->error_message = addslashes( $e->getMessage() );
+		add_action('git_div_message', array( &$this, 'display_commit_failure_message' ) );
+	}
+
+	public function display_commit_failure_message() {
+		remove_action( 'git_div_message', array( &$this, __FUNCTION__ ) );
+		echo '<p class="red">' . sprintf( __( 'Unsuccessful commit: "%s"' ), $this->error_message ) . '</p>';
 	}
 
 	private function invalidRepository() {
