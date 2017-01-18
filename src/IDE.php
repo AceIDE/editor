@@ -21,6 +21,7 @@ class IDE
 			array( 'admin_menu', array( &$this, 'add_my_menu_page' ) ),
 			array( 'admin_head', array( &$this, 'add_my_menu_icon' ) ),
 			array( 'admin_init', array( &$this, 'init_hooks' ) ),
+			array( 'network_admin_menu', array( &$this, 'add_my_menu_page' ) ),
 		);
 
 		// hook for processing incoming image saves
