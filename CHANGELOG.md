@@ -1,5 +1,8 @@
 ## AceIDE Changelog
 
+#### 2.5.5
+* Added editor to Multisite's network admin menu - Thanks to X-Raym
+
 #### 2.5.4
 * Fixed broken SumoPaint image manipulation functionality (see github issue #3)
 * Strips noise from other plugins upon opening files (see github issue #5)
@@ -10,7 +13,7 @@
 * Fixed broken zipping functionality (see github issue #2)
 
 #### 2.5.2
-* Fixed AceIDE editor main class error on older versions of PHP for unknown shorthand array syntax
+* Fixed AceIDE editor main class error on older versions of PHP for unknown shorthand array syntax - Thanks to X-Raym
 
 #### 2.5.1
 * Fixed dialog issues with Z order of find, settings and git dialogs

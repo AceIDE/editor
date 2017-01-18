@@ -3,7 +3,7 @@ Contributors: shanept, WPsites, Thomas Wieczorek
 Tags: code, theme editor, plugin editor, code editor
 Requires at least: 3.0
 Tested up to: 4.6
-Stable tag: 2.5.4
+Stable tag: 2.5.5
 
 A fork of the WPide project, AceIDE is a code editor with the long term goal of becoming the ultimate environment to develop themes and plugins.
 
@@ -33,6 +33,7 @@ This plugin performs best in the Chrome web browser.
 - Tabbed interface for editing multiple files (editing both plugin and theme files at the same time)
 - Using the WordPress filesystem API, although currently direct access is forced (edit AceIDE.php in the constructor to change this behaviour) ftp/ssh connections aren't setup yet, since WP will not remember a password need to work out how that will work. Maybe use modal to request password when you save but be able to click save all and save a batch with that password. Passwords defined in wp-config.php are persistent and would fix this problem but people don't generally add those details. Open to ideas here.
 - Image editing/drawing
+- WordPress Multisite support
 
 = Future Ideas: =
 - Improve the code autocomplete command information, providing more information on the commands, adding links through to the WordPress codex and PHP.net website for further info.
@@ -61,6 +62,9 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 1. Default colour picker image
 
 == Changelog ==
+= 2.5.5 =
+* Added editor to Multisite's network admin menu - Thanks to X-Raym
+
 = 2.5.4 =
 * Fixed broken SumoPaint image manipulation functionality (see github issue #3)
 * Strips noise from other plugins upon opening files (see github issue #5)
@@ -71,7 +75,7 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 * Fixed broken zipping functionality (see github issue #2)
 
 = 2.5.2 =
-* Fixed AceIDE editor main class error on older versions of PHP for unknown shorthand array syntax
+* Fixed AceIDE editor main class error on older versions of PHP for unknown shorthand array syntax - Thanks to X-Raym
 
 = 2.5.1 =
 * Fixed dialog issues with Z order of find, settings and git dialogs
