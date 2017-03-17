@@ -9,7 +9,7 @@ This plugin would not be possible without the [Ajax.org Cloud9 Editor][4] which 
 
 This plugin performs best in the Chrome web browser.
 
-Contributors: Shane Thompson, [WPsites][5], [Thomas Wieczorek][6]  
+Contributors: Shane Thompson, [WPsites][5], [Thomas Wieczorek][6], [X-Raym][7], [Kevin Young][8]
 Tags: code, theme editor, plugin editor, code editor  
 Requires at least: 3.0  
 Tested up to: 4.7  
@@ -64,6 +64,8 @@ Please have a look at CHANGELOG.md
 Simon Dunton - http://www.wpsites.co.uk  
 Thomas Wieczorek - http://www.wieczo.net  
 Shane Thompson  
+X-Raym
+Kevin Young - https://rdytogo.com/
 
 **Please read CONTRIBUTING.md before submitting a pull request.**
 
@@ -73,3 +75,5 @@ Shane Thompson
   [4]: http://ace.ajax.org
   [5]: http://www.wpsites.co.uk
   [6]: http://www.wieczo.net
+  [7]: 
+  [8]: https://rdytogo.com/

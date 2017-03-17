@@ -5,6 +5,12 @@
 	}
 
 	#quicktags, #post-status-info, #editor-toolbar, #newcontent, .ace_print_margin { display: none; }
+    #aceidelogo {
+        width: 111px;
+        height: 33px;
+        margin: -4px 7px 4px auto;
+        display: block;
+    }
     #fancyeditordiv {
 		position: relative;
 		width: 70%;
@@ -186,7 +192,6 @@
 		position: relative;
 		min-height: 30px;
 		width: 100%;
-		margin-top: 35px;
 		padding-right:2px;
 		float: right;
 		clear: right;

@@ -1,5 +1,5 @@
 === AceIDE ===
-Contributors: shanept, WPsites, Thomas Wieczorek
+Contributors: shanept, WPsites, Thomas Wieczorek, x-raym, Kevin Young
 Tags: code, theme editor, plugin editor, code editor
 Requires at least: 3.0
 Tested up to: 4.7
@@ -65,6 +65,7 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 = 2.5.5 =
 * Fixed github issue #11, where text would be replaced when clicking in replace field of the search box - Thanks to X-Raym
 * Added editor to Multisite's network admin menu - Thanks to X-Raym
+* Added AceIDE logo - Thanks to Kevin Young (rdytogokev)
 
 = 2.5.4 =
 * Fixed broken SumoPaint image manipulation functionality (see github issue #3)

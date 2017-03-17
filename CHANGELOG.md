@@ -3,6 +3,7 @@
 #### 2.5.5
 * Fixed github issue #11, where text would be replaced when clicking in replace field of the search box - Thanks to X-Raym
 * Added editor to Multisite's network admin menu - Thanks to X-Raym
+* Added AceIDE logo - Thanks to Kevin Young (rdytogokev)
 
 #### 2.5.4
 * Fixed broken SumoPaint image manipulation functionality (see github issue #3)
