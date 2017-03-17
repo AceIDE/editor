@@ -14,7 +14,7 @@ class IDE
 
 	private $modules = array();
 
-	function __construct() {
+	public function __construct() {
 		$this->site_url = get_bloginfo('url');
 
 		$actions = array (
@@ -142,34 +142,38 @@ class IDE
 	}
 
 	public function add_admin_js() {
-		$plugin_path = trailingslashit(plugin_dir_url( __FILE__ ));
-		$ver = $this->ace_version;
+                $plugin_path = trailingslashit( dirname( dirname( __FILE__ ) ) ) . 'AceIDE.php';
+                $plugin_url  = trailingslashit( plugin_dir_url( $plugin_path ) );
 
-		// include file tree
-		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'js/jqueryFileTree.js', __FILE__ ), array( 'jquery' ) );
-		// include ace
-		wp_enqueue_script( 'ace', "{$plugin_path}js/ace-{$ver}/ace.js" );
-		// include ace modes for css, javascript & php
-		wp_enqueue_script( 'ace-mode-css', "{$plugin_path}js/ace-{$ver}/mode-css.js", array( 'ace' ) );
-		wp_enqueue_script( 'ace-mode-less', "{$plugin_path}js/ace-{$ver}/mode-less.js", array( 'ace' ) );
-		wp_enqueue_script( 'ace-mode-javascript', "{$plugin_path}js/ace-{$ver}/mode-javascript.js", array( 'ace' ) );
-		wp_enqueue_script( 'ace-mode-php', "{$plugin_path}js/ace-{$ver}/mode-php.js", array( 'ace' ) );
-		wp_enqueue_script( 'ace-mode-twig', "{$plugin_path}js/ace-{$ver}/mode-twig.js", array( 'ace' ) );
-		// include ace theme
-		wp_enqueue_script( 'ace-theme', "{$plugin_path}js/ace-{$ver}/theme-dawn.js", array( 'ace' ) ); // ambiance looks really nice for high contrast
-		// load emmet
-		wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_path}js/ace-{$ver}/ext-emmet.js", array( 'ace' ) );
-		wp_enqueue_script( 'aceide-emmet', "{$plugin_path}js/emmet.js", array( 'aceide-ext-emmet' ) );
-		// wordpress-completion tags
-		wp_enqueue_script( 'aceide-wordpress-completion', "{$plugin_path}js/autocomplete/wordpress.js", array( 'ace' ) );
-		// php-completion tags
-		wp_enqueue_script( 'aceide-php-completion', "{$plugin_path}js/autocomplete/php.js", array( 'ace' ) );
-		// load editor
-		wp_enqueue_script( 'aceide-load-editor', "{$plugin_path}js/load-editor.js", array( 'ace', 'jquery', 'jquery-ui-core', 'jquery-ui-dialog' ) );
-		// load filetree menu
-		wp_enqueue_script( 'aceide-load-filetree-menu', "{$plugin_path}js/load-filetree-menu.js", array( 'ace', 'jquery' ) );
-		// load autocomplete dropdown
-		wp_enqueue_script( 'aceide-dd', "{$plugin_path}js/jquery.dd.js", array( 'ace', 'jquery' ) );
+                $acever = $this->ace_version;
+		$idever = get_plugin_data( $plugin_path, false, false );
+		$idever = $idever['Version'];
+
+                // include file tree
+                wp_enqueue_script( 'jquery-file-tree', plugins_url( 'js/jqueryFileTree.js', __FILE__ ), array( 'jquery' ), $idever );
+                // include ace
+                wp_enqueue_script( 'ace', "{$plugin_url}src/js/ace-{$acever}/ace.js", array(), $idever );
+                // include ace modes for css, javascript & php
+                wp_enqueue_script( 'ace-mode-css', "{$plugin_url}src/js/ace-{$acever}/mode-css.js", array( 'ace' ), $idever );
+                wp_enqueue_script( 'ace-mode-less', "{$plugin_url}src/js/ace-{$acever}/mode-less.js", array( 'ace' ), $idever );
+                wp_enqueue_script( 'ace-mode-javascript', "{$plugin_url}src/js/ace-{$acever}/mode-javascript.js", array( 'ace' ), $idever );
+                wp_enqueue_script( 'ace-mode-php', "{$plugin_url}src/js/ace-{$acever}/mode-php.js", array( 'ace' ), $idever );
+                wp_enqueue_script( 'ace-mode-twig', "{$plugin_url}src/js/ace-{$acever}/mode-twig.js", array( 'ace' ), $idever );
+                // include ace theme
+                wp_enqueue_script( 'ace-theme', "{$plugin_url}src/js/ace-{$acever}/theme-dawn.js", array( 'ace' ), $idever ); // ambiance looks really nice for high contrast
+                // load emmet
+                wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_url}src/js/ace-{$acever}/ext-emmet.js", array( 'ace' ), $idever );
+                wp_enqueue_script( 'aceide-emmet', "{$plugin_url}src/js/emmet.js", array( 'aceide-ext-emmet' ), $idever );
+                // wordpress-completion tags
+                wp_enqueue_script( 'aceide-wordpress-completion', "{$plugin_url}src/js/autocomplete/wordpress.js", array( 'ace' ), $idever );
+                // php-completion tags
+                wp_enqueue_script( 'aceide-php-completion', "{$plugin_url}src/js/autocomplete/php.js", array( 'ace' ), $idever );
+                // load editor
+                wp_enqueue_script( 'aceide-load-editor', "{$plugin_url}src/js/load-editor.js", array( 'ace', 'jquery', 'jquery-ui-core', 'jquery-ui-dialog' ), $idever );
+                // load filetree menu
+                wp_enqueue_script( 'aceide-load-filetree-menu', "{$plugin_url}src/js/load-filetree-menu.js", array( 'ace', 'jquery' ), $idever );
+                // load autocomplete dropdown
+                wp_enqueue_script( 'aceide-dd', "{$plugin_url}src/js/jquery.dd.js", array( 'ace', 'jquery' ), $idever );
 
 		// load color picker
 		wp_enqueue_script( 'ImageColorPicker', plugins_url( 'js/ImageColorPicker.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-widget' ),  '0.3' );
