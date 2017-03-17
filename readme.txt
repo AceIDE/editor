@@ -2,7 +2,7 @@
 Contributors: shanept, WPsites, Thomas Wieczorek, x-raym, Kevin Young
 Tags: code, theme editor, plugin editor, code editor
 Requires at least: 3.0
-Tested up to: 4.7
+Tested up to: 4.7.3
 Stable tag: 2.5.5
 
 A fork of the WPide project, AceIDE is a code editor with the long term goal of becoming the ultimate environment to develop themes and plugins.

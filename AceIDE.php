@@ -3,7 +3,7 @@
  * Plugin Name: AceIDE
  * Plugin URI: https://github.com/AceIDE/AceIDE
  * Description: WordPress code editor with auto completion of both WordPress and PHP functions with reference, syntax highlighting, line numbers, tabbed editing, automatic backup.
- * Version: 2.5.4
+ * Version: 2.5.5
  * Author: AceIDE
  **/
 
