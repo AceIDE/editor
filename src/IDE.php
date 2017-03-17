@@ -740,7 +740,7 @@ class IDE
 			<?php endif; ?>
 			<form id="find-inline" style="position: relative; padding: 4px; margin: 0px; height: 100%; overflow: hidden; width: 400px;">
 				<label class="left"> <?php esc_html_e( 'Find' ); ?><input type="search" name="find" /></label>
-				<label class="left"> <?php esc_html_e( 'Replace' ); ?><input type="search" name="replace" /></label>
+				<label class="left"> <?php esc_html_e( 'Replace' ); ?><input type="search" name="replacement" /></label>
 				<div class="clear" style="height: 33px;"></div>
 
 				<label><input type="checkbox" name="wrap" checked="checked" /> <?php esc_html_e( 'Wrap Around' ); ?></label>

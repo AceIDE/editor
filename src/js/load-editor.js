@@ -995,7 +995,7 @@ jQuery(document).ready(function($) {
 		var options = {};
 
 		var direction   = jQuery( "#editor_find_dialog input[name='direction']" ).prop("checked");
-		var replacement = jQuery( "#editor_find_dialog input[name='replace']" ).val();
+		var replacement = jQuery( "#editor_find_dialog input[name='replacement']" ).val();
 		var start       = editor.getSelectionRange().start;
 
 
@@ -1017,7 +1017,7 @@ jQuery(document).ready(function($) {
 		var options = {};
 
 		var direction   = jQuery( "#editor_find_dialog input[name='direction']" ).prop("checked");
-		var replacement = jQuery( "#editor_find_dialog input[name='replace']" ).val();
+		var replacement = jQuery( "#editor_find_dialog input[name='replacement']" ).val();
 		var start       = editor.getSelectionRange().start;
 
 		options.needle          = jQuery( "#editor_find_dialog input[name='find']" ).val();

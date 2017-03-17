@@ -1,6 +1,7 @@
 ## AceIDE Changelog
 
 #### 2.5.5
+* Fixed github issue #11, where text would be replaced when clicking in replace field of the search box - Thanks to X-Raym
 * Added editor to Multisite's network admin menu - Thanks to X-Raym
 
 #### 2.5.4
