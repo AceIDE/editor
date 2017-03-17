@@ -64,6 +64,7 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 == Changelog ==
 = 2.5.5 =
 * Fixed github issue #11, where text would be replaced when clicking in replace field of the search box - Thanks to X-Raym
+* Fixed shift line up/down hotkeys
 * Added editor to Multisite's network admin menu - Thanks to X-Raym
 * Added AceIDE logo - Thanks to Kevin Young (rdytogokev)
 

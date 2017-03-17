@@ -1118,12 +1118,7 @@ jQuery(document).ready(function($) {
 	//Key up command
 	editor.commands.addCommand({
 		name: "up",
-		bindKey: {
-			win: "Up",
-			mac: "Up",
-			sender: "editor"
-		},
-
+		bindKey: "Up",
 		exec: function(env, args, request) {
 			if (oHandler && oHandler.visible() === 'block'){
 				oHandler.previous();
@@ -1166,11 +1161,7 @@ jQuery(document).ready(function($) {
 	//key down command
 	editor.commands.addCommand({
 		name: "down",
-		bindKey: {
-			win: "Down",
-			mac: "Down",
-			sender: "editor"
-		},
+		bindKey: "Down",
 		exec: function(env, args, request) {
 
 			if (oHandler && oHandler.visible() === 'block'){
@@ -1195,14 +1186,9 @@ jQuery(document).ready(function($) {
 	});
 
 
-
 	editor.commands.addCommand({
 		name: "enter",
-		bindKey: {
-			win: "Return",
-			mac: "Return",
-			sender: "editor"
-		},
+		bindKey: "Return",
 		exec: selectACitem
 	});
 
@@ -1249,29 +1235,14 @@ jQuery(document).ready(function($) {
 	editor.commands.addCommand({
 		name: "shiftLinesUp",
 		bindKey: {
-			win: "",
+			win: "Ctrl-Shift-Up",
 			mac: "Command-Shift-Up",
 			sender: "editor"
 		},
 		exec: function() {
-			// Move rows down
-			var rows    = editor.$getSelectedRows();
-			editor.session.moveLinesUp( rows.first, rows.last );
-
-			if ( !editor.selection.isEmpty() && ( editor.selection.anchor.row == editor.selection.lead.row ) ) {
-				// Move selection down
-				console.log(rows);
-				rows.start.row++;
-				rows.end.row++;
-				rows.start.column   = 0;
-				rows.end.column     = 0;
-
-				editor.selection.moveCursorUp();
-				editor.selection.setSelectionRange( rows );
-			} else {
-				editor.selection.moveCursorUp();
-			}
-		}
+			editor.moveLinesUp();
+		},
+		scrollIntoView: "cursor"
 	});
 
 	// Move lines down
@@ -1284,23 +1255,9 @@ jQuery(document).ready(function($) {
 		},
 		exec: function() {
 			// Move rows down
-			var rows    = editor.$getSelectedRows();
-			editor.session.moveLinesDown( rows.first, rows.last );
-
-			if ( !editor.selection.isEmpty() && ( editor.selection.anchor.row == editor.selection.lead.row ) ) {
-				// Move selection down
-				console.log(rows);
-				rows.start.row++;
-				rows.end.row++;
-				rows.start.column   = 0;
-				rows.end.column     = 0;
-
-				editor.selection.moveCursorDown();
-				editor.selection.setSelectionRange( rows );
-			} else {
-				editor.selection.moveCursorDown();
-			}
-		}
+			editor.moveLinesDown();
+		},
+		scrollIntoView: "cursor"
 	});
 
 	// Show find dialog
@@ -1329,8 +1286,25 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+    editor.commands.addCommand({
+        name: "Toggle Fullscreen",
+        bindKey: "F11",
+        exec: function(editor) {
+            var fullScreen = dom.toggleCssClass(document.body, "fullScreen")
+            dom.setCssClass(editor.container, "fullScreen", fullScreen)
+            editor.setAutoScrollEditorIntoView(!fullScreen)
+            editor.resize()
+        }
+    });
+
 	//END COMMANDS
 
+    window.addEventListener('keydown', function(e) {
+        // Disable default fullscreen
+        if (e.keyCode === 122) {
+            e.preventDefault();
+        }
+    });
 
 	//click action for new directory/file submit link
 	$("#aceide_create_new_directory, #aceide_create_new_file").click(function(e){
