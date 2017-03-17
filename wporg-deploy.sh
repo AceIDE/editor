@@ -43,12 +43,13 @@ NEWVERSION3=`grep -m 1 "^#### [0-9\\.]*$" $GITPATH/CHANGELOG.md | awk -F' ' '{pr
 echo "CHANGELOG.md version: $NEWVERSION3"
 NEWVERSION4=`grep "^ \\* Version" $GITPATH/$MAINFILE | awk -F' ' '{print $3}'`
 echo "$MAINFILE version: $NEWVERSION4"
+echo
 
-# This check just wasn't working so disabled  
-# if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
-# echo "Versions match in readme.txt and PHP file. Let's proceed..."
+if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
+if [ "$NEWVERSION1" != "$NEWVERSION3" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
+if [ "$NEWVERSION1" != "$NEWVERSION4" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
 
-echo "Only proceed if the versions match"
+echo "Versions all match. Let's proceed..."
 
 cd $GITPATH
 echo -e "Enter a commit message for this new version: \c"
