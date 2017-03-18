@@ -1,5 +1,5 @@
 === AceIDE ===
-Contributors: shanept, WPsites, Thomas Wieczorek, x-raym, Kevin Young
+Contributors: shanept, WPsites, Thomas Wieczorek, x-raym, rdytogollc
 Tags: code, theme editor, plugin editor, code editor
 Requires at least: 3.0
 Tested up to: 4.7.3
