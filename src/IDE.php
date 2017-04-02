@@ -142,56 +142,63 @@ class IDE
 	}
 
 	public function add_admin_js() {
-                $plugin_path = trailingslashit( dirname( dirname( __FILE__ ) ) ) . 'AceIDE.php';
-                $plugin_url  = trailingslashit( plugin_dir_url( $plugin_path ) );
+		$plugin_path = trailingslashit( dirname( dirname( __FILE__ ) ) ) . 'AceIDE.php';
+		$plugin_url  = trailingslashit( plugin_dir_url( $plugin_path ) );
 
-                $acever = $this->ace_version;
+		$acever = $this->ace_version;
 		$idever = get_plugin_data( $plugin_path, false, false );
 		$idever = $idever['Version'];
 
-                // include file tree
-                wp_enqueue_script( 'jquery-file-tree', plugins_url( 'js/jqueryFileTree.js', __FILE__ ), array( 'jquery' ), $idever );
-                // include ace
-                wp_enqueue_script( 'ace', "{$plugin_url}src/js/ace-{$acever}/ace.js", array(), $idever );
-                // include ace modes for css, javascript & php
-                wp_enqueue_script( 'ace-mode-css', "{$plugin_url}src/js/ace-{$acever}/mode-css.js", array( 'ace' ), $idever );
-                wp_enqueue_script( 'ace-mode-less', "{$plugin_url}src/js/ace-{$acever}/mode-less.js", array( 'ace' ), $idever );
-                wp_enqueue_script( 'ace-mode-javascript', "{$plugin_url}src/js/ace-{$acever}/mode-javascript.js", array( 'ace' ), $idever );
-                wp_enqueue_script( 'ace-mode-php', "{$plugin_url}src/js/ace-{$acever}/mode-php.js", array( 'ace' ), $idever );
-                wp_enqueue_script( 'ace-mode-twig', "{$plugin_url}src/js/ace-{$acever}/mode-twig.js", array( 'ace' ), $idever );
-                // include ace theme
-                wp_enqueue_script( 'ace-theme', "{$plugin_url}src/js/ace-{$acever}/theme-dawn.js", array( 'ace' ), $idever ); // ambiance looks really nice for high contrast
-                // load emmet
-                wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_url}src/js/ace-{$acever}/ext-emmet.js", array( 'ace' ), $idever );
-                wp_enqueue_script( 'aceide-emmet', "{$plugin_url}src/js/emmet.js", array( 'aceide-ext-emmet' ), $idever );
-                // wordpress-completion tags
-                wp_enqueue_script( 'aceide-wordpress-completion', "{$plugin_url}src/js/autocomplete/wordpress.js", array( 'ace' ), $idever );
-                // php-completion tags
-                wp_enqueue_script( 'aceide-php-completion', "{$plugin_url}src/js/autocomplete/php.js", array( 'ace' ), $idever );
-                // load editor
-                wp_enqueue_script( 'aceide-load-editor', "{$plugin_url}src/js/load-editor.js", array( 'ace', 'jquery', 'jquery-ui-core', 'jquery-ui-dialog' ), $idever );
-                // load filetree menu
-                wp_enqueue_script( 'aceide-load-filetree-menu', "{$plugin_url}src/js/load-filetree-menu.js", array( 'ace', 'jquery' ), $idever );
-                // load autocomplete dropdown
-                wp_enqueue_script( 'aceide-dd', "{$plugin_url}src/js/jquery.dd.js", array( 'ace', 'jquery' ), $idever );
+		// include file tree
+		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'js/jqueryFileTree.js', __FILE__ ), array( 'jquery' ), $idever );
+		// include ace
+		wp_enqueue_script( 'ace', "{$plugin_url}src/js/ace-{$acever}/ace.js", array(), $idever );
+		// include ace modes for css, javascript & php
+		wp_enqueue_script( 'ace-mode-css', "{$plugin_url}src/js/ace-{$acever}/mode-css.js", array( 'ace' ), $idever );
+		wp_enqueue_script( 'ace-mode-less', "{$plugin_url}src/js/ace-{$acever}/mode-less.js", array( 'ace' ), $idever );
+		wp_enqueue_script( 'ace-mode-javascript', "{$plugin_url}src/js/ace-{$acever}/mode-javascript.js", array( 'ace' ), $idever );
+		wp_enqueue_script( 'ace-mode-php', "{$plugin_url}src/js/ace-{$acever}/mode-php.js", array( 'ace' ), $idever );
+		wp_enqueue_script( 'ace-mode-twig', "{$plugin_url}src/js/ace-{$acever}/mode-twig.js", array( 'ace' ), $idever );
+		// include ace theme
+		wp_enqueue_script( 'ace-theme', "{$plugin_url}src/js/ace-{$acever}/theme-dawn.js", array( 'ace' ), $idever ); // ambiance looks really nice for high contrast
+		// load emmet
+		wp_enqueue_script( 'aceide-ext-emmet', "{$plugin_url}src/js/ace-{$acever}/ext-emmet.js", array( 'ace' ), $idever );
+		wp_enqueue_script( 'aceide-emmet', "{$plugin_url}src/js/emmet.js", array( 'aceide-ext-emmet' ), $idever );
+		// wordpress-completion tags
+		wp_enqueue_script( 'aceide-wordpress-completion', "{$plugin_url}src/js/autocomplete/wordpress.js", array( 'ace' ), $idever );
+		// php-completion tags
+		wp_enqueue_script( 'aceide-php-completion', "{$plugin_url}src/js/autocomplete/php.js", array( 'ace' ), $idever );
+		// load editor
+		wp_enqueue_script( 'aceide-load-editor', "{$plugin_url}src/js/load-editor.js", array( 'ace', 'jquery', 'jquery-ui-core', 'jquery-ui-dialog' ), $idever );
+		// load filetree menu
+		wp_enqueue_script( 'aceide-load-filetree-menu', "{$plugin_url}src/js/load-filetree-menu.js", array( 'ace', 'jquery' ), $idever );
+		// load autocomplete dropdown
+		wp_enqueue_script( 'aceide-dd', "{$plugin_url}src/js/jquery.dd.js", array( 'ace', 'jquery' ), $idever );
 
 		// load color picker
-		wp_enqueue_script( 'ImageColorPicker', plugins_url( 'js/ImageColorPicker.js', __FILE__ ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-widget' ),  '0.3' );
+		wp_enqueue_script( 'ImageColorPicker', "{$plugin_url}src/js/ImageColorPicker.js", array( 'jquery', 'jquery-ui-core', 'jquery-ui-widget' ),  $idever );
 	}
 
 	public function add_admin_styles() {
+		$plugin_path = trailingslashit( dirname( dirname( __FILE__ ) ) ) . 'AceIDE.php';
+		$plugin_url  = trailingslashit( plugin_dir_url( $plugin_path ) );
+
+		$acever = $this->ace_version;
+		$idever = get_plugin_data( $plugin_path, false, false );
+		$idever = $idever['Version'];
+
 		// main AceIDE styles
-		wp_register_style( 'aceide_style', plugins_url( 'aceide.css', __FILE__ ) );
+		wp_register_style( 'aceide_style', "{$plugin_url}src/aceide.css", array(), $idever );
 		wp_enqueue_style( 'aceide_style' );
 		// filetree styles
-		wp_register_style( 'aceide_filetree_style', plugins_url( 'css/jqueryFileTree.css', __FILE__ ) );
+		wp_register_style( 'aceide_filetree_style', "{$plugin_url}src/css/jqueryFileTree.css", array( 'aceide_style' ), $idever );
 		wp_enqueue_style( 'aceide_filetree_style' );
 		// autocomplete dropdown styles
-		wp_register_style( 'aceide_dd_style', plugins_url( 'dd.css', __FILE__ ) );
+		wp_register_style( 'aceide_dd_style', "{$plugin_url}src/dd.css", array( 'aceide_style' ), $idever );
 		wp_enqueue_style( 'aceide_dd_style' );
 
 		// jquery ui styles
-		wp_register_style( 'aceide_jqueryui_style', plugins_url( 'css/flick/jquery-ui-1.8.20.custom.css', __FILE__ ) );
+		wp_register_style( 'aceide_jqueryui_style', "{$plugin_url}src/css/flick/jquery-ui-1.8.20.custom.css", array( 'aceide_style' ), $idever );
 		wp_enqueue_style( 'aceide_jqueryui_style' );
 	}
 
