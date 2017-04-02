@@ -29,8 +29,20 @@
 	}
 	#template div{margin-right:0 !important;}
 
+    #aceide_container {
+        width: 75%;
+        box-sizing: border-box;
+    }
+
+    #aceide_container.fullScreen {
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        background-color: #E9E9E9;
+    }
+
 	#aceide_toolbar{
-		width: 75%;
+		width: 100%;
 		min-height: 30px;
 		text-align: right;
 		padding-top: 5px;
@@ -131,7 +143,7 @@
 	 #aceide_toolbar_buttons {
 	 	position:relative;
 	 	min-height:30px;
-		width:75%;
+		width:100%;
 		float:left;
         clear:left;
 		text-align:left;
@@ -177,10 +189,10 @@
 	#aceide_save_container{
         float: left;
         clear: left;
-        width: 74%;
+        width: 100%;
         padding: 0.5%;
         background-color: #E9E9E9;
-
+        box-sizing: border-box;
         border-color: #CCC;
         -webkit-box-shadow: inset 0 1px 0 #fff;
         box-shadow: inset 0 1px 0 #fff;
@@ -242,7 +254,7 @@
 	}
 
     #fancyeditordiv{
-        width:75%;
+        width:100%;
         height:1000px;
         margin-right:0!important;
         float:left;

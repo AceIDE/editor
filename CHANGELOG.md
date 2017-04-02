@@ -5,6 +5,8 @@
 * Fixed shift line up/down hotkeys
 * Added editor to Multisite's network admin menu - Thanks to X-Raym
 * Added AceIDE logo - Thanks to Kevin Young (rdytogokev)
+* Added Fullscreen editor
+* Slightly modified some keyboard command handlers for usability
 
 #### 2.5.4
 * Fixed broken SumoPaint image manipulation functionality (see github issue #3)

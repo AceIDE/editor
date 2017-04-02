@@ -707,33 +707,34 @@ class IDE
 			</div>
 
 			<div id="post-body">
-				<div id="aceide_toolbar" class="quicktags-toolbar">
-					<div id="aceide_toolbar_tabs"> </div>
-					<div id="dialog_window_minimized_container"></div>
+		        <div id="aceide_container">
+					<div id="aceide_toolbar" class="quicktags-toolbar">
+						<div id="aceide_toolbar_tabs"> </div>
+						<div id="dialog_window_minimized_container"></div>
+					</div>
+	
+					<div id="aceide_toolbar_buttons">
+						<div id="aceide_message"></div>
+						<a class="button restore" style="display:none;" title="<?php esc_attr_e( 'Restore the active tab' ); ?>" href="#"><?php _e( 'Restore &#10012;' ); ?></a>
+					</div>
+					<div id='fancyeditordiv'></div>
+					<form id="aceide_save_container" action="" method="get">
+						<div id="aceide_footer_message"></div>
+						<div id="aceide_footer_message_last_saved"></div>
+						<div id="aceide_footer_message_unsaved"></div>
+	
+					  	<a href="#" id="aceide_save" alt="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" title="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" class="button-primary"><?php esc_html_e( 'SAVE FILE' ); ?></a>
+						<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ): ?>
+						<a href="#" id="aceide_git" alt="Open the Git overlay" title="Open the Git overlay" class="button-secondary"><?php esc_html_e( 'Git' ); ?></a>
+						<?php endif; ?>
+						<input type="hidden" id="filename" name="filename" value="" />
+						<?php
+							if ( function_exists( 'wp_nonce_field' ) ) {
+								wp_nonce_field('plugin-name-action_aceidenonce');
+							}
+						?>
+					</form>
 				</div>
-
-				<div id="aceide_toolbar_buttons">
-					<div id="aceide_message"></div>
-					<a class="button restore" style="display:none;" title="<?php esc_attr_e( 'Restore the active tab' ); ?>" href="#"><?php _e( 'Restore &#10012;' ); ?></a>
-				</div>
-				<div id='fancyeditordiv'></div>
-
-				<form id="aceide_save_container" action="" method="get">
-					<div id="aceide_footer_message"></div>
-					<div id="aceide_footer_message_last_saved"></div>
-					<div id="aceide_footer_message_unsaved"></div>
-
-				  	<a href="#" id="aceide_save" alt="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" title="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" class="button-primary"><?php esc_html_e( 'SAVE FILE' ); ?></a>
-					<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ): ?>
-					<a href="#" id="aceide_git" alt="Open the Git overlay" title="Open the Git overlay" class="button-secondary"><?php esc_html_e( 'Git' ); ?></a>
-					<?php endif; ?>
-					<input type="hidden" id="filename" name="filename" value="" />
-					<?php
-						if ( function_exists( 'wp_nonce_field' ) ) {
-							wp_nonce_field('plugin-name-action_aceidenonce');
-						}
-					?>
-				</form>
 			</div>
 		</div>
 		<div id="editor_find_dialog" title="<?php esc_attr_e( 'Find...' ); ?>" style="padding: 0px; display: none;">

@@ -16,6 +16,62 @@ var oHandler;
 
 var editor_options = {resizer:{}};
 
+// Fullscreen cross-browser fill
+document.fullscreenEnabled = document.fullscreenEnabled ||
+                             document.mozFullScreenEnabled ||
+                             document.msFullscreenEnabled ||
+                             document.documentElement.webkitRequestFullScreen;
+
+function requestFullscreen(element) {
+	if (element.requestFullscreen) {
+		element.requestFullscreen();
+		return true;
+	} else if (element.mozRequestFullScreen) {
+		element.mozRequestFullScreen();
+		return true;
+	} else if (element.webkitRequestFullScreen) {
+		element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+		return true;
+	} else if (element.msRequestFullscreen) {
+	    element.msRequestFullscreen();
+	    return true;
+	}
+
+    return false;
+}
+
+function fullscreenOnChange(cb) {
+    if (document.exitFullscreen) {
+        document.addEventListener('fullscreenchange', cb);
+    } else if (document.webkitExitFullscreen) {
+        document.addEventListener('webkitfullscreenchange', cb);
+    } else if (document.mozCancelFullScreen) {
+        document.addEventListener('mozfullscreenchange', cb);
+    } else if (document.msExitFullscreen) {
+        document.addEventListener('msfullscreenchange', cb);
+    }
+}
+
+function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+}
+
+if (!document.hasOwnProperty('fullscreenElement')) {
+    Object.defineProperty(document, 'fullscreenElement', {
+        'get': function() {
+            return document.webkitFullscreenElement || document.mozFullscreenElement || document.msFullscreenElement || null;
+        }
+    });
+}
+
 function onSessionChange(e)  {
 
 	//set the document as unsaved
@@ -1154,7 +1210,8 @@ jQuery(document).ready(function($) {
 */
 				editor.moveCursorTo(range.end.row-1, range.end.column);
 			}
-		}
+		},
+		scrollIntoView: "cursor"
 	});
 
 
@@ -1182,14 +1239,16 @@ jQuery(document).ready(function($) {
 				editor.clearSelection();
 				editor.moveCursorTo(range.end.row +1, range.end.column);
 			}
-		}
+		},
+		scrollIntoView: "cursor"
 	});
 
 
 	editor.commands.addCommand({
 		name: "enter",
 		bindKey: "Return",
-		exec: selectACitem
+		exec: selectACitem,
+		scrollIntoView: "cursor"
 	});
 
 	// save command:
@@ -1214,7 +1273,8 @@ jQuery(document).ready(function($) {
 		exec: function() {
 			var rows = editor.$getSelectedRows();
 			editor.session.duplicateLines( rows.first, rows.last );
-		}
+		},
+		scrollIntoView: "cursor"
 	});
 
 	// delete line:
@@ -1228,7 +1288,8 @@ jQuery(document).ready(function($) {
 		exec: function() {
 			editor.removeLines();
 			editor.selection.moveCursorUp();
-		}
+		},
+		scrollIntoView: "cursor"
 	});
 
 	// Move lines up
@@ -1287,17 +1348,49 @@ jQuery(document).ready(function($) {
 	});
 
     editor.commands.addCommand({
-        name: "Toggle Fullscreen",
-        bindKey: "F11",
+        name: "escape",
+        bindKey: "esc",
         exec: function(editor) {
-            var fullScreen = dom.toggleCssClass(document.body, "fullScreen")
-            dom.setCssClass(editor.container, "fullScreen", fullScreen)
-            editor.setAutoScrollEditorIntoView(!fullScreen)
-            editor.resize()
+            var element = editor.container.parentNode;
+
+            if (document.getElementById('ac').style.display === 'block') {
+                aceide_close_autocomplete();
+                return;
+            }
+
+            if (document.fullscreenElement !== null) {
+                element.className = element.className.replace(/\s?fullScreen/, '');
+                exitFullscreen();
+                editor.resize();
+                return;
+            }
         }
     });
 
+    editor.commands.addCommand({
+        name: "toggleFullscreen",
+        bindKey: "F11",
+        exec: function(editor) {
+            var element = editor.container.parentNode;
+
+            if (!requestFullscreen(element)) {
+                alert("Could not open full screen.");
+            }
+
+            element.className += ' fullScreen';
+            editor.resize();
+        }
+    });
 	//END COMMANDS
+
+    fullscreenOnChange(function() {
+        if (document.fullscreenElement === null) {
+            var element = document.getElementById("aceide_container");
+            element.className = element.className.replace(/\s?fullScreen/, '');
+            exitFullscreen();
+            editor.resize();
+        }
+    });
 
     window.addEventListener('keydown', function(e) {
         // Disable default fullscreen
