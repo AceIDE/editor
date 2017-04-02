@@ -68,6 +68,7 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 * Added editor to Multisite's network admin menu - Thanks to X-Raym
 * Added AceIDE logo - Thanks to Kevin Young (rdytogokev)
 * Added Fullscreen editor
+* Added confirmation to zipping operations
 * Slightly modified some keyboard command handlers for usability
 
 = 2.5.4 =

@@ -52,7 +52,7 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-rename")
                     .text("Rename")
                     .on("click", function() {
-                        aceide_rename_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_rename_file($this.attr("rel"));
                     });
 
             return $item;
@@ -63,7 +63,7 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-delete")
                     .text("Delete")
                     .on("click", function() {
-                        aceide_delete_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_delete_file($this.attr("rel"));
                     });
 
             return $item;
@@ -75,7 +75,7 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-upload")
                     .text("Upload")
                     .on("click", function() {
-                        aceide_upload_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_upload_file($this.attr("rel"));
                     });
 
             return $item;
@@ -86,7 +86,7 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-download")
                     .text("Download")
                     .on("click", function() {
-                        aceide_download_file($this.attr("rel"), function(){alert("Callback")});
+                        aceide_download_file($this.attr("rel"));
                     });
 
             return $item;
@@ -99,7 +99,9 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-zip")
                     .text("Zip")
                     .on("click", function() {
-                        aceide_zip_file($this.attr("rel"), function(){alert("Callback")});
+                        if (confirm("We are going to zip this file or directory:\n" + $this.attr("rel") + "\n\nContinue?")) {
+                            aceide_zip_file($this.attr("rel"));
+                        }
                     });
 
             return $item;
@@ -110,7 +112,9 @@ function display_context_menu(e) {
                     .attr("class", "menu-item-unzip")
                     .text("Unzip")
                     .on("click", function() {
-                        aceide_unzip_file($this.attr("rel"), function(){alert("Callback")});
+                        if (confirm("We are going to unzip this zip file:\n" + $this.attr("rel") + "\n\nContinue?")) {
+                            aceide_unzip_file($this.attr("rel"));
+                        }
                     });
 
             return $item;
@@ -304,6 +308,8 @@ function aceide_zip_file(file, callback_func) {
         } else {
             jQuery("ul.jqueryFileTree a[rel='"+ folder +"']").click().click();
         }
+
+        callback_func && callback_func();
     });
 }
 
@@ -323,6 +329,8 @@ function aceide_unzip_file(file, callback_func) {
         } else {
             jQuery("ul.jqueryFileTree a[rel='"+ folder +"']").click().click();
         }
+
+        callback_func && callback_func();
     });
 }
 
