@@ -107,7 +107,7 @@ class FileOps implements Module
 
 		// set backup filename
 		$backup_path = 'backups' . preg_replace( "#\.php$#i", "_" . date( "Y-m-d-H" ) . ".php", $_POST['filename'] );
-		$backup_path_full = plugin_dir_path( __FILE__ ) . $backup_path;
+		$backup_path_full = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . $backup_path;
 		// create backup directory if not there
 		$new_file_info = pathinfo( $backup_path_full );
 
