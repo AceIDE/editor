@@ -903,7 +903,7 @@ function display_editor_settings() {
 		resizable: false,
 		show: "fade",
 		close: load_editor_settings,
-		appendTo: jQuery("#wpbody-content")
+		appendTo: jQuery("#aceide_container")
 	}).dialog("moveToTop");
 }
 
@@ -922,7 +922,7 @@ function display_find_dialog() {
 		resizable: false,
 		show: "fade",
 		hide: "fade",
-		appendTo: jQuery("#wpbody-content")
+		appendTo: jQuery("#aceide_container")
 	}).dialog("moveToTop");
 
 }
@@ -934,7 +934,8 @@ function display_goto_dialog() {
 		width: "300",
 		resizable: false,
 		show: "fade",
-		hide: "fade"
+		hide: "fade",
+		appendTo: jQuery("#aceide_container")
 	});
 }
 
