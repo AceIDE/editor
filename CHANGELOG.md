@@ -7,10 +7,11 @@
 * Added AceIDE logo - Thanks to Kevin Young (rdytogokev)
 * Added Fullscreen editor
 * Slightly modified some keyboard command handlers for usability
+* Changed capability from 'create_users' to 'edit_plugins' (See GitHub issue #14)
 
 #### 2.5.4
 * Fixed broken SumoPaint image manipulation functionality (see github issue #3)
-* Strips noise from other plugins upon opening files (see github issue #5)
+* Strips noise from other plugins upon opening files (see github issue #5)/wp-content/plugins/aceide/CHANGELOG.md
 * Fixed broken zipping functionality with ZipArchive (see github issue #6)
 
 #### 2.5.3

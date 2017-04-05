@@ -97,7 +97,7 @@ class IDE
 	}
 
 	public static function check_perms( $check_referrer=true ) {
-		$capability = ( is_multisite() ? 'manage_network_themes' : 'create_users' );
+		$capability = ( is_multisite() ? 'manage_network_themes' : 'edit_plugins' );
 
 		if ( defined( 'DISALLOW_FILE_EDIT' ) && ! apply_filters( 'aceide_override_disallow_file_edit', ! DISALLOW_FILE_EDIT ) ) {
 			wp_die( '<p>' . __( 'You do not have sufficient permissions to edit templates for this site. SORRY' ) . '</p>' );
@@ -491,9 +491,9 @@ class IDE
 		}
 
 		if ( version_compare( $wp_version, '3.8', '<' ) ) {
-			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'create_users', "aceide", array( &$this, 'my_menu_page' ) );
+			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'edit_plugins', "aceide", array( &$this, 'my_menu_page' ) );
 		} else {
-			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'create_users', "aceide", array( &$this, 'my_menu_page' ), 'dashicons-editor-code' );
+			$this->menu_hook = add_menu_page( 'AceIDE', 'AceIDE', 'edit_plugins', "aceide", array( &$this, 'my_menu_page' ), 'dashicons-editor-code' );
 		}
 	}
 

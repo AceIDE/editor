@@ -70,6 +70,7 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 * Added Fullscreen editor
 * Added confirmation to zipping operations
 * Slightly modified some keyboard command handlers for usability
+* Changed capability from 'create_users' to 'edit_plugins' (See GitHub issue #14)
 
 = 2.5.4 =
 * Fixed broken SumoPaint image manipulation functionality (see github issue #3)
