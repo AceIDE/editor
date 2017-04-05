@@ -675,7 +675,7 @@ class IDE
 		?>
 		<div id="poststuff" class="metabox-holder has-right-sidebar">
 			<div id="side-info-column" class="inner-sidebar">
-				<img src="<?php echo plugin_dir_url( __FILE__ ); ?>/images/logo.png" id="aceidelogo" />
+				<img src="<?php echo plugins_url( 'images/logo.png', __FILE__ ); ?>" id="aceidelogo" />
 				<div id="aceide_info">
 					<div id="aceide_info_content"></div>
 				</div>
