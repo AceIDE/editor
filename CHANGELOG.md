@@ -1,5 +1,8 @@
 ## AceIDE Changelog
 
+#### 2.5.6
+* See github issue #15. Removes AJAX noise from ALL other plugins/themes etc. Much more solid than previous solution for github issue #5.
+
 #### 2.5.5
 * Fixed github issue #11, where text would be replaced when clicking in replace field of the search box - Thanks to X-Raym
 * Fixed shift line up/down hotkeys

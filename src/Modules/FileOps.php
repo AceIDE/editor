@@ -49,7 +49,10 @@ class FileOps implements Module
 		$root      = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
 		$file_name = $root . stripslashes($_POST['filename']);
 
-		echo '===FILE_CONTENTS_START===';
+		if (ob_get_level()) {
+			ob_end_clean();
+		}
+
 		echo $wp_filesystem->get_contents($file_name);
 		die(); // this is required to return a proper result
 	}
@@ -81,6 +84,10 @@ class FileOps implements Module
 			try {
 				$stmts = $parser->parse( $code );
 			} catch ( PHPParser_Error $e ) {
+				if (ob_get_level()) {
+					ob_end_clean();
+				}
+
 				echo 'Parse Error: ', $e->getMessage();
 				die();
 			}
@@ -148,6 +155,10 @@ die();
 			$result = __( 'Could not save file' );
 		}
 
+		if (ob_get_level()) {
+			ob_end_clean();
+		}
+
 		die( $result ); // this is required to return a proper result
 	}
 
@@ -187,6 +198,10 @@ die();
 			if ( $_POST['type'] == "directory" ) {
 				$write_result = $wp_filesystem->mkdir( $root . $path . $filename, FS_CHMOD_DIR );
 
+				if (ob_get_level()) {
+					ob_end_clean();
+				}
+
 				if ( $write_result ) {
 					die( "1" ); // created
 				} else {
@@ -195,17 +210,25 @@ die();
 			} else if ( $_POST['type'] == "file" ) {
 				// write the file
 				$write_result = $wp_filesystem->put_contents(
-				$root . $path . $filename,
-				'',
-				FS_CHMOD_FILE // predefined mode settings for WP files
+					$root . $path . $filename,
+					'',
+					FS_CHMOD_FILE // predefined mode settings for WP files
 				);
 
+				if (ob_get_level()) {
+					ob_end_clean();
+				}
+
 				if ( $write_result ) {
-				die( "1" ); // created
+					die( "1" ); // created
 				} else {
-				printf( __( "Problem creating file %s" ), $root . $path . $filename );
+					printf( __( "Problem creating file %s" ), $root . $path . $filename );
 				}
 			}
+		}
+
+		if (ob_get_level()) {
+			ob_end_clean();
 		}
 
 		echo "An error has occurred creating the file.";
@@ -228,6 +251,10 @@ die();
 		}
 
 		if ( ! WP_Filesystem( $creds ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( "Cannot initialise the WP file system API" );
 			exit;
 		}
@@ -237,11 +264,19 @@ die();
 		$new_name  = dirname( $file_name ) . '/' . stripslashes( $_POST['newname'] );
 
 		if ( ! $wp_filesystem->exists( $file_name ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+    
 			echo __( 'The target file doesn\'t exist!' );
 			exit;
 		}
 
 		if ( $wp_filesystem->exists( $new_name ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( 'The destination file exists!' );
 			exit;
 		}
@@ -250,6 +285,10 @@ die();
 		$renamed = $wp_filesystem->move( $file_name, $new_name );
 
 		if ( !$renamed ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( 'The file could not be renamed!' );
 		}
 
@@ -272,6 +311,10 @@ die();
 		}
 
 		if ( ! WP_Filesystem( $creds ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( "Cannot initialise the WP file system API" );
 			exit;
 		}
@@ -280,6 +323,10 @@ die();
 		$file_name = $root . stripslashes( $_POST['filename'] );
 
 		if ( ! $wp_filesystem->exists( $file_name ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( 'The file doesn\'t exist!' );
 			exit;
 		}
@@ -287,6 +334,10 @@ die();
 		$deleted = $wp_filesystem->delete( $file_name, true );
 
 		if ( ! $deleted ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( 'The file couldn\'t be deleted.' );
 		}
 
@@ -309,6 +360,10 @@ die();
 		}
 
 		if ( ! WP_Filesystem( $creds ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( "Cannot initialise the WP file system API" );
 			exit;
 		}
@@ -318,29 +373,45 @@ die();
 		$destination = $root . stripslashes( $_POST['destination'] );
 
 		if ( ! $wp_filesystem->exists( $source ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( 'The source file doesn\'t exist!' );
 			exit;
 		}
 
 		if ( !$wp_filesystem->exists( $destination ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( 'The destination directory does not exist!' );
 			exit;
 		}
 
-        if ( !$wp_filesystem->is_dir( $destination ) ) {
-            echo __( 'The destination is not a directory!' );
-            exit;
-        }
+		if ( !$wp_filesystem->is_dir( $destination ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
 
-        $destination .= '/' . basename( $source );
+			echo __( 'The destination is not a directory!' );
+			exit;
+		}
+
+		$destination .= '/' . basename( $source );
 
 		// Move instead of rename
 		$moved = $wp_filesystem->move( $source, $destination );
 
+		if (ob_get_level()) {
+			ob_end_clean();
+		}
+
 		if ( !$moved ) {
 			echo __( 'The file could not be renamed!' );
 		} else {
-		    echo '1';
+			echo '1';
 		}
 
 		exit;
@@ -362,6 +433,10 @@ die();
 		}
 
 		if ( ! WP_Filesystem( $creds ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( "Cannot initialise the WP file system API" );
 			exit;
 		}
@@ -377,14 +452,26 @@ die();
 			$destination = $destination_folder . $file['name'];
 
 			if ( $wp_filesystem->exists( $destination ) ) {
+				if (ob_get_level()) {
+					ob_end_clean();
+				}
+
 				exit( $file['name'] . ' already exists!' );
 			}
 
 			if ( ! $wp_filesystem->move( $file['tmp_name'], $destination ) ) {
+				if (ob_get_level()) {
+					ob_end_clean();
+				}
+
 				exit( $file['name'] . ' could not be moved.' );
 			}
 
 			if ( ! $wp_filesystem->chmod( $destination ) ) {
+				if (ob_get_level()) {
+					ob_end_clean();
+				}
+
 				exit( $file['name'] . ' could not be chmod.' );
 			}
 		}
@@ -408,6 +495,10 @@ die();
 		}
 
 		if ( ! WP_Filesystem( $creds ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( "Cannot initialise the WP file system API" );
 			exit;
 		}
@@ -416,8 +507,16 @@ die();
 		$file_name	= $root . stripslashes( $_POST['filename'] );
 
 		if ( ! $wp_filesystem->exists( $file_name ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo 'The file doesn\'t exist!';
 			exit;
+		}
+
+		if (ob_get_level()) {
+			ob_end_clean();
 		}
 
 		header( 'Content-Description: File Transfer' );
@@ -450,11 +549,19 @@ die();
 		}
 
 		if ( !WP_Filesystem( $creds ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( "Cannot initialise the WP file system API" );
 			exit;
 		}
 
 		if ( ! $wp_filesystem->exists( $file_name ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			echo __( 'Error: target file does not exist!' );
 			exit;
 		}
@@ -487,6 +594,10 @@ die();
 		$zipped = self::do_zip_file( $file_name, $output_path );
 
 		if ( is_wp_error( $zipped ) ) {
+			if (ob_get_level()) {
+				ob_end_clean();
+			}
+
 			printf( '%s: %s', $zipped->get_error_code(), $zipped->get_error_message() );
 		}
 

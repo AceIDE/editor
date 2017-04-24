@@ -3,7 +3,7 @@ Contributors: shanept, WPsites, Thomas Wieczorek, x-raym, rdytogollc
 Tags: code, theme editor, plugin editor, code editor
 Requires at least: 3.0
 Tested up to: 4.7.3
-Stable tag: 2.5.5
+Stable tag: 2.5.6
 
 A fork of the WPide project, AceIDE is a code editor with the long term goal of becoming the ultimate environment to develop themes and plugins.
 
@@ -62,6 +62,9 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 1. Default colour picker image
 
 == Changelog ==
+= 2.5.6 =
+* See github issue #15. Removes AJAX noise from ALL other plugins/themes etc. Much more solid than previous solution for github issue #5.
+
 = 2.5.5 =
 * Fixed github issue #11, where text would be replaced when clicking in replace field of the search box - Thanks to X-Raym
 * Fixed shift line up/down hotkeys

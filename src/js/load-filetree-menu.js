@@ -174,7 +174,7 @@ function aceide_rename_file(file, callback_func) {
     if (new_name === null)
         return;
 
-    jQuery.post(ajaxurl, data, function(response) {
+    jQuery.post(aceajax.url, data, function(response) {
         // If we are adding to wp-content, make sure we refresh the whole tree.
         if (jQuery("ul.jqueryFileTree a[rel='"+ folder +"']").length == 0) {
             the_filetree();
@@ -193,7 +193,7 @@ function aceide_delete_file(file, callback_func) {
     if ( !confirm("Are you sure you wish to delete " + filename + "?") )
         return;
 
-    jQuery.post(ajaxurl, data, function(response) {
+    jQuery.post(aceajax.url, data, function(response) {
         // If we are adding to wp-content, make sure we refresh the whole tree.
         if (jQuery("ul.jqueryFileTree a[rel='"+ folder +"']").length == 0) {
             the_filetree();
@@ -226,7 +226,7 @@ function aceide_upload_file(server_destination, callback_func) {
         // We need to use XMLHttpRequest instead of jQuery.ajax here
         var xhr = new XMLHttpRequest();
 
-        xhr.open('POST', ajaxurl, true);
+        xhr.open('POST', aceajax.url, true);
         xhr.onreadystatechange = function(e) {
             if (this.readyState === 4) {
                 if (this.status === 200) {
@@ -256,12 +256,12 @@ function aceide_download_file(file, callback_func) {
 
 //    jQuery("a[rel='"+file+"']").parent().addClass("wait");
 
-    jQuery.post(ajaxurl, data, function(response) {
+    jQuery.post(aceajax.url, data, function(response) {
         var $iframe = jQuery("<iframe>");
 
         $iframe.css("display","none").appendTo(document.body);
         $iframe.get(0).contentWindow.document.write(
-            '<form action="'+ajaxurl+'" method="POST"><input type="hidden"' +
+            '<form action="'+aceajax.url+'" method="POST"><input type="hidden"' +
             ' name="action" value="aceide_download_file" /><input type=' +
             '"hidden" name="filename" value="'+file+'" /><input type="hidden"' +
             ' name="_wpnonce" value="'+jQuery("#_wpnonce").val()+'" /><input' +
@@ -297,7 +297,7 @@ function aceide_zip_file(file, callback_func) {
     var folder = file.replace(/\/[^\/]*?\/?$/, '/'),
         data = { action: 'aceide_zip_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
-    jQuery.post(ajaxurl, data, function(response) {
+    jQuery.post(aceajax.url, data, function(response) {
         if (response.length) {
             alert(response);
         }
@@ -318,7 +318,7 @@ function aceide_unzip_file(file, callback_func) {
     var folder = file.replace(/\/[^\/]*?\/?$/, '/'),
         data = { action: 'aceide_unzip_file', filename: file, _wpnonce: jQuery("#_wpnonce").val(),  _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
-    jQuery.post(ajaxurl, data, function(response) {
+    jQuery.post(aceajax.url, data, function(response) {
         if (response.length) {
             alert(response);
         }

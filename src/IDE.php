@@ -175,6 +175,11 @@ class IDE
 		// load autocomplete dropdown
 		wp_enqueue_script( 'aceide-dd', "{$plugin_url}src/js/jquery.dd.js", array( 'ace', 'jquery' ), $idever );
 
+		// Specify custom AJAX handler
+		wp_localize_script( 'aceide-load-editor', 'aceajax', array(
+			'url' => plugins_url( 'Ajax.php', __FILE__ )
+		) );
+
 		// load color picker
 		wp_enqueue_script( 'ImageColorPicker', "{$plugin_url}src/js/ImageColorPicker.js", array( 'jquery', 'jquery-ui-core', 'jquery-ui-widget' ),  $idever );
 	}
@@ -224,6 +229,9 @@ class IDE
 
 		$_POST['dir'] = urldecode( $_POST['dir'] );
 		$root = apply_filters( 'aceide_filesystem_root', WP_CONTENT_DIR );
+		if (ob_get_level()) {
+			ob_end_clean();
+		}
 
 		if ( $wp_filesystem->exists( $root . $_POST['dir'] ) ) {
 			$files = $wp_filesystem->dirlist( $root . $_POST['dir'] );
@@ -268,6 +276,10 @@ class IDE
 	public function image_edit_key() {
 		// check the user has the permissions
 		self::check_perms();
+
+		if (ob_get_level()) {
+			ob_end_clean();
+		}
 
 		// create a nonce based on the image path
 		echo wp_create_nonce( 'aceide_image_edit' . $_POST['file'] );
@@ -337,6 +349,10 @@ class IDE
 
 		// check the user has the permissions
 		self::check_perms();
+
+		if (ob_get_level()) {
+			ob_end_clean();
+		}
 
 		echo "\n\n\n\n" . __( 'ACEIDE STARTUP CHECKS' ) . "\n";
 		echo "___________________ \n\n";
@@ -714,7 +730,7 @@ class IDE
 			</div>
 
 			<div id="post-body">
-		        <div id="aceide_container">
+				<div id="aceide_container">
 					<div id="aceide_toolbar" class="quicktags-toolbar">
 						<div id="aceide_toolbar_tabs"> </div>
 						<div id="dialog_window_minimized_container"></div>

@@ -518,7 +518,7 @@ function aceide_set_file_contents(file, callback_func){
 	//ajax call to get file contents we are about to edit
 	var data = { action: 'aceide_get_file', filename: file, _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
-	jQuery.post(ajaxurl, data, function(response) {
+	jQuery.post(aceajax.url, data, function(response) {
 		var the_path = file.replace(/^.*[\\\/]/, '').trim();
 		var the_id = "aceide_tab_" + last_added_editor_session;
 
@@ -527,9 +527,6 @@ function aceide_set_file_contents(file, callback_func){
 		editor.setReadOnly(false);
 
 		jQuery("#aceide_toolbar_tabs").append('<span id="'+the_id+'" sessionrel="'+last_added_editor_session+'"  title="  '+file+' " rel="'+file+'" class="aceide_tab">'+ the_path +'<a class="close_tab" href="#">x</a></span>');
-
-		//trim everything before, and including, the start of file marker
-		response = response.substring(response.indexOf('===FILE_CONTENTS_START===') + 25);
 
 		saved_editor_sessions[last_added_editor_session] = new EditSession(response);//set saved session
 		saved_editor_sessions[last_added_editor_session].on('change', onSessionChange);
@@ -685,7 +682,7 @@ function saveDocument() {
 
 	//ajax call to save the file and generate a backup if needed
 	var data = { action: 'aceide_save_file', filename: jQuery('input[name=filename]').val(),  _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val(), content: editor.getSession().getValue() };
-	jQuery.post(ajaxurl, data, function(response) {
+	jQuery.post(aceajax.url, data, function(response) {
 		var regexchk=/\".*:::.*\"/;
 		var saved_when = Date();
 
@@ -987,7 +984,7 @@ function filetree_drag_initializer() {
 
 		var data = { action: 'aceide_move_file', source: source, destination: destination, _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
-		jQuery.post(ajaxurl, data, function(response) {
+		jQuery.post(aceajax.url, data, function(response) {
 			if (response == "1") {
 				if (jQuery("ul.jqueryFileTree a[rel='"+ source +"']").parents('ul').size() < 2) {
 					// We are moving something to the root folder so regenerate the whole filetree
@@ -1131,7 +1128,7 @@ jQuery(document).ready(function($) {
 	//startup info - usefull for debugging
 		var data = { action: 'aceide_startup_check', _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
-		jQuery.post(ajaxurl, data, function(response) {
+		jQuery.post(aceajax.url, data, function(response) {
 			if (response == "-1"){
 				intialData = intialData + "Permission/security problem with ajax request. Refresh AceIDE and try again. \n\n";
 			} else {
@@ -1410,7 +1407,7 @@ jQuery(document).ready(function($) {
 		//item.path file|directory
 		var data = { action: 'aceide_create_new', path: item.path, type: item.type, file: data_input.val(), _wpnonce: jQuery('#_wpnonce').val(), _wp_http_referer: jQuery('#_wp_http_referer').val() };
 
-		jQuery.post(ajaxurl, data, function(response) {
+		jQuery.post(aceajax.url, data, function(response) {
 
 			if (response == "1"){
 				//remove the file/dir name from the text input
