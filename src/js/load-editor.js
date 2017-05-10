@@ -563,6 +563,9 @@ function aceide_set_file_contents(file, callback_func){
 			if (/\.css$/.test(currentFilename)) {
 				mode = require("ace/mode/css").Mode;
 			}
+			if (/\.scss$/.test(currentFilename)) {
+				mode = require("ace/mode/scss").Mode;
+			}
 			else if (/\.less$/.test(currentFilename)) {
 				mode = require("ace/mode/less").Mode;
 			}

@@ -155,6 +155,7 @@ class IDE
 		wp_enqueue_script( 'ace', "{$plugin_url}src/js/ace-{$acever}/ace.js", array(), $idever );
 		// include ace modes for css, javascript & php
 		wp_enqueue_script( 'ace-mode-css', "{$plugin_url}src/js/ace-{$acever}/mode-css.js", array( 'ace' ), $idever );
+		wp_enqueue_script( 'ace-mode-scss', "{$plugin_url}src/js/ace-{$acever}/mode-scss.js", array( 'ace' ), $idever );
 		wp_enqueue_script( 'ace-mode-less', "{$plugin_url}src/js/ace-{$acever}/mode-less.js", array( 'ace' ), $idever );
 		wp_enqueue_script( 'ace-mode-javascript', "{$plugin_url}src/js/ace-{$acever}/mode-javascript.js", array( 'ace' ), $idever );
 		wp_enqueue_script( 'ace-mode-php', "{$plugin_url}src/js/ace-{$acever}/mode-php.js", array( 'ace' ), $idever );
