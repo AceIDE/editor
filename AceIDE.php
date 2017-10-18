@@ -5,6 +5,7 @@
  * Description: WordPress code editor with auto completion of both WordPress and PHP functions with reference, syntax highlighting, line numbers, tabbed editing, automatic backup.
  * Version: 2.5.6
  * Author: AceIDE
+ * License: GPL3
  **/
 
 // Exit if accessed directly
