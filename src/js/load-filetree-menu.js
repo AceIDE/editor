@@ -241,7 +241,7 @@ function aceide_upload_file(server_destination, callback_func) {
                         alert(this.responseText);
                     }
                 } else {
-                    alert('NO!');
+                    alert("HTTP Error " + this.status + "\n\n" + this.statusText);
                 }
             }
         };
