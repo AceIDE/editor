@@ -66,6 +66,7 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 * See github issue #15. Removes AJAX noise from ALL other plugins/themes etc. Much more solid than previous solution for github issue #5.
 * Resolves github issue #21. Better error output in the event the HTTP server will not process a file upload request.
 * Added plugin license.
+* Resolved github issue #22. AceIDE is now PHP 7 compatible.
 
 = 2.5.5 =
 * Fixed github issue #11, where text would be replaced when clicking in replace field of the search box - Thanks to X-Raym

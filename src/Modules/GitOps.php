@@ -3,7 +3,6 @@
 namespace AceIDE\Editor\Modules;
 
 use AceIDE\Editor\IDE;
-use phpseclib\Crypt\RSA as Crypt_RSA;
 
 class GitOps implements Module
 {
@@ -253,11 +252,7 @@ class GitOps implements Module
 
 		// create keys if not exist
 		if ( ! file_exists( $gitpath . "/id_rsa" ) || ! file_exists( $gitpath . "/id_rsa.pub" ) ) {
-			$rsa = new Crypt_RSA();
-
-			$rsa->setPublicKeyFormat( 'OPENSSH' );
-
-			extract( $rsa->createKey() ); // == $rsa->createKey(1024) where 1024 is the key size - $privatekey and $publickey
+			$this->createRsaKey( 2048 );
 
 			// create private key
 			file_put_contents( $gitpath . "/id_rsa", $privatekey );
@@ -535,10 +530,20 @@ class GitOps implements Module
 
 		$this->git_open_repo(); // make sure git repo is open
 
-		// putenv("GIT_AUTHOR_NAME=AceIDE"); // author can be set using env but for now we set it during the commit
-		// putenv("GIT_AUTHOR_EMAIL=shanept@iinet.net.au");
-		putenv( "GIT_COMMITTER_NAME=AceIDE" ); // commiter details, shows under author on github
-		putenv( "GIT_COMMITTER_EMAIL=shanept@iinet.net.au" );
+		$userinfo = wp_get_current_user();
+
+		// committer name, shows under author on github
+		putenv( sprintf(
+			"GIT_COMMITTER_NAME=%s %s",
+			$userinfo->user_firstname,
+			$userinfo->user_lastname
+		) );
+
+		// committer email address
+		putenv( sprintf(
+			"GIT_COMMITTER_EMAIL=%s",
+			$userinfo->user_email
+		) );
 
 		$files = array();
 		foreach ( $_POST['files'] as $file ) {
@@ -555,5 +560,21 @@ class GitOps implements Module
 		$this->git_status();
 
 		die(); // this is required to return a proper result
+	}
+
+	private function createRsaKey( $size ) {
+		$config = array();
+
+		$rsa = openssl_pkey_new( array_merge( array (
+			'private_key_bits' => $size
+		), $config ) );
+
+		openssl_pkey_export($rsa, $privatekeystr, null, $config);
+		$publickeyarr = openssl_pkey_get_details($rsa);
+
+		return array (
+			'privatekey' => $privatekeystr,
+			'publickey'  => $publickeyarr['key']
+		);
 	}
 }
