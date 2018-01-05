@@ -9,11 +9,11 @@ This plugin would not be possible without the [Ajax.org Cloud9 Editor][4] which 
 
 This plugin performs best in the Chrome web browser.
 
-Contributors: Shane Thompson, [WPsites][5], [Thomas Wieczorek][6], [X-Raym][7], [Kevin Young][8]
+Contributors: Shane Thompson, [WPsites][5], [Thomas Wieczorek][6], X-Raym, [Kevin Young][7]
 Tags: code, theme editor, plugin editor, code editor  
 Requires at least: 3.0  
-Tested up to: 4.7  
-Stable tag: 2.5.6  
+Tested up to: 4.9.1  
+Stable tag: 2.6.0  
 
 ### Current Features:
 - Syntax highlighting
@@ -75,5 +75,4 @@ Kevin Young - https://rdytogo.com/
   [4]: http://ace.ajax.org
   [5]: http://www.wpsites.co.uk
   [6]: http://www.wieczo.net
-  [7]: 
-  [8]: https://rdytogo.com/
+  [7]: https://rdytogo.com/
