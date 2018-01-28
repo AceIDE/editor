@@ -1,5 +1,8 @@
 ## AceIDE Changelog
 
+#### 2.6.1
+* See github issue #27. Fixes issue introduced in 2.6.0, attempting to fix noise in AJAX.
+
 #### 2.6.0
 * See github issue #15. Removes AJAX noise from ALL other plugins/themes etc. Much more solid than previous solution for github issue #5.
 * Resolves github issue #21. Better error output in the event the HTTP server will not process a file upload request.

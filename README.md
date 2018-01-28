@@ -13,7 +13,7 @@ Contributors: Shane Thompson, [WPsites][5], [Thomas Wieczorek][6], X-Raym, [Kevi
 Tags: code, theme editor, plugin editor, code editor  
 Requires at least: 3.0  
 Tested up to: 4.9.1  
-Stable tag: 2.6.0  
+Stable tag: 2.6.1  
 
 ### Current Features:
 - Syntax highlighting
