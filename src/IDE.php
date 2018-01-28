@@ -150,7 +150,7 @@ class IDE
 		$idever = $idever['Version'];
 
 		// include file tree
-		wp_enqueue_script( 'jquery-file-tree', plugins_url( 'js/jqueryFileTree.js', __FILE__ ), array( 'jquery' ), $idever );
+		wp_enqueue_script( 'jquery-file-tree', "{$plugin_url}src/js/jqueryFileTree.js", array( 'jquery' ), $idever );
 		// include ace
 		wp_enqueue_script( 'ace', "{$plugin_url}src/js/ace-{$acever}/ace.js", array(), $idever );
 		// include ace modes for css, javascript & php
@@ -178,7 +178,7 @@ class IDE
 
 		// Specify custom AJAX handler
 		wp_localize_script( 'aceide-load-editor', 'aceajax', array(
-			'url' => plugins_url( 'Ajax.php', __FILE__ )
+			'url' => "{$plugin_url}src/Ajax.php"
 		) );
 
 		// load color picker
