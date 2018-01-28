@@ -66,6 +66,8 @@ class FileOps implements Module
 
 		$is_php = false;
 
+		$check_syntax = apply_filters( 'aceide_parse_php', true );
+
 		/*
 		 * Check file syntax of PHP files by parsing the PHP
 		 * If a site is running low on memory this PHP parser library could well tip memory usage over the edge
@@ -73,7 +75,7 @@ class FileOps implements Module
 		 * Might be worth either making this syntax check optional or it only running if memory is available.
 		 * Symptoms: no response on file save, and errors in your log like "Fatal error: Allowed memory size of 8388608 bytes exhausted…"
 		 */
-		if ( preg_match( "#\.php$#i", $_POST['filename'] ) ) {
+		if ( $check_syntax && preg_match( "#\.php$#i", $_POST['filename'] ) ) {
 			$is_php = true;
 
 			ini_set( 'xdebug.max_nesting_level', 2000 );
