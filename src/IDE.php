@@ -7,7 +7,7 @@ use AceIDE\Editor\Modules\Module;
 
 class IDE
 {
-	private $ace_version = '1.2.4';
+	private $ace_version = '1.2.9';
 
 	public $site_url, $plugin_url;
 	private $menu_hook;
