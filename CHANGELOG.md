@@ -6,6 +6,7 @@
 * Bumped Ace version to 1.2.9.
 * Fixed PHPParser_Error not being caught.
 * Added 'aceide_parse_php' filter to allow disabling the inbuilt PHP syntax parser.
+* See github issue #24. Fixes some resource URLs.
 
 #### 2.6.0
 * See github issue #15. Removes AJAX noise from ALL other plugins/themes etc. Much more solid than previous solution for github issue #5.
