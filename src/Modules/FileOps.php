@@ -5,6 +5,7 @@ namespace AceIDE\Editor\Modules;
 use WP_Error;
 use AceIDE\Editor\IDE;
 use PHPParser_Lexer;
+use PHPParser_Error;
 use PHPParser_Parser;
 use PclZip;
 use ZipArchive;
