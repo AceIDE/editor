@@ -49,6 +49,7 @@ if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo >&2 "Versions don't match. Ex
 if [ "$NEWVERSION1" != "$NEWVERSION3" ]; then echo >&2 "Versions don't match. Exiting...."; exit 1; fi
 if [ "$NEWVERSION1" != "$NEWVERSION4" ]; then echo >&2 "Versions don't match. Exiting...."; exit 1; fi
 command -v composer >/dev/null 2>&1 || { echo >&2 "Composer not installed.  Exiting...."; exit 1; }
+command -v svn >/dev/null 2>&1 || { echo >&2 "Subversion not installed. Exiting...."; exit 1; }
 
 echo "Versions all match. Let's proceed..."
 
