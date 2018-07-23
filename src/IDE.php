@@ -178,7 +178,7 @@ class IDE
 
 		// Specify custom AJAX handler
 		wp_localize_script( 'aceide-load-editor', 'aceajax', array(
-			'url' => "{$plugin_url}src/Ajax.php"
+			'url' => admin_url( 'admin-ajax.php' )
 		) );
 
 		// load color picker
@@ -736,7 +736,7 @@ class IDE
 						<div id="aceide_toolbar_tabs"> </div>
 						<div id="dialog_window_minimized_container"></div>
 					</div>
-	
+
 					<div id="aceide_toolbar_buttons">
 						<div id="aceide_message"></div>
 						<a class="button restore" style="display:none;" title="<?php esc_attr_e( 'Restore the active tab' ); ?>" href="#"><?php _e( 'Restore &#10012;' ); ?></a>
@@ -746,7 +746,7 @@ class IDE
 						<div id="aceide_footer_message"></div>
 						<div id="aceide_footer_message_last_saved"></div>
 						<div id="aceide_footer_message_unsaved"></div>
-	
+
 					  	<a href="#" id="aceide_save" alt="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" title="<?php esc_attr_e( 'Keyboard shortcut to save [Ctrl/Cmd + S]' ); ?>" class="button-primary"><?php esc_html_e( 'SAVE FILE' ); ?></a>
 						<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ): ?>
 						<a href="#" id="aceide_git" alt="Open the Git overlay" title="Open the Git overlay" class="button-secondary"><?php esc_html_e( 'Git' ); ?></a>

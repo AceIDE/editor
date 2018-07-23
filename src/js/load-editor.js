@@ -528,6 +528,9 @@ function aceide_set_file_contents(file, callback_func){
 
 		jQuery("#aceide_toolbar_tabs").append('<span id="'+the_id+'" sessionrel="'+last_added_editor_session+'"  title="  '+file+' " rel="'+file+'" class="aceide_tab">'+ the_path +'<a class="close_tab" href="#">x</a></span>');
 
+		//trim everything before, and including, the start of file marker
+		response = response.substring(response.indexOf('===FILE_CONTENTS_START===') + 25);
+
 		saved_editor_sessions[last_added_editor_session] = new EditSession(response);//set saved session
 		saved_editor_sessions[last_added_editor_session].on('change', onSessionChange);
 		saved_undo_manager[last_added_editor_session] = new UndoManager(editor.getSession().getUndoManager());//new undo manager for this session

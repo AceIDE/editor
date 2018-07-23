@@ -2,6 +2,7 @@
 
 #### 2.6.2
 * See github issue #32. Adds precision to backup naming.
+* Reverts breaking changes made by commit 80e8adf to fix #15.
 
 #### 2.6.1
 * See github issue #27. Fixes issue introduced in 2.6.0, attempting to fix noise in AJAX.

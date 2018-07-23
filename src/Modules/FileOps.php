@@ -54,6 +54,7 @@ class FileOps implements Module
 			ob_end_clean();
 		}
 
+		echo '===FILE_CONTENTS_START===';
 		echo $wp_filesystem->get_contents($file_name);
 		die(); // this is required to return a proper result
 	}
