@@ -28,11 +28,11 @@ CHANGELOG.md" #other files you you don't need to publish to the WP.org repo
 
 # Let's begin...
 echo ".........................................."
-echo 
+echo
 echo "Preparing to deploy wordpress plugin"
-echo 
+echo
 echo ".........................................."
-echo 
+echo
 
 # Check version in readme.txt is the same as plugin file
 NEWVERSION1=`grep "^Stable tag" $GITPATH/readme.txt | awk -F' ' '{print $3}'`
@@ -45,9 +45,10 @@ NEWVERSION4=`grep "^ \\* Version" $GITPATH/$MAINFILE | awk -F' ' '{print $3}'`
 echo "$MAINFILE version: $NEWVERSION4"
 echo
 
-if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
-if [ "$NEWVERSION1" != "$NEWVERSION3" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
-if [ "$NEWVERSION1" != "$NEWVERSION4" ]; then echo "Versions don't match. Exiting...."; exit 1; fi
+if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo >&2 "Versions don't match. Exiting...."; exit 1; fi
+if [ "$NEWVERSION1" != "$NEWVERSION3" ]; then echo >&2 "Versions don't match. Exiting...."; exit 1; fi
+if [ "$NEWVERSION1" != "$NEWVERSION4" ]; then echo >&2 "Versions don't match. Exiting...."; exit 1; fi
+command -v composer >/dev/null 2>&1 || { echo >&2 "Composer not installed.  Exiting...."; exit 1; }
 
 echo "Versions all match. Let's proceed..."
 
@@ -63,7 +64,7 @@ echo "Pushing latest commit to origin, with tags"
 git push origin master
 git push origin master --tags
 
-echo 
+echo
 echo "Creating local copy of SVN repo ..."
 svn co $SVNURL $SVNPATH
 
