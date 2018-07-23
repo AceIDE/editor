@@ -62,6 +62,8 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 1. Default colour picker image
 
 == Changelog ==
+= 2.6.2 =
+* See github issue #32. Adds precision to backup naming.
 = 2.6.1 =
 * See github issue #27. Fixes issue introduced in 2.6.0, attempting to fix nois$
 * See github issue #26. Fixes CSS highlighting not working.
@@ -105,13 +107,13 @@ AceIDE on GitHub: https://github.com/AceIDE/editor/
 = 2.5.0 =
 * WPide was forked into AceIDE!
 * Introduced composer as a dependency management solution
-* Massive code refactor to better follow Single Role Principle, and the WordPress PHP coding standards - introduces PHP namespacing into internal plugin code 
+* Massive code refactor to better follow Single Role Principle, and the WordPress PHP coding standards - introduces PHP namespacing into internal plugin code
 * Fixed WPide admin_body_class filter issue
 * Added multi-site support. (UNTESTED)
 * Added Drag n' Drop file moving
 * Added syntax highlighting for the Twig templating language  (http://twig.sensiolabs.org)
 * Added the Emmet plugin to create HTML nodes with CSS syntax (http://emmet.io)
-* Upgraded Ace to v1.2.4  
+* Upgraded Ace to v1.2.4
 * Fixed SumoPaint link issues when the aceide_filesystem_root filter is not at default value
 
 = 2.4.0 =

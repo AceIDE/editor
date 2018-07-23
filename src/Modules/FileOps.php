@@ -116,7 +116,7 @@ class FileOps implements Module
 		$file_name = $root . stripslashes( $_POST['filename'] );
 
 		// set backup filename
-		$backup_path = 'backups' . preg_replace( "#\.php$#i", "_" . date( "Y-m-d-H" ) . ".php", $_POST['filename'] );
+		$backup_path = 'backups' . preg_replace( "#\.php$#i", "_" . date( "Y-m-d-H-i-s" ) . ".php", $_POST['filename'] );
 		$backup_path_full = plugin_dir_path( dirname( dirname( __FILE__ ) ) ) . $backup_path;
 		// create backup directory if not there
 		$new_file_info = pathinfo( $backup_path_full );
@@ -270,7 +270,7 @@ die();
 			if (ob_get_level()) {
 				ob_end_clean();
 			}
-    
+
 			echo __( 'The target file doesn\'t exist!' );
 			exit;
 		}
