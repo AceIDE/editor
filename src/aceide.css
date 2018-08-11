@@ -654,6 +654,13 @@ div.ImageColorPickerWrapper{
 #editor_find_dialog div.right input:hover {
 	border-color: #AAAAAA;
 }
+#editor_goto_dialog input[name="line"] {
+    width: 99%;
+}
+#editor_goto_dialog input[name="submit"],
+#editor_goto_dialog input[name="cancel"] {
+    width: 48%;
+}
 
 ul.jqueryFileTree a {
 	overflow: hidden;

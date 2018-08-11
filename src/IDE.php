@@ -799,7 +799,15 @@ class IDE
 			</form>
 			<?php endif; ?>
 		</div>
-		<div id="editor_goto_dialog" title="<?php esc_attr_e( 'Go to...' ); ?>" style="padding: 0px; display: none;"></div>
+		<div id="editor_goto_dialog" title="<?php esc_attr_e( 'Go to...' ); ?>" style="padding: 0px; display: none;">
+            <form>
+                <p><input type="text" id="line" name="line" value="0" /></p>
+                <p>
+                    <input type="submit" name="submit" value="Go To" />
+                    <input type="button" name="cancel" value="Cancel" />
+                </p>
+            </form>
+        </div>
 		<div id="editor_settings_dialog" style="padding: 10px 10px 5px; display: none;">
 			<div class="left">
 				<label><?php _e( 'Theme:' ); ?> <input type="text" id="editor_theme_setting" class="ipt-sel"></label>

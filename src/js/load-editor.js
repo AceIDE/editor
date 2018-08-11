@@ -1097,6 +1097,17 @@ jQuery(document).ready(function($) {
 		jQuery( "#editor_find_dialog" ).dialog( "close" );
 		editor.focus();
 	});
+	$("#editor_goto_dialog form").submit(function( e ) {
+		e.preventDefault()
+
+		lineNo = jQuery( "#editor_goto_dialog input[name='line']" ).val()
+		editor.gotoLine(lineNo)
+	});
+	$("#editor_goto_dialog input[name='cancel']").click(function( e ) {
+		e.preventDefault()
+		jQuery( "#editor_goto_dialog" ).dialog( "close" );
+		editor.focus();
+	});
 
 	// drag and drop colour picker image
 	$("#aceide_color_assist").on('drop', function(e) {
