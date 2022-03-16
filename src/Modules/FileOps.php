@@ -746,7 +746,7 @@ die();
 				$filePath = "$folder/$file";
 				$filePathRel = str_replace( $zip_base, '', $filePath );
 
-				if ( $filePathRel{0} === '/' ) {
+				if ( $filePathRel[0] === '/' ) {
 					$filePathRel = substr( $filePathRel, 1 );
 				}
 
